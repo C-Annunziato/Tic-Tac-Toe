@@ -11,6 +11,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -21,7 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
@@ -46,9 +50,11 @@ class MainActivity : ComponentActivity() {
 fun TicTacToe(modifier: Modifier = Modifier, viewModel: T3ViewModel) {
 
     Column(modifier = modifier.fillMaxSize()) {
-        Column(modifier = modifier
-            .weight(0.6f, true)
-            .background(Color.Blue)) {
+        Column(
+            modifier = modifier
+                .weight(0.6f, true)
+                .background(Color.Blue)
+        ) {
             Board(boardState = viewModel.boardState)
             //this is for some controls
         }
@@ -66,11 +72,10 @@ fun TicTacToe(modifier: Modifier = Modifier, viewModel: T3ViewModel) {
 
 @Composable
 fun Board(
-    modifier: Modifier = Modifier,
-    boardState: LiveData<BoardState>
+    modifier: Modifier = Modifier, boardState: LiveData<BoardState>
 ) {
 
-val tileState = boardState.observeAsState().value
+    val tileState = boardState.observeAsState().value
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -86,7 +91,7 @@ val tileState = boardState.observeAsState().value
                 )
             ) {
                 for (j in 1..3) {
-                    Tiles(onChooseTile = {} )
+                    Tiles(onChooseTile = {})
                 }
             }
         }
@@ -96,19 +101,18 @@ val tileState = boardState.observeAsState().value
 
 @Composable
 fun Tiles(
-    modifier: Modifier = Modifier,
-    onChooseTile: () -> Unit
+    modifier: Modifier = Modifier, onChooseTile: () -> Unit
 ) {
     Column(
     ) {
-        Box(modifier = modifier
-            .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
-            .size(80.dp)
-            .clickable { onChooseTile },
-        contentAlignment = Alignment.Center
-            ){
-            XX()
-//            OO()
+        Box(
+            modifier = modifier
+                .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
+                .size(80.dp)
+                .clickable { onChooseTile }, contentAlignment = Alignment.Center
+        ) {
+//            XX()
+            OO()
         }
 
     }
@@ -142,29 +146,90 @@ fun OO(modifier: Modifier = Modifier) {
         val canvasHeight = size.height
 
         drawCircle(
-            radius = 50f, center = Offset(
+            radius = 50f,
+            center = Offset(
                 x = canvasWidth / 2, y = canvasHeight / 2
-            ), color = Color.Black, style = Stroke(width = 10f)
-        )
+            ),
+            color = Color.Black,
+            style = Stroke(width = 10f),
+
+            )
     }
 }
 
 
 @Composable
-fun GameController(modifier: Modifier = Modifier){
-    
-    Column(modifier = modifier){
+fun GameController(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier) {
         Button(onClick = { }, modifier = Modifier) {
             Icon(Icons.Filled.Refresh, contentDescription = "rewind")
         }
+
+        Button(onClick = { }) {
+            Icon(Icons.Filled.Clear, contentDescription = "remove")
+        }
+//        Button(onClick = { }) {
+//            Icon(Icons.Filled contentDescription = "temphold")
+//        }
     }
-    
+
+}
+
+@Composable
+fun ClockIcon(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .border(4.dp, Color.Green)
+                .size(80.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Canvas(modifier = modifier) {
+                val canvasWidth = size.width
+                val canvasHeight = size.height
+                drawCircle(
+                    radius = 85f,
+                    center = Offset(
+                        x = canvasWidth / 2, y = canvasHeight / 2
+                    ),
+                    color = Color.Black,
+                    style = Stroke(
+                        width = 10f, pathEffect = PathEffect.dashPathEffect(
+                            floatArrayOf(20f, 20f), 20f
+                        )
+                    ),
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .width(50.dp)
+                    .rotate(270f),
+                thickness = 4.dp,
+                color = Color.Black,
+                startIndent = 23.dp
+            )
+
+            Divider(
+                modifier = Modifier
+                    .rotate(-20f)
+                    .width(50.dp),
+                thickness = 4.dp,
+                color = Color.Black,
+                startIndent = 23.dp
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-
+    ClockIcon()
 }
 
 
