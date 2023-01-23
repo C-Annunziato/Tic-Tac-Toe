@@ -30,13 +30,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TicTacToe(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxHeight(10f).background(Color.Blue)) {
-        Board()
-        //this is for some controls
-        Column(modifier = Modifier.fillMaxHeight(50f).background(Color.Black)) {}
+    Column(modifier = modifier.fillMaxSize()) {
+
+        Column(modifier = modifier.weight(0.6f, true).background(Color.Blue)) {
+            Board()
+            //this is for some controls
+        }
+
+        Column(
+            modifier = Modifier.weight(0.4f, true).background(Color.Gray)
+        ) {
+            //Controls
+        }
     }
 }
-
 
 @Composable
 fun Board(modifier: Modifier = Modifier) {
@@ -49,7 +56,7 @@ fun Board(modifier: Modifier = Modifier) {
     ) {
         for (i in 1..3) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(
+                horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.padding(
                     10.dp
                 )
             ) {
@@ -113,6 +120,7 @@ fun OO(modifier: Modifier = Modifier) {
 fun DefaultPreview() {
 
 }
+
 
 
 
