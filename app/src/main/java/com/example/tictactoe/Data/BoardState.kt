@@ -7,7 +7,4 @@ data class BoardState(
     val boardIsExpanded: Boolean = false,
     val isTileOnHold: Boolean = false,
     val isXTurn: Boolean = false,
-    val isOTurn: Boolean = false,
-
-
-)
+    val isOTurn: Boolean = false, )
