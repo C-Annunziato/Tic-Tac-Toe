@@ -10,16 +10,17 @@ const val TAG = "viewmodel"
 class T3ViewModel : ViewModel() {
 
     private val _tileState = MutableLiveData(listOfState)
-    val tileState: LiveData <List<TileState>?> = _tileState
-    fun updateBoardState(bool: Boolean){
-        _tileState.value = _tileState.value?.copy(isOTurn = bool)
-    }
+    val tileState: LiveData<List<TileState>?> = _tileState
 
-    init {
+    fun updateBoardState(listOfStateIndex: Int, bool: Boolean) {
+        _tileState.value = listOfState.mapIndexed { index, tileState ->
+            if (listOfStateIndex == index) {
+                tileState.copy(isOTurn = bool)
+            } else tileState
+        }
 
-    }
+        fun populateTile() {
 
-    fun populateTile() {
-
+        }
     }
 }

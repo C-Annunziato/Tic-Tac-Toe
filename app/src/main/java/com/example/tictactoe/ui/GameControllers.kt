@@ -19,7 +19,6 @@ import com.example.tictactoe.TAG
 
 @Composable
 fun GameControlsLeft(modifier: Modifier = Modifier) {
-    Log.i(TAG, "gamecontrollerleftcalled")
     Column(
         modifier = modifier.padding(start = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

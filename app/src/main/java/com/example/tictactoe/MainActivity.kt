@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,19 +31,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            log.i(tag, "oncreatecalled")
+//            Log.i(TAG, "oncreatecalled")
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            TicTacToe(viewModel = vm, tileState = vm.tileState)
+            TicTacToe(viewModel = vm, liveDataListOfTileStates = vm.tileState)
         }
     }
 }
 
 @Composable
 fun TicTacToe(
-    modifier: Modifier = Modifier, viewModel: T3ViewModel, tileState: LiveData<List<TileState>?>
+    modifier: Modifier = Modifier,
+    viewModel: T3ViewModel,
+    liveDataListOfTileStates: LiveData<List<TileState>?>
 ) {
 
-    val liveBoardstate = tileState.observeAsState()
+    val liveBoardstate = liveDataListOfTileStates.observeAsState()
 
     Column(modifier = modifier.fillMaxSize()) {
         Column(
@@ -52,7 +53,7 @@ fun TicTacToe(
 
         ) {
             Board(
-                tileState = liveBoardstate.value ?: listOfState, viewModel = viewModel
+                listOfTileStates = liveBoardstate.value ?: listOfState, viewModel = viewModel
             )
         }
         Row(
@@ -69,10 +70,19 @@ fun TicTacToe(
 
 @Composable
 fun Board(
-    modifier: Modifier = Modifier, tileState: List<TileState>?, viewModel: T3ViewModel
+    modifier: Modifier = Modifier, listOfTileStates: List<TileState>?, viewModel: T3ViewModel
 ) {
-
 //    val tileState = boardState.observeAsState().value
+
+    var tiles = listOfTileStates?.forEachIndexed { index, tileState ->
+        val tile by mutableStateOf(
+            Pair(
+                index, tileState
+            )
+        )
+    }
+
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,6 +90,7 @@ fun Board(
             .padding(10.dp)
             .fillMaxSize(),
     ) {
+
         Text("Complete a row, diagonal or column")
         for (i in 1..3) {
             Row(
@@ -87,16 +98,16 @@ fun Board(
                 modifier = Modifier.padding(10.dp)
             ) {
                 for (j in 1..3) {
-                    if (tileState != null) {
-                        Tile(onChooseTile = {
+                    Log.i(TAG, " This is another tile being created")
+                    listOfTileStates?.getOrNull((i - 1) * 3 + (j - 1)).let { tileState ->
+                        Tile(onChooseTile = { bool ->
                             //pass and boolean and update specific tile with some logic
-                            viewModel.updateBoardState(it)
+                            viewModel.updateBoardState(listOfStateIndex = (i - 1) * 3 + (j - 1), bool = bool)
                             //figure out how to individually deliver each tilestate to this parameter
                             // turn list of 9 items in 3x3 grid
-                        }, state = tileState.)
+                        }, state = tileState)
                     }
                 }
-
             }
         }
     }
