@@ -6,27 +6,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.tictactoe.Data.BoardState
+import com.example.tictactoe.Data.TileState
 import com.example.tictactoe.Data.T3ViewModel
+import com.example.tictactoe.Data.listOfState
 import com.example.tictactoe.ui.GameControlsLeft
 import com.example.tictactoe.ui.GameControlsRight
 import com.example.tictactoe.ui.OO
@@ -38,31 +32,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Log.i(TAG, "oncreatecalled")
+//            log.i(tag, "oncreatecalled")
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            TicTacToe(viewModel = vm, boardState = vm.boardState)
+            TicTacToe(viewModel = vm, tileState = vm.tileState)
         }
     }
 }
 
 @Composable
 fun TicTacToe(
-    modifier: Modifier = Modifier,
-    viewModel: T3ViewModel,
-    boardState: LiveData<BoardState>
+    modifier: Modifier = Modifier, viewModel: T3ViewModel, tileState: LiveData<List<TileState>?>
 ) {
 
-//    val tileState = viewModel.boardState.observeAsState().value
-//    val xtileState by remember {
-//        mutableStateOf(boardState)
-//    }
-
-    val liveBoardstate = boardState.observeAsState().value
-
-//
-    Log.i(TAG, "${liveBoardstate!!.isOTurn} observed value")
-
-
+    val liveBoardstate = tileState.observeAsState()
 
     Column(modifier = modifier.fillMaxSize()) {
         Column(
@@ -70,14 +52,12 @@ fun TicTacToe(
 
         ) {
             Board(
-                boardState = liveBoardstate, viewModel = viewModel
+                tileState = liveBoardstate.value ?: listOfState, viewModel = viewModel
             )
-            //this is for some controls
         }
         Row(
             modifier = Modifier
                 .weight(0.5f)
-
                 .fillMaxSize()
         ) {
             //Controls
@@ -89,7 +69,7 @@ fun TicTacToe(
 
 @Composable
 fun Board(
-    modifier: Modifier = Modifier, boardState: BoardState?, viewModel: T3ViewModel
+    modifier: Modifier = Modifier, tileState: List<TileState>?, viewModel: T3ViewModel
 ) {
 
 //    val tileState = boardState.observeAsState().value
@@ -107,12 +87,16 @@ fun Board(
                 modifier = Modifier.padding(10.dp)
             ) {
                 for (j in 1..3) {
-
-                    Tiles(
-                        onChooseTile = { viewModel.updateBoardState(true) },
-                        state = boardState,
-                        )
+                    if (tileState != null) {
+                        Tile(onChooseTile = {
+                            //pass and boolean and update specific tile with some logic
+                            viewModel.updateBoardState(it)
+                            //figure out how to individually deliver each tilestate to this parameter
+                            // turn list of 9 items in 3x3 grid
+                        }, state = tileState.)
+                    }
                 }
+
             }
         }
     }
@@ -120,19 +104,19 @@ fun Board(
 
 
 @Composable
-fun Tiles(
-    modifier: Modifier = Modifier, onChooseTile: () -> Unit, state: BoardState?,
-    ) {
+fun Tile(
+    modifier: Modifier = Modifier, onChooseTile: (Boolean) -> Unit, state: TileState?
+) {
     Column(
+        modifier = modifier
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
                 .size(80.dp)
-                .clickable(onClick = { onChooseTile() }), contentAlignment = Alignment.Center
+                .clickable(onClick = { onChooseTile(true) }),
+            contentAlignment = Alignment.Center
         ) {
-            Log.i(TAG, "${state!!.isXTurn} XXX")
-            Log.i(TAG, "${state!!.isOTurn} OOO")
 
             if (state!!.isXTurn) {
                 XX()
@@ -143,9 +127,6 @@ fun Tiles(
         }
     }
 }
-
-
-
 
 
 @Preview(showBackground = true)
