@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            Log.i(TAG, "oncreatecalled")
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
             TicTacToe(viewModel = vm, liveDataListOfTileStates = vm.tileState)
         }
@@ -50,7 +49,6 @@ fun TicTacToe(
     Column(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = modifier.weight(0.5f)
-
         ) {
             Board(
                 listOfTileStates = liveBoardstate.value ?: listOfState, viewModel = viewModel
@@ -72,16 +70,6 @@ fun TicTacToe(
 fun Board(
     modifier: Modifier = Modifier, listOfTileStates: List<TileState>?, viewModel: T3ViewModel
 ) {
-//    val tileState = boardState.observeAsState().value
-
-    var tiles = listOfTileStates?.forEachIndexed { index, tileState ->
-        val tile by mutableStateOf(
-            Pair(
-                index, tileState
-            )
-        )
-    }
-
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -98,26 +86,38 @@ fun Board(
                 modifier = Modifier.padding(10.dp)
             ) {
                 for (j in 1..3) {
-                    Log.i(TAG, " This is another tile being created")
-                    listOfTileStates?.getOrNull((i - 1) * 3 + (j - 1)).let { tileState ->
+                    val currentIndex = (i - 1) * 3 + (j - 1)
+                    listOfTileStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(onChooseTile = { bool ->
                             //pass and boolean and update specific tile with some logic
-                            viewModel.updateBoardState(listOfStateIndex = (i - 1) * 3 + (j - 1), bool = bool)
+                            viewModel.updatePlayerState(
+                                listOfStateIndex = currentIndex, bool = bool
+                            )
                             //figure out how to individually deliver each tilestate to this parameter
                             // turn list of 9 items in 3x3 grid
-                        }, state = tileState)
+                        }, state = tileState, currentIndex = currentIndex, viewModel = viewModel)
                     }
                 }
             }
         }
+        Text("${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"} Turn")
     }
 }
 
-
 @Composable
 fun Tile(
-    modifier: Modifier = Modifier, onChooseTile: (Boolean) -> Unit, state: TileState?
+    modifier: Modifier = Modifier,
+    onChooseTile: (Boolean) -> Unit,
+    state: TileState?,
+    currentIndex: Int,
+    viewModel: T3ViewModel,
 ) {
+
+    Log.i(
+        TAG,
+        "isplayer1turn" + "isnotoccupied:  " + "isnottileonhold: " + " currentindex:" + " stateid: " + "" + " \n${state!!.isPlayer1Turn},  ${!state!!.tileIsOccupied}, ${!state!!.isTileOnHold},$currentIndex ,$currentIndex"
+    )
+
     Column(
         modifier = modifier
     ) {
@@ -125,20 +125,29 @@ fun Tile(
             modifier = Modifier
                 .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
                 .size(80.dp)
-                .clickable(onClick = { onChooseTile(true) }),
-            contentAlignment = Alignment.Center
+                .clickable(onClick = {
+                    if (state.isPlayer1Turn) onChooseTile(true) else onChooseTile(
+                        false
+                    )
+                }), contentAlignment = Alignment.Center
         ) {
 
-            if (state!!.isXTurn) {
+            //if it is player 1 turn
+            //and there is not already a symbol in the tile
+            //and the tile is not on hold
+            //and the index of the one we are altering is the index of the one we clicked on
+//            && !state.tileIsOccupied && !state.isTileOnHold && currentIndex == state.id
+            if (state!!.isPlayer1Turn && currentIndex == state.id) {
                 XX()
-            } else if (state!!.isOTurn) {
+                viewModel.nextPlayerTurn()
+            } else if (!state!!.isPlayer1Turn && currentIndex == state.id) {
                 OO()
+                viewModel.nextPlayerTurn()
             }
 //            Text("hey")
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
