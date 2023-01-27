@@ -18,14 +18,46 @@ class T3ViewModel : ViewModel() {
     private var currentTileIndex: Int by mutableStateOf(0)
 
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
-        currentTileIndex = listOfStateIndex
 
+        currentTileIndex = listOfStateIndex
+        // update global
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            Log.i(TAG, "${tileState.isPlayer1Turn} is player one turn for index $index")
-            if (listOfStateIndex == index && tileState.isPlayer1Turn) {
+//            Log.i(TAG, "${tileState.currentTileSymbolState}")
+            Log.i(TAG,"$index" )
                 tileState.copy(isPlayer1Turn = !bool)
-            } else tileState
         }
+
+         val currentTileState = tileState.value!![listOfStateIndex]
+        // update individual
+        Log.i(TAG, "${currentTileState.isPlayer1Turn}")
+
+       val updatedTileState = if (currentTileState.isPlayer1Turn) {
+           currentTileState.copy(currentTileSymbolState = TileValue.CROSS)
+        } else  currentTileState.copy(currentTileSymbolState = TileValue.CIRCLE)
+
+        _tileState.value = _tileState.value!!.toMutableList().apply { this[listOfStateIndex] = updatedTileState }
+
+//        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+
+//            if (listOfStateIndex == index) {
+//                tileState.copy(isPlayer1Turn = tileState.isPlayer1Turn == !bool)
+//
+//
+//            if (tileState.isPlayer1Turn) {
+//                tileState.copy(currentTileSymbolState = TileValue.CROSS)
+//            } else if (!tileState.isPlayer1Turn) {
+//                tileState.copy(currentTileSymbolState = TileValue.CIRCLE)
+//            } else tileState
+//        }
+
+
+        //Global update of player turn
+//        listOfState.forEach {
+//            it.copy(isPlayer1Turn = it.isPlayer1Turn == !bool)
+//        }
+
+    }
+
 
 //        _tileState.value = listOfState.mapIndexed { index, tileState ->
 //            if (listOfStateIndex == index) {
@@ -33,7 +65,6 @@ class T3ViewModel : ViewModel() {
 //            } else tileState
 //        }
 
-    }
 
     fun nextPlayerTurn() {
 
@@ -48,7 +79,10 @@ class T3ViewModel : ViewModel() {
 //        var i = TileState(id= 0).copy(isPlayer1Turn = false, isOTurn = false, isXTurn = true)
 
 
-        Log.i(TAG, "${_tileState.value?.get(currentTileIndex)?.isPlayer1Turn} is player turn for index: $currentTileIndex")
+//    Log.i(
+//        TAG,
+//        "${_tileState.value?.get(currentTileIndex)?.isPlayer1Turn} is player turn for index: $currentTileIndex"
+//    )
     }
 
     fun populateTile() {

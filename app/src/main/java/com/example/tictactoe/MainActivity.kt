@@ -19,6 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.tictactoe.Data.TileState
 import com.example.tictactoe.Data.T3ViewModel
+import com.example.tictactoe.Data.TileValue
 import com.example.tictactoe.Data.listOfState
 import com.example.tictactoe.ui.GameControlsLeft
 import com.example.tictactoe.ui.GameControlsRight
@@ -113,10 +114,11 @@ fun Tile(
     viewModel: T3ViewModel,
 ) {
 
-    Log.i(
-        TAG,
-        "isplayer1turn" + "isnotoccupied:  " + "isnottileonhold: " + " currentindex:" + " stateid: " + "" + " \n${state!!.isPlayer1Turn},  ${!state!!.tileIsOccupied}, ${!state!!.isTileOnHold},$currentIndex ,$currentIndex"
-    )
+//    Log.i(
+//        TAG,
+//        "isplayer1turn" + "isnotoccupied:  " + "isnottileonhold: " + " currentindex:" + " stateid: " + "" + " " +
+//                "\n${state!!.isPlayer1Turn},  ${!state!!.tileIsOccupied}, ${!state!!.isTileOnHold},$currentIndex ,$currentIndex"
+//    )
 
     Column(
         modifier = modifier
@@ -126,9 +128,10 @@ fun Tile(
                 .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
                 .size(80.dp)
                 .clickable(onClick = {
-                    if (state.isPlayer1Turn) onChooseTile(true) else onChooseTile(
-                        false
-                    )
+                    when (state?.isPlayer1Turn) {
+                        true -> onChooseTile(true)
+                        false -> onChooseTile(false)
+                    }
                 }), contentAlignment = Alignment.Center
         ) {
 
@@ -137,14 +140,16 @@ fun Tile(
             //and the tile is not on hold
             //and the index of the one we are altering is the index of the one we clicked on
 //            && !state.tileIsOccupied && !state.isTileOnHold && currentIndex == state.id
-            if (state!!.isPlayer1Turn && currentIndex == state.id) {
+            if (state?.isPlayer1Turn == true && state?.currentTileSymbolState?.ordinal == TileValue.CROSS.ordinal && currentIndex == state?.id) {
                 XX()
                 viewModel.nextPlayerTurn()
-            } else if (!state!!.isPlayer1Turn && currentIndex == state.id) {
+            } else if (state?.isPlayer1Turn == false && state?.currentTileSymbolState?.ordinal == TileValue.CIRCLE.ordinal && currentIndex == state?.id) {
                 OO()
                 viewModel.nextPlayerTurn()
+            } else if (state?.isPlayer1Turn == true && state.currentTileSymbolState?.ordinal == TileValue.NONE.ordinal) {
+//                Text("hey")
             }
-//            Text("hey")
+
         }
     }
 }
