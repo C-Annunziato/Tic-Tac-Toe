@@ -89,12 +89,9 @@ fun Board(
                     val currentIndex = (i - 1) * 3 + (j - 1)
                     listOfTileStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(onChooseTile = { bool ->
-                            //pass and boolean and update specific tile with some logic
                             viewModel.updatePlayerState(
                                 listOfStateIndex = currentIndex, bool = bool
                             )
-                            //figure out how to individually deliver each tilestate to this parameter
-                            // turn list of 9 items in 3x3 grid
                         }, state = tileState, currentIndex = currentIndex, viewModel = viewModel)
                     }
                 }
@@ -113,11 +110,6 @@ fun Tile(
     viewModel: T3ViewModel,
 ) {
 
-//    Log.i(
-//        TAG,
-//        "isplayer1turn" + "isnotoccupied:  " + "isnottileonhold: " + " currentindex:" + " stateid: " + "" + " " +
-//                "\n${state!!.isPlayer1Turn},  ${!state!!.tileIsOccupied}, ${!state!!.isTileOnHold},$currentIndex ,$currentIndex"
-//    )
 
     Column(
         modifier = modifier
@@ -134,29 +126,13 @@ fun Tile(
                 }), contentAlignment = Alignment.Center
         ) {
 
-            //if it is player 1 turn
-            //and there is not already a symbol in the tile
-            //and the tile is not on hold
-            //and the index of the one we are altering is the index of the one we clicked on
-//            && !state.tileIsOccupied && !state.isTileOnHold && currentIndex == state.id
-            if (state?.isPlayer1Turn == true && state?.currentTileSymbolState?.ordinal == TileValue.CROSS.ordinal && currentIndex == state?.id && !state.tileIsOccupied) {
-                XX()
-                viewModel.nextPlayerTurn()
-            } else if (state?.isPlayer1Turn == false && state?.currentTileSymbolState?.ordinal == TileValue.CIRCLE.ordinal && currentIndex == state?.id && !state.tileIsOccupied) {
-                OO()
-                viewModel.nextPlayerTurn()
-            } else if (state?.isPlayer1Turn == true && state.currentTileSymbolState?.ordinal == TileValue.NONE.ordinal) {
-//                Text("hey")
+            when (state?.currentTileSymbolState?.ordinal) {
+                TileValue.NONE.ordinal -> {}
+                TileValue.CROSS.ordinal -> XX()
+                TileValue.CIRCLE.ordinal -> OO()
             }
-
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-
 }
 
 
