@@ -3,7 +3,7 @@ package com.example.tictactoe.Data
 data class TileState(
     val id: Int,
     val isPlayer1Turn: Boolean = true,
-    val tileIsNotOccupied: Boolean = true,
+    val tileOccupied: Boolean = false,
     val currentTileSymbolState: TileValue = TileValue.NONE,
 
 //    val tileIsVisible: Boolean = true,

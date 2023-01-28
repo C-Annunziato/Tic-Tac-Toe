@@ -89,9 +89,11 @@ fun Board(
                     val currentIndex = (i - 1) * 3 + (j - 1)
                     listOfTileStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(onChooseTile = { bool ->
-                            viewModel.updatePlayerState(
-                                listOfStateIndex = currentIndex, bool = bool
-                            )
+                            //only flip state if the tile is not occupied
+                            if(!tileState?.tileOccupied!!){
+                                viewModel.updatePlayerState(
+                                    listOfStateIndex = currentIndex, bool = bool)
+                            }
                         }, state = tileState, currentIndex = currentIndex, viewModel = viewModel)
                     }
                 }

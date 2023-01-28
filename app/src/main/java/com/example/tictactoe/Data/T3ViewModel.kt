@@ -21,15 +21,15 @@ class T3ViewModel : ViewModel() {
         //global list items change
         currentTileIndex = listOfStateIndex
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            tileState.copy(isPlayer1Turn = !bool)
+                tileState.copy(isPlayer1Turn = !bool)
         }
 
         //specific list item change
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            if (listOfStateIndex == index && tileState.isPlayer1Turn ) {
-                tileState.copy(currentTileSymbolState = TileValue.CROSS)
-            } else if (listOfStateIndex == index && !tileState.isPlayer1Turn ) {
-                tileState.copy(currentTileSymbolState = TileValue.CIRCLE)
+            if (listOfStateIndex == index && tileState.isPlayer1Turn) {
+                tileState.copy(currentTileSymbolState = TileValue.CROSS, tileOccupied = true)
+            } else if (listOfStateIndex == index && !tileState.isPlayer1Turn) {
+                tileState.copy(currentTileSymbolState = TileValue.CIRCLE, tileOccupied = true)
                 //retain the state
             } else tileState
         }
