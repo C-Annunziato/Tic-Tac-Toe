@@ -18,22 +18,22 @@ class T3ViewModel : ViewModel() {
 
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
 
+        //global list items change
         currentTileIndex = listOfStateIndex
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
             tileState.copy(isPlayer1Turn = !bool)
         }
 
+        //specific list item change
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            if (listOfStateIndex == index && tileState.isPlayer1Turn) {
+            if (listOfStateIndex == index && tileState.isPlayer1Turn ) {
                 tileState.copy(currentTileSymbolState = TileValue.CROSS)
-            } else if (listOfStateIndex == index && !tileState.isPlayer1Turn) {
+            } else if (listOfStateIndex == index && !tileState.isPlayer1Turn ) {
                 tileState.copy(currentTileSymbolState = TileValue.CIRCLE)
-            } else tileState.copy(currentTileSymbolState = TileValue.NONE)
+                //retain the state
+            } else tileState
         }
     }
-
-
-
 }
 
 
