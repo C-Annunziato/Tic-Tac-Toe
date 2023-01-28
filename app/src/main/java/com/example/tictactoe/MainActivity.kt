@@ -1,7 +1,6 @@
 package com.example.tictactoe
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
@@ -140,10 +139,10 @@ fun Tile(
             //and the tile is not on hold
             //and the index of the one we are altering is the index of the one we clicked on
 //            && !state.tileIsOccupied && !state.isTileOnHold && currentIndex == state.id
-            if (state?.isPlayer1Turn == true && state?.currentTileSymbolState?.ordinal == TileValue.CROSS.ordinal && currentIndex == state?.id) {
+            if (state?.isPlayer1Turn == true && state?.currentTileSymbolState?.ordinal == TileValue.CROSS.ordinal && currentIndex == state?.id && !state.tileIsOccupied) {
                 XX()
                 viewModel.nextPlayerTurn()
-            } else if (state?.isPlayer1Turn == false && state?.currentTileSymbolState?.ordinal == TileValue.CIRCLE.ordinal && currentIndex == state?.id) {
+            } else if (state?.isPlayer1Turn == false && state?.currentTileSymbolState?.ordinal == TileValue.CIRCLE.ordinal && currentIndex == state?.id && !state.tileIsOccupied) {
                 OO()
                 viewModel.nextPlayerTurn()
             } else if (state?.isPlayer1Turn == true && state.currentTileSymbolState?.ordinal == TileValue.NONE.ordinal) {

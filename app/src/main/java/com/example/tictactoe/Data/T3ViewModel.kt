@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import java.lang.reflect.Array.set
 
 const val TAG = "viewmodel"
 
@@ -20,23 +23,43 @@ class T3ViewModel : ViewModel() {
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
 
         currentTileIndex = listOfStateIndex
-        // update global
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//            Log.i(TAG, "${tileState.currentTileSymbolState}")
-            Log.i(TAG,"$index" )
-                tileState.copy(isPlayer1Turn = !bool)
+            tileState.copy(isPlayer1Turn = !bool)
         }
 
-         val currentTileState = tileState.value!![listOfStateIndex]
-        // update individual
-        Log.i(TAG, "${currentTileState.isPlayer1Turn}")
+        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+            if(listOfStateIndex== index && tileState.isPlayer1Turn) {
+                tileState.copy(currentTileSymbolState = TileValue.CROSS)
+            } else if(listOfStateIndex== index && !tileState.isPlayer1Turn) {
+                 tileState.copy(currentTileSymbolState = TileValue.CIRCLE)
+            } else  tileState.copy(currentTileSymbolState = TileValue.NONE)
+        }
 
-       val updatedTileState = if (currentTileState.isPlayer1Turn) {
-           currentTileState.copy(currentTileSymbolState = TileValue.CROSS)
-        } else  currentTileState.copy(currentTileSymbolState = TileValue.CIRCLE)
+//        listOfState[listOfStateIndex].currentTileSymbolState = TileValue.CROSS
+//
 
-        _tileState.value = _tileState.value!!.toMutableList().apply { this[listOfStateIndex] = updatedTileState }
+//        val currentTileState = tileState.value!![listOfStateIndex]
+//        // update individual
+//        Log.i(TAG, "${currentTileState.isPlayer1Turn}")
+//
+//        val updatedTileState = if (currentTileState.isPlayer1Turn) {
+//            currentTileState.copy(currentTileSymbolState = TileValue.CROSS)
+//        } else currentTileState.copy(currentTileSymbolState = TileValue.CIRCLE)
 
+//        if(currentTileState.id == listOfStateIndex){
+//            _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+////            Log.i(TAG, "$index, $listOfStateIndex, ${tileState.id}")
+//                if (index == listOfStateIndex) updatedTileState else tileState
+//            }
+//        }
+//
+//        val newList = _tileState.value!!.toMutableList()
+//        newList[listOfStateIndex] = newList[listOfStateIndex].copy(tileIsOccupied = true)
+//        _tileState.value = newList
+
+
+
+//
 //        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
 
 //            if (listOfStateIndex == index) {
@@ -57,6 +80,12 @@ class T3ViewModel : ViewModel() {
 //        }
 
     }
+
+//    fun updateTileState(id: Int, tileIsOccupied: Boolean) {
+//        val newList = _tileState.value!!.toMutableList()
+//        newList[id] = newList[id].copy(tileIsOccupied = tileIsOccupied)
+//        _tileState.emit(newList)
+//    }
 
 
 //        _tileState.value = listOfState.mapIndexed { index, tileState ->
