@@ -27,9 +27,9 @@ class T3ViewModel : ViewModel() {
         //specific list item change
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
             if (listOfStateIndex == index && tileState.isPlayer1Turn) {
-                tileState.copy(currentTileSymbolState = TileValue.CROSS, tileOccupied = true)
+                tileState.copy(currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true)
             } else if (listOfStateIndex == index && !tileState.isPlayer1Turn) {
-                tileState.copy(currentTileSymbolState = TileValue.CIRCLE, tileOccupied = true)
+                tileState.copy(currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true)
                 //retain the state
             } else tileState
         }

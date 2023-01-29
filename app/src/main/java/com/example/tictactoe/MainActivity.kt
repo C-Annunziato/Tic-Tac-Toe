@@ -12,18 +12,18 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.tictactoe.Data.TileState
 import com.example.tictactoe.Data.T3ViewModel
 import com.example.tictactoe.Data.TileValue
 import com.example.tictactoe.Data.listOfState
-import com.example.tictactoe.ui.GameControlsLeft
-import com.example.tictactoe.ui.GameControlsRight
-import com.example.tictactoe.ui.OO
-import com.example.tictactoe.ui.XX
+import com.example.tictactoe.ui.*
+import com.example.tictactoe.ui.theme.playerTextFont
 
 const val TAG = "main"
 
@@ -90,16 +90,23 @@ fun Board(
                     listOfTileStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(onChooseTile = { bool ->
                             //only flip state if the tile is not occupied
-                            if(!tileState?.tileOccupied!!){
+                            if (!tileState?.tileIsOccupied!!) {
                                 viewModel.updatePlayerState(
-                                    listOfStateIndex = currentIndex, bool = bool)
+                                    listOfStateIndex = currentIndex, bool = bool
+                                )
                             }
                         }, state = tileState, currentIndex = currentIndex, viewModel = viewModel)
                     }
                 }
             }
         }
-        Text("${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"} Turn")
+        Text(
+            "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"} Turn",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = playerTextFont,
+            color = Color.Red
+        )
     }
 }
 
@@ -135,6 +142,14 @@ fun Tile(
         }
     }
 }
+
+@Preview
+@Composable
+
+fun Preview() {
+    HorizontalLine()
+}
+
 
 
 
