@@ -34,6 +34,10 @@ class T3ViewModel : ViewModel() {
             } else tileState
         }
     }
+
+    fun checkForVictory(){
+
+    }
 }
 
 

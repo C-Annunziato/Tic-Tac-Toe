@@ -147,7 +147,6 @@ fun Tile(
 @Composable
 
 fun Preview() {
-    HorizontalLine()
 }
 
 
