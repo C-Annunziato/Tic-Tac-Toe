@@ -5,13 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -120,18 +128,33 @@ fun Tile(
 ) {
 
     Column(
-        modifier = modifier
-    ) {
-        Box(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        ) {
+        Card(
             modifier = Modifier
-                .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
+                .border(
+                    4.dp,
+                    Color.Black,
+                    shape = RoundedCornerShape(8.dp)
+                )
                 .size(80.dp)
                 .clickable(onClick = {
                     when (state?.isPlayer1Turn) {
                         true -> onChooseTile(true)
                         false -> onChooseTile(false)
                     }
-                }), contentAlignment = Alignment.Center
+                })
+                .drawBehind {
+                    drawRoundRect(
+                        color = Color.Black,
+                        size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
+                        cornerRadius = CornerRadius(x = 30f, y = 30f)
+                    )
+                }, elevation = 5.dp,
+            shape = RoundedCornerShape(8.dp)
         ) {
 
             when (state?.currentTileSymbolState?.ordinal) {
