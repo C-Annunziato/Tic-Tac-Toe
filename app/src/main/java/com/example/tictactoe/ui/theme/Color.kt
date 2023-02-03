@@ -15,3 +15,7 @@ val retroOrange = Color(0xFFCA4D13)
 val retroBlue = Color(0xFF2872F0)
 val retroPink = Color(0xFFD64681)
 val retroDarkBlue = Color(0xFF2E485E)
+val retroRed = Color(0xFF7A2626)
+val retroGreen = Color(0xFF22804F)
+val retroBrown = Color(0xFF6F6D69)
+

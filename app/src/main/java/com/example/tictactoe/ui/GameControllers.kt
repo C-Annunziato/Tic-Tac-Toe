@@ -5,6 +5,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -87,7 +88,8 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
         modifier = modifier.padding(end = 10.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { }, shape = CircleShape, modifier = Modifier.size(80.dp)
+            onClick = { }, shape = CircleShape, modifier = Modifier.size(80.dp), colors = ButtonDefaults.buttonColors(
+                retroGreen)
         ) {
             Icon(
                 Icons.Filled.Refresh, contentDescription = "rewind", modifier = Modifier.size(50.dp)
