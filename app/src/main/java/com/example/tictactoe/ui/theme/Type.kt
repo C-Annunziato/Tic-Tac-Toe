@@ -12,6 +12,7 @@ val playerTextFont1 = FontFamily(Font(R.font.inide_flower_reg))
 val playerTextFont2 = FontFamily(Font(R.font.evil_empire_reg))
 val playerTextFont3 = FontFamily(Font(R.font.orbitron_reg))
 val playerTextFont4 = FontFamily(Font(R.font.op_mono_med_))
+val playerTextFont5 = FontFamily(Font(R.font.press_start_reg))
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(

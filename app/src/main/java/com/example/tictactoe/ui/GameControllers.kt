@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -18,6 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tictactoe.TAG
+import com.example.tictactoe.ui.theme.*
+import kotlinx.coroutines.delay
+import kotlin.time.ExperimentalTime
+import kotlin.time.seconds
 
 
 //@Composable
@@ -59,7 +63,11 @@ import com.example.tictactoe.TAG
 
 @Composable
 fun GameControlsLeft(modifier: Modifier = Modifier) {
-    Canvas(modifier = Modifier.size(80.dp).padding(10.dp)) {
+    Canvas(
+        modifier = Modifier
+            .size(80.dp)
+            .padding(10.dp)
+    ) {
 
         val width = size.width
         val height = size.height
@@ -111,10 +119,76 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
 
 @Composable
 fun FullController() {
-    Row() {
-        GameControlsLeft(modifier = Modifier.weight(1f))
-        GameControlsRight(modifier = Modifier.weight(1f))
+    Column(
+        modifier = Modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row() {
+            GameControlsLeft(modifier = Modifier.weight(1f))
+            GameControlsRight(modifier = Modifier.weight(1f))
+        }
+        CountdownTimer()
+    }
+}
+
+
+@Composable
+fun CountdownTimer() {
+
+    var timeLeftForTurn by remember { mutableStateOf(12) }
+    LaunchedEffect(Unit) {
+        for (i in 0 until timeLeftForTurn) {
+            delay(1000)
+            timeLeftForTurn--
+        }
     }
 
+    Text(
+        text = when (timeLeftForTurn) {
+            12, 11, 10, 9, 8, 7 -> "Time $timeLeftForTurn s"
+            6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
+            else -> {
+                "Fatality"
+            }
+        },
+
+        color = retroDarkBlue,
+        fontSize = 25.sp,
+        modifier = Modifier.padding(top = 50.dp),
+        fontFamily = playerTextFont5
+    )
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
