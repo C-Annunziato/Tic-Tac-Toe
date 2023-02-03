@@ -89,7 +89,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
     ) {
         Button(
             onClick = { }, shape = CircleShape, modifier = Modifier.size(80.dp), colors = ButtonDefaults.buttonColors(
-                retroGreen)
+                retroCustomRed)
         ) {
             Icon(
                 Icons.Filled.Refresh, contentDescription = "rewind", modifier = Modifier.size(50.dp)
