@@ -8,7 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.tictactoe.R
 
-val playerTextFont = FontFamily(Font(R.font.inide_flower_reg))
+val playerTextFont1 = FontFamily(Font(R.font.inide_flower_reg))
+val playerTextFont2 = FontFamily(Font(R.font.evil_empire_reg))
+val playerTextFont3 = FontFamily(Font(R.font.orbitron_reg))
+val playerTextFont4 = FontFamily(Font(R.font.op_mono_med_))
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(

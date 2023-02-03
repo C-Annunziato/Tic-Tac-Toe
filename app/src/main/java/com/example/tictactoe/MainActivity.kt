@@ -18,8 +18,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +29,9 @@ import com.example.tictactoe.Data.T3ViewModel
 import com.example.tictactoe.Data.TileValue
 import com.example.tictactoe.Data.listOfState
 import com.example.tictactoe.ui.*
-import com.example.tictactoe.ui.theme.playerTextFont
+import com.example.tictactoe.ui.theme.playerTextFont2
+import com.example.tictactoe.ui.theme.playerTextFont3
+import com.example.tictactoe.ui.theme.playerTextFont4
 
 const val TAG = "main"
 
@@ -54,7 +54,9 @@ fun TicTacToe(
 
     val liveBoardstate = liveDataListOfTileStates.observeAsState()
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(Color(196, 196, 196))) {
         Column(
             modifier = modifier.weight(0.5f)
         ) {
@@ -68,8 +70,7 @@ fun TicTacToe(
                 .fillMaxSize()
         ) {
             //Controls
-            GameControlsLeft(modifier = Modifier.weight(1f))
-            GameControlsRight(modifier = Modifier.weight(1f))
+       FullController()
         }
     }
 }
@@ -87,7 +88,11 @@ fun Board(
             .fillMaxSize(),
     ) {
 
-        Text("Complete a row, diagonal or column")
+        Text(
+            "Complete a row, diagonal or column",
+            fontFamily = playerTextFont4,
+            color = Color.DarkGray
+        )
         for (i in 1..3) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
@@ -110,10 +115,11 @@ fun Board(
         }
         Text(
             "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"} Turn",
-            fontSize = 30.sp,
+            fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = playerTextFont,
-            color = Color.Red
+            fontFamily = playerTextFont3,
+            color = Color.Blue,
+            modifier = Modifier.padding(5.dp)
         )
     }
 }
