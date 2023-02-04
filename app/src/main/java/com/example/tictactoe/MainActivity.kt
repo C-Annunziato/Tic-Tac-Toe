@@ -183,7 +183,7 @@ fun Tile(
                 when (state?.currentTileSymbolState?.ordinal) {
                     TileValue.NONE.ordinal -> {}
                     TileValue.CROSS.ordinal -> XX()
-                    TileValue.CIRCLE.ordinal -> OO()
+                    TileValue.CIRCLE.ordinal -> CircleOfSquares()
                 }
             }
         }

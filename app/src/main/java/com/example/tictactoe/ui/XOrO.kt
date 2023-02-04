@@ -1,25 +1,20 @@
 package com.example.tictactoe.ui
 
-import android.R.attr.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.tictactoe.ui.theme.*
 import java.lang.Math.cos
 import java.lang.Math.sin
-import java.util.*
 
 
 @Composable
@@ -90,18 +85,34 @@ fun XX(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CircleOfSquares(radius: Float, squaresCount: Int) {
-    val step = (2 * Math.PI) / squaresCount
-    for (i in 0 until squaresCount) {
-        val angle = step * i
-        val x = (radius * cos(angle)).toFloat() + radius
-        val y = (radius * sin(angle)).toFloat() + radius
-        Canvas(modifier = Modifier.offset(x = x.dp, y = y.dp)) {
-            drawRect(color = Color.Black, style = Fill)
+fun CircleOfSquares(
+    numberOfCircles: Int = 20,
+) {
+    val offsetAngleDegree = 0f
+    Canvas(
+        modifier = Modifier.size(70.dp).padding(end =2.dp, bottom = 2.dp)
+    ) {
+
+        val radius = (size.width * .5f -40f) - (.25f * (size.width * .5f - 40f))
+        val lineDegree = (360f - offsetAngleDegree * 2) / numberOfCircles
+
+        for (squareNumber in 0..numberOfCircles) {
+
+            val angleInDegrees = lineDegree * (squareNumber - 90f + offsetAngleDegree)
+            val angleRad = Math.toRadians(angleInDegrees.toDouble()).toFloat()
+
+            val squareDistanceFromMainCircle = radius * .1f
+
+            drawRect(
+                color = Color.Black, topLeft = Offset(
+                    x = (radius + squareDistanceFromMainCircle) * kotlin.math.cos(angleRad) + size.center.x,
+                    y = (radius + squareDistanceFromMainCircle) * kotlin.math.sin(angleRad) + size.center.y
+                ),
+                size = Size(20f, 20f)
+            )
         }
     }
 }
-
 
 
 @Composable
@@ -174,7 +185,7 @@ fun OO(modifier: Modifier = Modifier) {
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 @Composable
 fun Prev() {
-    CircleOfSquares(radius = 0.5f, squaresCount = 100)
+
 }
 
 private fun createStripeBrush(
