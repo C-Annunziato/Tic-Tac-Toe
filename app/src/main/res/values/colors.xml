@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="retroStatusBar">#AA490A</color>
+    <color name="retroStatusBar">#63635A</color>
     <color name="retroRed">#7A2626</color>
     <color name="retroYellow">#CCAB47</color>
 </resources>

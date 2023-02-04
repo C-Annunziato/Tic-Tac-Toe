@@ -20,4 +20,8 @@ val retroGreen = Color(0xFF22804F)
 val retroBrown = Color(0xFF6F6D69)
 val retroYellow = Color(0xFFCCAB47)
 val retroCustomRed = Color(0xFFFF0202)
+val retroGrey = Color(0xFF63635A)
+val retroNearWhite = Color(0xFFF1F1F1)
+val retroPurple = Color(0xFF7E6DE2)
+val retroControllerButtons = Color(0xFFDFE2D9)
 

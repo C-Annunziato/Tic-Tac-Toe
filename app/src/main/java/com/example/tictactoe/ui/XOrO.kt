@@ -9,12 +9,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tictactoe.ui.theme.*
-import java.lang.Math.cos
-import java.lang.Math.sin
 
 
 @Composable
@@ -86,30 +83,34 @@ fun XX(modifier: Modifier = Modifier) {
 
 @Composable
 fun CircleOfSquares(
-    numberOfCircles: Int = 20,
+    numberOfSquares: Int = 32,
 ) {
-    val offsetAngleDegree = 0f
     Canvas(
-        modifier = Modifier.size(70.dp).padding(end =2.dp, bottom = 2.dp)
+        modifier = Modifier.size(70.dp).padding(end = 6.dp)
     ) {
 
-        val radius = (size.width * .5f -40f) - (.25f * (size.width * .5f - 40f))
-        val lineDegree = (360f - offsetAngleDegree * 2) / numberOfCircles
+        val radius = (size.width * .5f -20f) - (.25f * (size.width * .5f - 20f))
+        val lineDegree = (360f * 2) / numberOfSquares
 
-        for (squareNumber in 0..numberOfCircles) {
+        for (squareNumber in 0..numberOfSquares) {
 
-            val angleInDegrees = lineDegree * (squareNumber - 90f + offsetAngleDegree)
+            val angleInDegrees = lineDegree * (squareNumber - 90f)
             val angleRad = Math.toRadians(angleInDegrees.toDouble()).toFloat()
 
-            val squareDistanceFromMainCircle = radius * .1f
+            drawRect(
+                color = Color(59, 93, 194, 255), topLeft = Offset(
+                    x = (radius ) * kotlin.math.cos(angleRad) + size.center.x,
+                    y = (radius ) * kotlin.math.sin(angleRad) + size.center.y -20f
+                ), size = Size(22f, 22f))
+
 
             drawRect(
-                color = Color.Black, topLeft = Offset(
-                    x = (radius + squareDistanceFromMainCircle) * kotlin.math.cos(angleRad) + size.center.x,
-                    y = (radius + squareDistanceFromMainCircle) * kotlin.math.sin(angleRad) + size.center.y
-                ),
-                size = Size(20f, 20f)
-            )
+                color = retroPink, topLeft = Offset(
+                    x = (radius ) * kotlin.math.cos(angleRad) + size.center.x,
+                    y = (radius ) * kotlin.math.sin(angleRad) + size.center.y
+                ), size = Size(22f, 22f))
+
+
         }
     }
 }

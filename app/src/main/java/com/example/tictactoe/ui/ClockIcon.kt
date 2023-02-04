@@ -28,11 +28,11 @@ fun ClockIcon(modifier: Modifier = Modifier) {
                 val canvasWidth = size.width
                 val canvasHeight = size.height
                 drawCircle(
-                    radius = 85f,
+                    radius = 55f,
                     center = Offset(
                         x = canvasWidth / 2, y = canvasHeight / 2
                     ),
-                    color = Color.White,
+                    color = Color.Black,
                     style = Stroke(
                         width = 10f, pathEffect = PathEffect.dashPathEffect(
                             floatArrayOf(20f, 20f), 20f
@@ -45,8 +45,8 @@ fun ClockIcon(modifier: Modifier = Modifier) {
                     .width(50.dp)
                     .rotate(270f),
                 thickness = 4.dp,
-                color = Color.White,
-                startIndent = 23.dp
+                color = Color.Black,
+                startIndent = 16.dp
             )
 
             Divider(
@@ -54,8 +54,8 @@ fun ClockIcon(modifier: Modifier = Modifier) {
                     .rotate(-20f)
                     .width(50.dp),
                 thickness = 4.dp,
-                color = Color.White,
-                startIndent = 23.dp
+                color = Color.Black,
+                startIndent = 16.dp
             )
         }
     }
