@@ -3,6 +3,7 @@ package com.example.tictactoe.ui
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -135,15 +136,14 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
 @Composable
 fun FullController() {
     Column(
-        modifier = Modifier,
+        modifier = Modifier.background(Color.Magenta).fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row() {
-            GameControlsLeft(modifier = Modifier.weight(1f))
+            GameControlsLeft(modifier = Modifier.weight(2f))
             GameControlsRight(modifier = Modifier.weight(1f))
         }
-        CountdownTimer()
     }
 }
 
@@ -161,19 +161,19 @@ fun CountdownTimer() {
 
     Text(
         text = when (timeLeftForTurn) {
-            12, 11, 10, 9, 8, 7 -> "Time $timeLeftForTurn s"
+            12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
             6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
-            else -> {
+            0 -> {
                 "Fatality"
-            }
+            } else -> ""
         },
 
-        color = retroDarkBlue,
+        color = if( timeLeftForTurn ==  0) Color.Red else retroDarkBlue,
         fontSize = 25.sp,
-        modifier = Modifier.padding(top = 50.dp),
-        fontFamily = playerTextFont5
+        modifier = Modifier.padding(5.dp),
+        fontFamily = playerTextFont3,
+        fontWeight = FontWeight.Bold
     )
-
 }
 
 
