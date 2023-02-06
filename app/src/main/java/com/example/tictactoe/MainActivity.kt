@@ -88,9 +88,16 @@ fun TicTacToe(
                 colors = ButtonDefaults.buttonColors(
                     retroPurple
                 ), elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
-                border = BorderStroke(5.dp, color = Color.Black)
+                border = BorderStroke(5.dp, color = Color.Black),
+                modifier = Modifier.size(140.dp, 60.dp)
             ) {
-                Text("Reset", modifier = Modifier.padding(5.dp), fontSize = 20.sp, color = Color.White)
+                Text(
+                    "Reset",
+                    modifier = Modifier.padding(top = 8.dp, start = 5.dp),
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontFamily = playerTextFont5
+                )
             }
         }
     }

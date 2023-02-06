@@ -98,14 +98,14 @@ fun CircleOfSquares(
             val angleRad = Math.toRadians(angleInDegrees.toDouble()).toFloat()
 
             drawRect(
-                color = Color(59, 93, 194, 255), topLeft = Offset(
+                color = Color(69, 157, 172, 255), topLeft = Offset(
                     x = (radius ) * kotlin.math.cos(angleRad) + size.center.x,
                     y = (radius ) * kotlin.math.sin(angleRad) + size.center.y -20f
                 ), size = Size(22f, 22f))
 
 
             drawRect(
-                color = retroPink, topLeft = Offset(
+                color = Color(134, 105, 213, 255), topLeft = Offset(
                     x = (radius ) * kotlin.math.cos(angleRad) + size.center.x,
                     y = (radius ) * kotlin.math.sin(angleRad) + size.center.y
                 ), size = Size(22f, 22f))
