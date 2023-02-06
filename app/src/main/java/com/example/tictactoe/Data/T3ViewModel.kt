@@ -20,7 +20,7 @@ class T3ViewModel : ViewModel() {
 
         //global list items change
         currentTileIndex = listOfStateIndex
-        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+        _tileState.value = _tileState.value?.mapIndexed { _, tileState ->
                 tileState.copy(isPlayer1Turn = !bool)
         }
 

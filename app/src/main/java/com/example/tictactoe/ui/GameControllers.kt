@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -65,20 +65,70 @@ import kotlin.time.seconds
 
 @Composable
 fun GameControlsLeft(modifier: Modifier = Modifier) {
-    Canvas(
-        modifier = Modifier
-            .size(80.dp)
-            .padding(10.dp)
+    Column(
+        modifier = modifier.padding(end = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        val width = size.width
-        val height = size.height
-
-        val centerX = width / 2
-        val centerY = height / 2
-        val radius = width / 4
-
-
+        Button(
+            onClick = { },
+            shape = CircleShape,
+            modifier = Modifier.size(55.dp),
+            colors = ButtonDefaults.buttonColors(
+                retroControllerButtons
+            ),
+            border = BorderStroke(2.dp, color = Color.Gray)
+        ) {
+            Icon(
+                Icons.Filled.PlayArrow,
+                contentDescription = "up arrow",
+                modifier = Modifier.size(50.dp).rotate(-90f)
+            )
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+            Button(
+                onClick = { },
+                shape = CircleShape,
+                modifier = Modifier.size(55.dp),
+                colors = ButtonDefaults.buttonColors(
+                    retroControllerButtons
+                ),
+                border = BorderStroke(2.dp, color = Color.Gray)
+            ) {
+                Icon(
+                    Icons.Filled.PlayArrow,
+                    contentDescription = "left arrow",
+                    modifier = Modifier.size(50.dp).rotate(180f)
+                )
+            }
+            Button(
+                onClick = { },
+                shape = CircleShape,
+                modifier = Modifier.size(55.dp),
+                colors = ButtonDefaults.buttonColors(
+                    retroControllerButtons
+                ),
+                border = BorderStroke(2.dp, color = Color.Gray)
+            ) {
+                Icon(Icons.Filled.PlayArrow,
+                contentDescription = "right arrow",
+                modifier = Modifier.size(50.dp))
+            }
+        }
+        Button(
+            onClick = { },
+            shape = CircleShape,
+            modifier = Modifier.size(55.dp),
+            colors = ButtonDefaults.buttonColors(
+                retroControllerButtons
+            ),
+            border = BorderStroke(2.dp, color = Color.Gray)
+        ) {
+            Icon(
+                Icons.Filled.PlayArrow,
+                contentDescription = "down arrow",
+                modifier = Modifier.size(50.dp).rotate(90f)
+            )
+        }
     }
 }
 
@@ -91,7 +141,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
         Button(
             onClick = { },
             shape = CircleShape,
-            modifier = Modifier.size(67.dp),
+            modifier = Modifier.size(62.dp),
             colors = ButtonDefaults.buttonColors(
                 retroControllerButtons
             ),
@@ -105,7 +155,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
             Button(
                 onClick = { },
                 shape = CircleShape,
-                modifier = Modifier.size(67.dp),
+                modifier = Modifier.size(62.dp),
                 colors = ButtonDefaults.buttonColors(
                     retroControllerButtons
                 ),
@@ -120,7 +170,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
             TextButton(
                 onClick = { },
                 shape = CircleShape,
-                modifier = Modifier.size(67.dp),
+                modifier = Modifier.size(62.dp),
                 colors = ButtonDefaults.buttonColors(
                     retroControllerButtons
                 ),
@@ -136,12 +186,12 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
 @Composable
 fun FullController() {
     Column(
-        modifier = Modifier.background(Color.Magenta).fillMaxHeight(),
+        modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row() {
-            GameControlsLeft(modifier = Modifier.weight(2f))
+            GameControlsLeft(modifier = Modifier.weight(1f))
             GameControlsRight(modifier = Modifier.weight(1f))
         }
     }
@@ -158,17 +208,17 @@ fun CountdownTimer() {
             timeLeftForTurn--
         }
     }
-
     Text(
         text = when (timeLeftForTurn) {
             12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
             6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
             0 -> {
                 "Fatality"
-            } else -> ""
+            }
+            else -> ""
         },
 
-        color = if( timeLeftForTurn ==  0) Color.Red else retroDarkBlue,
+        color = if (timeLeftForTurn == 0) Color.Red else retroDarkBlue,
         fontSize = 25.sp,
         modifier = Modifier.padding(5.dp),
         fontFamily = playerTextFont3,
