@@ -1,11 +1,11 @@
 package com.example.tictactoe.ui
 
+import android.graphics.drawable.ClipDrawable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -13,11 +13,17 @@ import androidx.compose.material.icons.outlined.Stream
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.center
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tictactoe.ui.theme.*
@@ -161,9 +167,12 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
         modifier = modifier,
         horizontalAlignment = Alignment.End,
 
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)){
+        ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Button(
                     onClick = { },
                     shape = CircleShape,
@@ -239,59 +248,58 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
 
 @Composable
 fun FullController() {
+
+
     Column(
         modifier = Modifier
-            .fillMaxHeight()
-            .clip(CircleShape),
-
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
             modifier = Modifier
                 .border(width = 5.dp, color = Color.Black, shape = CircleShape)
-                .shadow(5.dp, shape = CircleShape),
-            elevation = 5.dp,
-            color = retroDarkGrey
+                .shadow(5.dp, shape = CircleShape), elevation = 5.dp, color = retroDarkGrey
         ) {
-                Row(
-                    modifier = Modifier.padding(start = 35.dp, end = 35.dp, top = 25.dp, bottom = 25.dp)
-                ) {
-                    GameControlsLeft(modifier = Modifier.weight(1f))
-                    GameControlsRight(modifier = Modifier.weight(1f))
-                }
+            Row(
+                modifier = Modifier.padding(start = 35.dp, end = 35.dp, top = 25.dp, bottom = 25.dp)
+            ) {
+                GameControlsLeft(modifier = Modifier.weight(1f))
+                GameControlsRight(modifier = Modifier.weight(1f))
             }
+        }
+
     }
 }
 
 
-    @Composable
-    fun CountdownTimer() {
+@Composable
+fun CountdownTimer() {
 
-        var timeLeftForTurn by remember { mutableStateOf(12) }
-        LaunchedEffect(Unit) {
-            for (i in 0 until timeLeftForTurn) {
-                delay(1000)
-                timeLeftForTurn--
-            }
+    var timeLeftForTurn by remember { mutableStateOf(12) }
+    LaunchedEffect(Unit) {
+        for (i in 0 until timeLeftForTurn) {
+            delay(1000)
+            timeLeftForTurn--
         }
-        Text(
-            text = when (timeLeftForTurn) {
-                12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
-                6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
-                0 -> {
-                    "Fatality"
-                }
-                else -> ""
-            },
-
-            color = if (timeLeftForTurn == 0) Color.Red else retroDarkBlue,
-            fontSize = 25.sp,
-            modifier = Modifier.padding(5.dp),
-            fontFamily = playerTextFont3,
-            fontWeight = FontWeight.Bold
-        )
     }
+    Text(
+        text = when (timeLeftForTurn) {
+            12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
+            6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
+            0 -> {
+                "Fatality"
+            }
+            else -> ""
+        },
+
+        color = if (timeLeftForTurn == 0) Color.Red else retroDarkBlue,
+        fontSize = 25.sp,
+        modifier = Modifier.padding(5.dp),
+        fontFamily = playerTextFont3,
+        fontWeight = FontWeight.Bold
+    )
+}
+
 
 
 

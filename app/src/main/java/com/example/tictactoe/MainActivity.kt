@@ -17,13 +17,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,8 +59,47 @@ fun TicTacToe(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(196, 196, 196)),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(Color(196, 196, 196))
+            .drawBehind {
+                val canvasWidth = size.width
+                val canvasHeight = size.height
+
+                val startx = canvasWidth / 2f
+                val starty = canvasHeight * 0.589f
+
+                val endx = canvasWidth / 2f
+                val endy = canvasHeight * 0.41f
+
+                val ctr1x = canvasWidth /2 - 100f
+                val ctr1y = canvasHeight * 0.49f
+
+                val ctr2x = canvasWidth /2 + 100f
+                val xtr2y = canvasHeight * 0.48f
+
+
+                val stroke = Path().apply {
+                    reset()
+                    moveTo(x = startx, y = starty)
+                    cubicTo(x1 = ctr1x, y1 = ctr1y, x2 = ctr2x, y2 = xtr2y, x3 =  endx, y3 = endy)
+                }
+
+                drawPath(
+                    stroke, color = Color.Black, style = Stroke(
+                        width = 12f,
+                    )
+                )
+
+
+//
+//                drawLine(
+//                    color = retroBlack,
+//                    start = Offset(
+//                        x = canvasWidth/2f, y = canvasHeight * 0.589f
+//                    ),
+//                    end = Offset(x = canvasWidth/2, y = canvasHeight * 0.41f),
+//                    strokeWidth = 20f,
+//                )
+            }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
             modifier = modifier.weight(0.5f)
@@ -72,7 +109,9 @@ fun TicTacToe(
             )
         }
         Row(
-            modifier = Modifier.weight(0.4f).padding(8.dp)
+            modifier = Modifier
+                .weight(0.4f)
+                .padding(8.dp)
 
         ) {
             FullController()
@@ -87,7 +126,8 @@ fun TicTacToe(
                 shape = CutCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     retroPurple
-                ), elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
+                ),
+                elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
                 border = BorderStroke(5.dp, color = Color.Black),
                 modifier = Modifier.size(140.dp, 60.dp)
             ) {
@@ -144,10 +184,10 @@ fun Board(
                 }
             }
         }
-        Row (){
+        Row(modifier = Modifier.background(Color.Magenta).width(300.dp)) {
 
             Text(
-                "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1 :" else "Player 2 :"}",
+                "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1         " else "Player 2 :"}",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = playerTextFont3,
