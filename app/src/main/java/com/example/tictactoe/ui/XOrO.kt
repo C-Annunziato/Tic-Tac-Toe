@@ -9,6 +9,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tictactoe.ui.theme.*
@@ -86,10 +87,12 @@ fun CircleOfSquares(
     numberOfSquares: Int = 32,
 ) {
     Canvas(
-        modifier = Modifier.size(70.dp).padding(end = 6.dp)
+        modifier = Modifier
+            .size(70.dp)
+            .padding(end = 6.dp)
     ) {
 
-        val radius = (size.width * .5f -20f) - (.25f * (size.width * .5f - 20f))
+        val radius = (size.width * .5f - 20f) - (.25f * (size.width * .5f - 20f))
         val lineDegree = (360f * 2) / numberOfSquares
 
         for (squareNumber in 0..numberOfSquares) {
@@ -99,16 +102,18 @@ fun CircleOfSquares(
 
             drawRect(
                 color = Color(69, 157, 172, 255), topLeft = Offset(
-                    x = (radius ) * kotlin.math.cos(angleRad) + size.center.x,
-                    y = (radius ) * kotlin.math.sin(angleRad) + size.center.y -20f
-                ), size = Size(22f, 22f))
+                    x = (radius) * kotlin.math.cos(angleRad) + size.center.x,
+                    y = (radius) * kotlin.math.sin(angleRad) + size.center.y - 20f
+                ), size = Size(22f, 22f)
+            )
 
 
             drawRect(
                 color = Color(134, 105, 213, 255), topLeft = Offset(
-                    x = (radius ) * kotlin.math.cos(angleRad) + size.center.x,
-                    y = (radius ) * kotlin.math.sin(angleRad) + size.center.y
-                ), size = Size(22f, 22f))
+                    x = (radius) * kotlin.math.cos(angleRad) + size.center.x,
+                    y = (radius) * kotlin.math.sin(angleRad) + size.center.y
+                ), size = Size(22f, 22f)
+            )
 
 
         }
@@ -117,87 +122,60 @@ fun CircleOfSquares(
 
 
 @Composable
-fun OO(modifier: Modifier = Modifier) {
+fun XOIcon(modifier: Modifier = Modifier) {
 
-    Canvas(modifier = modifier.drawBehind {
-        drawCircle(
-            color = retroBrown, radius = 75f
-        )
-    }) {
 
-        val transparentMask = createStripeBrush()
+    Canvas(modifier = Modifier.fillMaxSize()) {
 
         val canvasWidth = size.width
         val canvasHeight = size.height
 
-//        val colorStops = arrayOf(
-//            0.0f to retroTan,
-//            0.2f to retroTeal,
-//            0.4f to retroBlue,
-//            0.6f to retroPink,
-//            0.9f to retroOrange,
-//        )
+        drawCircle(
+            color = retroBlack,
+            center = Offset(x = canvasWidth / 2, y = canvasHeight / 2),
+            radius = 90f / 2,
+            style = Stroke(10F),
+            alpha = 0.7f,
 
-        val colorStops = arrayOf(
-            0.0f to retroYellow,
-            0.5f to retroBlack,
-            0.8f to retroCustomRed,
         )
 
-
-
-
-        drawCircle(
-            brush = Brush.verticalGradient(colorStops = colorStops),
-            radius = 70f,
-            center = Offset(
-                x = canvasWidth / 2, y = canvasHeight / 2
+        drawLine(
+            color = retroBlack,
+            start = Offset(
+                x = 0f +10f, y = 0f + 10f
             ),
-
-            )
-
-        drawCircle(
-            brush = transparentMask,
-            radius = 70f,
-            center = Offset(
-                x = canvasWidth / 2, y = canvasHeight / 2
-            ),
+            end = Offset(x = canvasWidth, y = canvasHeight + 10f),
+            strokeWidth = 10f,
         )
 
-        drawCircle(
-            color = retroBrown,
-            radius = 58f,
-            center = Offset(
-                x = canvasWidth / 2, y = canvasHeight / 2
+        drawLine(
+            color = retroBlack,
+            start = Offset(
+                x = canvasWidth, y = 0f - 10f
             ),
+            end = Offset(x = 0f, y = canvasHeight - 5f),
+            strokeWidth = 10f
         )
-        drawCircle(
-            color = Color.White,
-            radius = 50f,
-            center = Offset(
-                x = canvasWidth / 2, y = canvasHeight / 2
-            ),
-        )
-
-
     }
-}
-
-@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
-@Composable
-fun Prev() {
 
 }
 
-private fun createStripeBrush(
-): Brush {
 
-    val colorStops = arrayOf(
-        0.0f to Color.White,
-        0.3f to Color.Transparent,
-    )
-
-    return Brush.verticalGradient(
-        colorStops = colorStops, tileMode = TileMode.Repeated, startY = 0f, endY = 12f
-    )
-}
+//@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
+//@Composable
+//fun Prev() {
+//
+//}
+//
+//private fun createStripeBrush(
+//): Brush {
+//
+//    val colorStops = arrayOf(
+//        0.0f to Color.White,
+//        0.3f to Color.Transparent,
+//    )
+//
+//    return Brush.verticalGradient(
+//        colorStops = colorStops, tileMode = TileMode.Repeated, startY = 0f, endY = 12f
+//    )
+//

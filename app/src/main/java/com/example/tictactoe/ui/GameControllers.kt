@@ -1,29 +1,27 @@
 package com.example.tictactoe.ui
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Stream
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tictactoe.TAG
 import com.example.tictactoe.ui.theme.*
 import kotlinx.coroutines.delay
-import kotlin.time.ExperimentalTime
-import kotlin.time.seconds
 
 
 //@Composable
@@ -45,7 +43,7 @@ import kotlin.time.seconds
 //                onClick = { },
 //                shape = CircleShape,
 //                modifier = Modifier.size(80.dp),
-////            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant)
+////            colors = ButtonDefaults.buttonColors(backgroundColor = Materialtheme.colors.secondaryVariant)
 //            ) {
 //                ClockIcon()
 //            }
@@ -66,29 +64,16 @@ import kotlin.time.seconds
 @Composable
 fun GameControlsLeft(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.padding(end = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
     ) {
-        Button(
-            onClick = { },
-            shape = CircleShape,
-            modifier = Modifier.size(55.dp),
-            colors = ButtonDefaults.buttonColors(
-                retroControllerButtons
-            ),
-            border = BorderStroke(2.dp, color = Color.Gray)
-        ) {
-            Icon(
-                Icons.Filled.PlayArrow,
-                contentDescription = "up arrow",
-                modifier = Modifier.size(50.dp).rotate(-90f)
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Button(
                 onClick = { },
                 shape = CircleShape,
-                modifier = Modifier.size(55.dp),
+                modifier = Modifier
+                    .size(55.dp)
+                    .shadow(2.dp, shape = CircleShape),
                 colors = ButtonDefaults.buttonColors(
                     retroControllerButtons
                 ),
@@ -97,37 +82,74 @@ fun GameControlsLeft(modifier: Modifier = Modifier) {
                 Icon(
                     Icons.Filled.PlayArrow,
                     contentDescription = "left arrow",
-                    modifier = Modifier.size(50.dp).rotate(180f)
+                    modifier = Modifier
+                        .size(50.dp)
+                        .rotate(180f)
                 )
+            }
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+
+                Button(
+                    onClick = { },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(55.dp)
+                        .shadow(2.dp, shape = CircleShape),
+                    colors = ButtonDefaults.buttonColors(
+                        retroControllerButtons
+                    ),
+                    border = BorderStroke(2.dp, color = Color.Gray)
+                ) {
+                    Icon(
+                        Icons.Filled.PlayArrow,
+                        contentDescription = "up arrow",
+                        modifier = Modifier
+                            .size(50.dp)
+                            .rotate(-90f)
+                    )
+                }
+
+                Button(
+                    onClick = { },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(55.dp)
+                        .shadow(2.dp, shape = CircleShape),
+                    colors = ButtonDefaults.buttonColors(
+                        retroControllerButtons
+                    ),
+                    border = BorderStroke(2.dp, color = Color.Gray)
+                ) {
+                    Icon(
+                        Icons.Filled.PlayArrow,
+                        contentDescription = "down arrow",
+                        modifier = Modifier
+                            .size(50.dp)
+                            .rotate(90f)
+                    )
+                }
             }
             Button(
                 onClick = { },
                 shape = CircleShape,
-                modifier = Modifier.size(55.dp),
+                modifier = Modifier
+                    .size(55.dp)
+                    .shadow(2.dp, shape = CircleShape),
                 colors = ButtonDefaults.buttonColors(
                     retroControllerButtons
                 ),
                 border = BorderStroke(2.dp, color = Color.Gray)
             ) {
-                Icon(Icons.Filled.PlayArrow,
-                contentDescription = "right arrow",
-                modifier = Modifier.size(50.dp))
+                Icon(
+                    Icons.Filled.PlayArrow,
+                    contentDescription = "right arrow",
+                    modifier = Modifier.size(50.dp)
+                )
             }
-        }
-        Button(
-            onClick = { },
-            shape = CircleShape,
-            modifier = Modifier.size(55.dp),
-            colors = ButtonDefaults.buttonColors(
-                retroControllerButtons
-            ),
-            border = BorderStroke(2.dp, color = Color.Gray)
-        ) {
-            Icon(
-                Icons.Filled.PlayArrow,
-                contentDescription = "down arrow",
-                modifier = Modifier.size(50.dp).rotate(90f)
-            )
+
         }
     }
 }
@@ -136,47 +158,79 @@ fun GameControlsLeft(modifier: Modifier = Modifier) {
 @Composable
 fun GameControlsRight(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.padding(end = 10.dp), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier,
+        horizontalAlignment = Alignment.End,
+
     ) {
-        Button(
-            onClick = { },
-            shape = CircleShape,
-            modifier = Modifier.size(62.dp),
-            colors = ButtonDefaults.buttonColors(
-                retroControllerButtons
-            ),
-            border = BorderStroke(2.dp, color = Color.Gray)
-        ) {
-            Icon(
-                Icons.Filled.Refresh, contentDescription = "rewind", modifier = Modifier.size(50.dp)
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Button(
-                onClick = { },
-                shape = CircleShape,
-                modifier = Modifier.size(62.dp),
-                colors = ButtonDefaults.buttonColors(
-                    retroControllerButtons
-                ),
-                border = BorderStroke(2.dp, color = Color.Gray)
-            ) {
-                Icon(
-                    Icons.Filled.Clear,
-                    contentDescription = "remove",
-                    modifier = Modifier.size(50.dp)
-                )
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)){
+                Button(
+                    onClick = { },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(62.dp)
+                        .shadow(2.dp, shape = CircleShape),
+                    colors = ButtonDefaults.buttonColors(
+                        retroControllerButtons
+                    ),
+                    border = BorderStroke(2.dp, color = Color.Gray),
+                ) {
+                    Icon(
+                        Icons.Filled.AdsClick,
+                        contentDescription = "rewind",
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
+
+                Button(
+                    onClick = { },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(62.dp)
+                        .shadow(2.dp, shape = CircleShape),
+                    colors = ButtonDefaults.buttonColors(
+                        retroControllerButtons
+                    ),
+                    border = BorderStroke(2.dp, color = Color.Gray),
+                ) {
+                    Icon(
+                        Icons.Filled.Bolt,
+                        contentDescription = "rewind",
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
             }
-            TextButton(
-                onClick = { },
-                shape = CircleShape,
-                modifier = Modifier.size(62.dp),
-                colors = ButtonDefaults.buttonColors(
-                    retroControllerButtons
-                ),
-                border = BorderStroke(2.dp, color = Color.Gray)
-            ) {
-                Text("?", fontSize = 30.sp)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Button(
+                    onClick = { },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(62.dp)
+                        .shadow(2.dp, shape = CircleShape),
+                    colors = ButtonDefaults.buttonColors(
+                        retroControllerButtons
+                    ),
+                    border = BorderStroke(2.dp, color = Color.Gray)
+                ) {
+                    Icon(
+                        Icons.Filled.Lock,
+                        contentDescription = "remove",
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
+                TextButton(
+                    onClick = { },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(62.dp)
+                        .shadow(2.dp, shape = CircleShape),
+                    colors = ButtonDefaults.buttonColors(
+                        retroControllerButtons
+                    ),
+                    border = BorderStroke(2.dp, color = Color.Gray)
+                ) {
+                    Text("?", fontSize = 30.sp)
+                }
             }
         }
     }
@@ -186,45 +240,59 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
 @Composable
 fun FullController() {
     Column(
-        modifier = Modifier.fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxHeight()
+            .clip(CircleShape),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row() {
-            GameControlsLeft(modifier = Modifier.weight(1f))
-            GameControlsRight(modifier = Modifier.weight(1f))
-        }
-    }
-}
+        Box(
+            modifier = Modifier
+                .background(Color.Blue)
+                .border(5.dp, retroBlack)
+                .padding(15.dp),
+        ) {
+                Row(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    GameControlsLeft(modifier = Modifier.weight(1f))
 
-
-@Composable
-fun CountdownTimer() {
-
-    var timeLeftForTurn by remember { mutableStateOf(12) }
-    LaunchedEffect(Unit) {
-        for (i in 0 until timeLeftForTurn) {
-            delay(1000)
-            timeLeftForTurn--
-        }
-    }
-    Text(
-        text = when (timeLeftForTurn) {
-            12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
-            6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
-            0 -> {
-                "Fatality"
+                    GameControlsRight(modifier = Modifier.weight(1f))
+                }
             }
-            else -> ""
-        },
-
-        color = if (timeLeftForTurn == 0) Color.Red else retroDarkBlue,
-        fontSize = 25.sp,
-        modifier = Modifier.padding(5.dp),
-        fontFamily = playerTextFont3,
-        fontWeight = FontWeight.Bold
-    )
+    }
 }
+
+
+    @Composable
+    fun CountdownTimer() {
+
+        var timeLeftForTurn by remember { mutableStateOf(12) }
+        LaunchedEffect(Unit) {
+            for (i in 0 until timeLeftForTurn) {
+                delay(1000)
+                timeLeftForTurn--
+            }
+        }
+        Text(
+            text = when (timeLeftForTurn) {
+                12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
+                6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
+                0 -> {
+                    "Fatality"
+                }
+                else -> ""
+            },
+
+            color = if (timeLeftForTurn == 0) Color.Red else retroDarkBlue,
+            fontSize = 25.sp,
+            modifier = Modifier.padding(5.dp),
+            fontFamily = playerTextFont3,
+            fontWeight = FontWeight.Bold
+        )
+    }
+
 
 
 
