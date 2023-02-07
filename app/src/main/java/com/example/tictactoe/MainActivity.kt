@@ -72,7 +72,7 @@ fun TicTacToe(
             )
         }
         Row(
-            modifier = Modifier.weight(0.4f).background(Color.Magenta).padding(8.dp)
+            modifier = Modifier.weight(0.4f).padding(8.dp)
 
         ) {
             FullController()

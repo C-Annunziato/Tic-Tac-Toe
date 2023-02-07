@@ -247,17 +247,17 @@ fun FullController() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Surface(
             modifier = Modifier
-                .background(Color.Blue)
-                .border(5.dp, retroBlack)
-                .padding(15.dp),
+                .border(width = 5.dp, color = Color.Black, shape = CircleShape)
+                .shadow(5.dp, shape = CircleShape),
+            elevation = 5.dp,
+            color = retroDarkGrey
         ) {
                 Row(
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(start = 35.dp, end = 35.dp, top = 25.dp, bottom = 25.dp)
                 ) {
                     GameControlsLeft(modifier = Modifier.weight(1f))
-
                     GameControlsRight(modifier = Modifier.weight(1f))
                 }
             }

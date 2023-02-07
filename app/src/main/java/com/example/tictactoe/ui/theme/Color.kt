@@ -25,5 +25,5 @@ val retroNearWhite = Color(0xFFF1F1F1)
 val retroPurple = Color(0xFF7E6DE2)
 val retroControllerButtons = Color(0xFFDFE2D9)
 val retroOColor = Color(0xFF506D15)
-val retroDarkGrey = Color(0xB59E9E9E)
+val retroDarkGrey = Color(0xB5919191)
 
