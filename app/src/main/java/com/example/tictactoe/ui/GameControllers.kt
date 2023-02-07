@@ -284,7 +284,7 @@ fun CountdownTimer() {
     }
     Text(
         text = when (timeLeftForTurn) {
-            12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn s"
+            12, 11, 10, 9, 8, 7 -> "    $timeLeftForTurn s"
             6, 5, 4, 3, 2, 1 -> "Hurry! $timeLeftForTurn s"
             0 -> {
                 "Fatality"
