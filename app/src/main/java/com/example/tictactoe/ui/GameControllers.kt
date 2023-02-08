@@ -177,7 +177,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
                     onClick = { },
                     shape = CircleShape,
                     modifier = Modifier
-                        .size(62.dp)
+                        .size(60.dp)
                         .shadow(2.dp, shape = CircleShape),
                     colors = ButtonDefaults.buttonColors(
                         retroControllerButtons
@@ -195,7 +195,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
                     onClick = { },
                     shape = CircleShape,
                     modifier = Modifier
-                        .size(62.dp)
+                        .size(60.dp)
                         .shadow(2.dp, shape = CircleShape),
                     colors = ButtonDefaults.buttonColors(
                         retroControllerButtons
@@ -214,7 +214,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
                     onClick = { },
                     shape = CircleShape,
                     modifier = Modifier
-                        .size(62.dp)
+                        .size(60.dp)
                         .shadow(2.dp, shape = CircleShape),
                     colors = ButtonDefaults.buttonColors(
                         retroControllerButtons
@@ -231,7 +231,7 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
                     onClick = { },
                     shape = CircleShape,
                     modifier = Modifier
-                        .size(62.dp)
+                        .size(60.dp)
                         .shadow(2.dp, shape = CircleShape),
                     colors = ButtonDefaults.buttonColors(
                         retroControllerButtons
@@ -263,7 +263,7 @@ fun FullController() {
             Row(
                 modifier = Modifier.padding(start = 35.dp, end = 35.dp, top = 25.dp, bottom = 25.dp)
             ) {
-                GameControlsLeft(modifier = Modifier.weight(1f))
+                GameControlsLeft(modifier = Modifier.weight(1.2f))
                 GameControlsRight(modifier = Modifier.weight(1f))
             }
         }

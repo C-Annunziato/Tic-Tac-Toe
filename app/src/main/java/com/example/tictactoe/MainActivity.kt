@@ -65,16 +65,16 @@ fun TicTacToe(
                 val canvasWidth = size.width
                 val canvasHeight = size.height
 
-                val startx = canvasWidth / 2f
+                val startx = canvasWidth * 0.5f
                 val starty = canvasHeight * 0.589f
 
-                val endx = canvasWidth / 2f
+                val endx = canvasWidth * 0.5f
                 val endy = canvasHeight * 0.40f
 
-                val ctr1x = canvasWidth / 2 - 100f
+                val ctr1x = canvasWidth * 0.5f - 100f
                 val ctr1y = canvasHeight * 0.49f
 
-                val ctr2x = canvasWidth / 2 + 100f
+                val ctr2x = canvasWidth * 0.5f + 100f
                 val xtr2y = canvasHeight * 0.48f
 
 
@@ -90,16 +90,16 @@ fun TicTacToe(
                     )
                 )
 
-                val startxLeftWires = canvasWidth / 5.6f
+                val startxLeftWires = canvasWidth * 0.178f
                 val startyLeftWires = canvasHeight * 0.37f
 
-                val endxLeftWires = canvasWidth / 5.6f
+                val endxLeftWires = canvasWidth * 0.178f
                 val endyLeftWires = canvasHeight * 0.20f
 
-                val ctr1xLeftWires = canvasWidth / 6 - 20f
+                val ctr1xLeftWires = canvasWidth * 0.166f - 20f
                 val ctr1yLeftWires = canvasHeight * 0.33f
 
-                val ctr2xLeftWires = canvasWidth / 6 - 70f
+                val ctr2xLeftWires = canvasWidth * 0.166f - 70f
                 val xtr2yLeftWires = canvasHeight * 0.25f
 
 
@@ -125,16 +125,16 @@ fun TicTacToe(
                 )
 
 
-                val startxLeftWiresTop = canvasWidth / 5.6f
+                val startxLeftWiresTop = canvasWidth *0.178f
                 val startyLeftWiresTop = canvasHeight * 0.23f
 
-                val endxLeftWiresTop = canvasWidth / 5.6f
+                val endxLeftWiresTop = canvasWidth *0.178f
                 val endyLeftWiresTop = canvasHeight * 0.1f
 
-                val ctr1xLeftWiresTop = canvasWidth / 6 - 20f
+                val ctr1xLeftWiresTop = canvasWidth * 0.166f - 20f
                 val ctr1yLeftWiresTop = canvasHeight * 0.26f
 
-                val ctr2xLeftWiresTop = canvasWidth / 6 - 30f
+                val ctr2xLeftWiresTop = canvasWidth * 0.166f - 30f
                 val xtr2yLeftWiresTop = canvasHeight * 0.18f
 
 
@@ -160,16 +160,16 @@ fun TicTacToe(
                 )
 
 
-                val startxLeftWiresTop2 = canvasWidth / 5.6f
+                val startxLeftWiresTop2 = canvasWidth *0.178f
                 val startyLeftWiresTop2 = canvasHeight * 0.28f
 
-                val endxLeftWiresTop2 = canvasWidth / 5.6f
+                val endxLeftWiresTop2 = canvasWidth *0.178f
                 val endyLeftWiresTop2 = canvasHeight * 0.15f
 
-                val ctr1xLeftWiresTop2 = canvasWidth / 6 - 70f
+                val ctr1xLeftWiresTop2 = canvasWidth * 0.166f - 70f
                 val ctr1yLeftWiresTop2 = canvasHeight * 0.26f
 
-                val ctr2xLeftWiresTop2 = canvasWidth / 6 - 30f
+                val ctr2xLeftWiresTop2 = canvasWidth * 0.166f - 30f
                 val xtr2yLeftWiresTop2 = canvasHeight * 0.18f
 
 
@@ -195,16 +195,16 @@ fun TicTacToe(
                 )
 
 
-                val startxRightWires = canvasWidth / 1.2f
+                val startxRightWires = canvasWidth * 0.83f
                 val startyRightWires = canvasHeight * 0.37f
 
-                val endxRightWires = canvasWidth / 1.2f
+                val endxRightWires = canvasWidth * 0.83f
                 val endyRightWires = canvasHeight * 0.23f
 
-                val ctr1xRightWires = canvasWidth / 1.2f + 50f
+                val ctr1xRightWires = canvasWidth * 0.83f + 50f
                 val ctr1yRighttWires = canvasHeight * 0.33f
 
-                val ctr2xRightWires = canvasWidth / 1.2f + 80f
+                val ctr2xRightWires = canvasWidth * 0.83f + 80f
                 val xtr2yRightWires = canvasHeight * 0.25f
 
 
@@ -230,16 +230,16 @@ fun TicTacToe(
                 )
 
 
-                val startxRightWiresTop = canvasWidth / 1.2f
+                val startxRightWiresTop = canvasWidth * 0.83f
                 val startyRightWiresTop = canvasHeight * 0.26f
 
-                val endxRightWiresTop = canvasWidth / 1.2f
+                val endxRightWiresTop = canvasWidth * 0.83f
                 val endyRightWiresTop = canvasHeight * 0.12f
 
-                val ctr1xRightWiresTop = canvasWidth / 1.2f + 65f
+                val ctr1xRightWiresTop = canvasWidth * 0.83f + 65f
                 val ctr1yRighttWiresTop = canvasHeight * 0.23f
 
-                val ctr2xRightWiresTop = canvasWidth / 1.2f + 25f
+                val ctr2xRightWiresTop = canvasWidth * 0.83f + 25f
                 val xtr2yRightWiresTop = canvasHeight * 0.16f
 
 
@@ -265,6 +265,41 @@ fun TicTacToe(
                 )
 
 
+                val startxRightWiresTop2 = canvasWidth * 0.8f
+                val startyRightWiresTop2 = canvasHeight * 0.39f
+
+                val endxRightWiresTop2 = canvasWidth * 0.83f
+                val endyRightWiresTop2 = canvasHeight * 0.27f
+
+                val ctr1xRightWiresTop2 = canvasWidth * 0.83f + 90f
+                val ctr1yRighttWiresTop2 = canvasHeight * 0.40f
+
+                val ctr2xRightWiresTop2 = canvasWidth * 0.83f + 5f
+                val xtr2yRightWiresTop2 = canvasHeight * 0.26f
+
+
+                val rightSideConnectorsTop2 = Path().apply {
+                    reset()
+                    moveTo(
+                        x = startxRightWiresTop2, y = startyRightWiresTop2
+                    )
+                    cubicTo(
+                        x1 = ctr1xRightWiresTop2,
+                        y1 = ctr1yRighttWiresTop2,
+                        x2 = ctr2xRightWiresTop2,
+                        y2 = xtr2yRightWiresTop2,
+                        x3 = endxRightWiresTop2,
+                        y3 = endyRightWiresTop2
+                    )
+                }
+
+                drawPath(
+                    rightSideConnectorsTop2, color = Color.Black, style = Stroke(
+                        width = 10f
+                    )
+                )
+
+
                 val startxMid1 = canvasWidth / 1.2f
                 val startyMid1 = canvasHeight * 0.26f
 
@@ -283,81 +318,74 @@ fun TicTacToe(
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 2 *0.95f , y = canvasHeight * 0.35f),
-                    end = Offset(x = canvasWidth / 2*0.95f , y = canvasHeight * 0.25f),
+                    start = Offset(x = canvasWidth * 0.5f * 0.95f, y = canvasHeight * 0.35f),
+                    end = Offset(x = canvasWidth * 0.5f * 0.95f, y = canvasHeight * 0.25f),
                 )
 
 
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 1.89f, y = canvasHeight * 0.24f),
-                    end = Offset(x = canvasWidth / 1.89f, y = canvasHeight * 0.14f),
+                    start = Offset(x = canvasWidth * 0.53f, y = canvasHeight * 0.24f),
+                    end = Offset(x = canvasWidth * 0.53f, y = canvasHeight * 0.14f),
                 )
 
 
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 5, y = canvasHeight * 0.14f),
-                    end = Offset(x = canvasWidth / 2f, y = canvasHeight * 0.14f),
+                    start = Offset(x = canvasWidth * 0.2f, y = canvasHeight * 0.14f),
+                    end = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.14f),
                 )
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 2, y = canvasHeight * 0.12f),
-                    end = Offset(x = canvasWidth / 1.2f, y = canvasHeight * 0.12f),
-                )
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 5, y = canvasHeight * 0.33f),
-                    end = Offset(x = canvasWidth / 2f, y = canvasHeight * 0.33f),
-                )
-
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 1.4f, y = canvasHeight * 0.23f),
-                    end = Offset(x = canvasWidth / 1.4f, y = canvasHeight * 0.15f),
+                    start = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.12f),
+                    end = Offset(x = canvasWidth * 0.83f, y = canvasHeight * 0.12f),
                 )
 
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 1.30f, y = canvasHeight * 0.38f),
-                    end = Offset(x = canvasWidth / 1.30f, y = canvasHeight * 0.25f),
+                    start = Offset(x = canvasWidth * 0.2f, y = canvasHeight * 0.33f),
+                    end = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.33f),
                 )
-
 
 
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 2, y = canvasHeight * 0.38f),
-                    end = Offset(x = canvasWidth / 1.2f, y = canvasHeight * 0.38f),
+                    start = Offset(x = canvasWidth * 0.71f, y = canvasHeight * 0.23f),
+                    end = Offset(x = canvasWidth * 0.71f, y = canvasHeight * 0.15f),
                 )
 
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 3.3f, y = canvasHeight * 0.38f),
-                    end = Offset(x = canvasWidth / 3.3f, y = canvasHeight * 0.28f),
+                    start = Offset(x = canvasWidth * 0.77f, y = canvasHeight * 0.38f),
+                    end = Offset(x = canvasWidth * 0.77f, y = canvasHeight * 0.25f),
                 )
 
                 drawLine(
                     color = Color.Black,
                     strokeWidth = 10f,
-                    start = Offset(x = canvasWidth / 4.2f, y = canvasHeight * 0.28f),
-                    end = Offset(x = canvasWidth / 4.2f, y = canvasHeight * 0.15f),
+                    start = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.38f),
+                    end = Offset(x = canvasWidth * 0.8f, y = canvasHeight * 0.38f),
                 )
 
+                drawLine(
+                    color = Color.Black,
+                    strokeWidth = 10f,
+                    start = Offset(x = canvasWidth * 0.30f, y = canvasHeight * 0.38f),
+                    end = Offset(x = canvasWidth * 0.30f, y = canvasHeight * 0.28f),
+                )
 
-
-
-
+                drawLine(
+                    color = Color.Black,
+                    strokeWidth = 10f,
+                    start = Offset(x = canvasWidth * 0.238f, y = canvasHeight * 0.28f),
+                    end = Offset(x = canvasWidth * 0.238f, y = canvasHeight * 0.15f),
+                )
 
 
             }, horizontalAlignment = Alignment.CenterHorizontally
@@ -371,7 +399,7 @@ fun TicTacToe(
         }
         Row(
             modifier = Modifier
-                .weight(0.4f)
+                .weight(0.40f)
                 .padding(8.dp)
 
         ) {
@@ -400,6 +428,7 @@ fun TicTacToe(
                     fontFamily = playerTextFont5
                 )
             }
+
         }
     }
 }
