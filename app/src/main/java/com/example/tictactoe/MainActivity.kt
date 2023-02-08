@@ -65,99 +65,47 @@ fun TicTacToe(
                 val canvasWidth = size.width
                 val canvasHeight = size.height
 
-                val startx = canvasWidth * 0.5f
-                val starty = canvasHeight * 0.589f
-
-                val endx = canvasWidth * 0.5f
-                val endy = canvasHeight * 0.40f
-
-                val ctr1x = canvasWidth * 0.5f - 100f
-                val ctr1y = canvasHeight * 0.49f
-
-                val ctr2x = canvasWidth * 0.5f + 100f
-                val xtr2y = canvasHeight * 0.48f
-
-
-                val wire = Path().apply {
-                    reset()
-                    moveTo(x = startx, y = starty)
-                    cubicTo(x1 = ctr1x, y1 = ctr1y, x2 = ctr2x, y2 = xtr2y, x3 = endx, y3 = endy)
-                }
-
-                drawPath(
-                    wire, color = Color.Black, style = Stroke(
-                        width = 12f,
-                    )
-                )
-
-                val startxLeftWires = canvasWidth * 0.178f
-                val startyLeftWires = canvasHeight * 0.37f
-
-                val endxLeftWires = canvasWidth * 0.178f
-                val endyLeftWires = canvasHeight * 0.20f
-
-                val ctr1xLeftWires = canvasWidth * 0.166f - 20f
-                val ctr1yLeftWires = canvasHeight * 0.33f
-
-                val ctr2xLeftWires = canvasWidth * 0.166f - 70f
-                val xtr2yLeftWires = canvasHeight * 0.25f
-
-
-                val leftSideConnectors = Path().apply {
-                    reset()
-                    moveTo(
-                        x = startxLeftWires, y = startyLeftWires
-                    )
-                    cubicTo(
-                        x1 = ctr1xLeftWires,
-                        y1 = ctr1yLeftWires,
-                        x2 = ctr2xLeftWires,
-                        y2 = xtr2yLeftWires,
-                        x3 = endxLeftWires,
-                        y3 = endyLeftWires
-                    )
-                }
-
-                drawPath(
-                    leftSideConnectors, color = Color.Black, style = Stroke(
-                        width = 10f
-                    )
+                drawBezierCables(
+                    stroke = 12f,
+                    startx = 0.5f,
+                    starty = 0.589f,
+                    endx = 0.5f,
+                    endy = 0.4f,
+                    firstControlPointx = 0.5f,
+                    adjFirstControlPointx = - 100f,
+                    firstControlPointy = 0.49f,
+                    secondControlPointx = 0.5f,
+                    adjSecondControlPointx = 100f,
+                    secondControlPointy = 0.48f
                 )
 
 
-                val startxLeftWiresTop = canvasWidth * 0.178f
-                val startyLeftWiresTop = canvasHeight * 0.23f
-
-                val endxLeftWiresTop = canvasWidth * 0.178f
-                val endyLeftWiresTop = canvasHeight * 0.1f
-
-                val ctr1xLeftWiresTop = canvasWidth * 0.166f - 20f
-                val ctr1yLeftWiresTop = canvasHeight * 0.26f
-
-                val ctr2xLeftWiresTop = canvasWidth * 0.166f - 30f
-                val xtr2yLeftWiresTop = canvasHeight * 0.18f
-
-
-                val leftSideConnectorsTop = Path().apply {
-                    reset()
-                    moveTo(
-                        x = startxLeftWiresTop, y = startyLeftWiresTop
-                    )
-                    cubicTo(
-                        x1 = ctr1xLeftWiresTop,
-                        y1 = ctr1yLeftWiresTop,
-                        x2 = ctr2xLeftWiresTop,
-                        y2 = xtr2yLeftWiresTop,
-                        x3 = endxLeftWiresTop,
-                        y3 = endyLeftWiresTop
-                    )
-                }
-
-                drawPath(
-                    leftSideConnectorsTop, color = Color.Black, style = Stroke(
-                        width = 10f
-                    )
+                drawBezierCables(
+                    startx = 0.178f,
+                    starty = 0.37f,
+                    endx = 0.178f,
+                    endy = 0.20f,
+                    firstControlPointx = 0.166f,
+                    adjFirstControlPointx = -20f,
+                    firstControlPointy = 0.33f,
+                    secondControlPointx = 0.166f,
+                    adjSecondControlPointx = -70f,
+                    secondControlPointy = 0.25f
                 )
+
+                drawBezierCables(
+                    startx = 0.178f,
+                    starty = 0.23f,
+                    endx = 0.178f,
+                    endy = 0.1f,
+                    firstControlPointx = 0.166f,
+                    adjFirstControlPointx = -20f,
+                    firstControlPointy = 0.26f,
+                    secondControlPointx = 0.166f,
+                    adjSecondControlPointx = - 30f,
+                    secondControlPointy = 0.18f
+                )
+
 
 
                 val startxLeftWiresTop2 = canvasWidth * 0.178f
