@@ -125,10 +125,10 @@ fun TicTacToe(
                 )
 
 
-                val startxLeftWiresTop = canvasWidth *0.178f
+                val startxLeftWiresTop = canvasWidth * 0.178f
                 val startyLeftWiresTop = canvasHeight * 0.23f
 
-                val endxLeftWiresTop = canvasWidth *0.178f
+                val endxLeftWiresTop = canvasWidth * 0.178f
                 val endyLeftWiresTop = canvasHeight * 0.1f
 
                 val ctr1xLeftWiresTop = canvasWidth * 0.166f - 20f
@@ -160,10 +160,10 @@ fun TicTacToe(
                 )
 
 
-                val startxLeftWiresTop2 = canvasWidth *0.178f
+                val startxLeftWiresTop2 = canvasWidth * 0.178f
                 val startyLeftWiresTop2 = canvasHeight * 0.28f
 
-                val endxLeftWiresTop2 = canvasWidth *0.178f
+                val endxLeftWiresTop2 = canvasWidth * 0.178f
                 val endyLeftWiresTop2 = canvasHeight * 0.15f
 
                 val ctr1xLeftWiresTop2 = canvasWidth * 0.166f - 70f
@@ -313,79 +313,16 @@ fun TicTacToe(
                 val xtr2yMid1 = canvasHeight * 0.16f
 
 
-
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.5f * 0.95f, y = canvasHeight * 0.35f),
-                    end = Offset(x = canvasWidth * 0.5f * 0.95f, y = canvasHeight * 0.25f),
-                )
-
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.53f, y = canvasHeight * 0.24f),
-                    end = Offset(x = canvasWidth * 0.53f, y = canvasHeight * 0.14f),
-                )
-
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.2f, y = canvasHeight * 0.14f),
-                    end = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.14f),
-                )
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.12f),
-                    end = Offset(x = canvasWidth * 0.83f, y = canvasHeight * 0.12f),
-                )
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.2f, y = canvasHeight * 0.33f),
-                    end = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.33f),
-                )
-
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.71f, y = canvasHeight * 0.23f),
-                    end = Offset(x = canvasWidth * 0.71f, y = canvasHeight * 0.15f),
-                )
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.77f, y = canvasHeight * 0.38f),
-                    end = Offset(x = canvasWidth * 0.77f, y = canvasHeight * 0.25f),
-                )
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.5f, y = canvasHeight * 0.38f),
-                    end = Offset(x = canvasWidth * 0.8f, y = canvasHeight * 0.38f),
-                )
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.30f, y = canvasHeight * 0.38f),
-                    end = Offset(x = canvasWidth * 0.30f, y = canvasHeight * 0.28f),
-                )
-
-                drawLine(
-                    color = Color.Black,
-                    strokeWidth = 10f,
-                    start = Offset(x = canvasWidth * 0.238f, y = canvasHeight * 0.28f),
-                    end = Offset(x = canvasWidth * 0.238f, y = canvasHeight * 0.15f),
-                )
+                drawStraightConnectorLines(xStart = 0.475f, yStart = 0.35f, xEnd = 0.475f, yEnd =  0.25f)
+                drawStraightConnectorLines(xStart = 0.53f, yStart = 0.24f, xEnd = 0.53f, yEnd = 0.14f)
+                drawStraightConnectorLines(xStart = 0.2f, yStart = 0.14f, xEnd = 0.5f, yEnd = 0.14f)
+                drawStraightConnectorLines(xStart = 0.5f, yStart = 0.12f, xEnd = 0.83f, yEnd = 0.12f)
+                drawStraightConnectorLines(xStart = 0.2f, yStart = 0.33f, xEnd = 0.5f, yEnd = 0.33f)
+                drawStraightConnectorLines(xStart = 0.71f, yStart = 0.23f, xEnd = 0.71f, yEnd = 0.15f)
+                drawStraightConnectorLines(xStart = 0.77f, yStart = 0.38f, xEnd = 0.77f, yEnd = 0.25f)
+                drawStraightConnectorLines(xStart = 0.5f, yStart = 0.38f, xEnd = 0.8f, yEnd = 0.38f)
+                drawStraightConnectorLines(xStart = 0.3f, yStart = 0.38f, xEnd = 0.3f, yEnd = 0.28f)
+                drawStraightConnectorLines(xStart = 0.238f, yStart = 0.28f, xEnd = 0.238f, yEnd = 0.15f)
 
 
             }, horizontalAlignment = Alignment.CenterHorizontally
