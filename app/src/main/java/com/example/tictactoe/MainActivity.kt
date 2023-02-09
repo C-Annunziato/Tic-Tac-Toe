@@ -66,25 +66,23 @@ fun TicTacToe(
             }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = modifier.weight(0.5f)
+            modifier = Modifier
+                .weight(0.5f)
+
         ) {
             Board(
                 listOfTileStates = liveBoardstate.value ?: listOfState, viewModel = viewModel
             )
         }
-        Row(
+        Column(
             modifier = Modifier
-                .weight(0.40f)
-                .padding(8.dp)
-
+                .weight(0.50f)
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
             FullController()
-        }
-        Column(
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.weight(.1f)
-        ) {
+
             OutlinedButton(
                 onClick = { /*TODO*/ },
                 shape = CutCornerShape(10.dp),

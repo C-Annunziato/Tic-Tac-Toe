@@ -251,8 +251,7 @@ fun FullController() {
 
 
     Column(
-        modifier = Modifier
-            .fillMaxHeight(),
+        modifier = Modifier,
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
