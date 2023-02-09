@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -272,7 +273,7 @@ fun FullController() {
 
 
 @Composable
-fun CountdownTimer() {
+fun CountdownTimer(modifier: Modifier) {
 
     var timeLeftForTurn by remember { mutableStateOf(12) }
     LaunchedEffect(Unit) {
@@ -293,7 +294,8 @@ fun CountdownTimer() {
 
         color = if (timeLeftForTurn == 0) Color.Red else retroDarkBlue,
         fontSize = 25.sp,
-        modifier = Modifier.padding(5.dp),
+        modifier = modifier.padding(5.dp),
+       textAlign = TextAlign.Center,
         fontFamily = playerTextFont3,
         fontWeight = FontWeight.Bold
     )

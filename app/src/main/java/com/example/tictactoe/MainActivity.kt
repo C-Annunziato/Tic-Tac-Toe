@@ -24,6 +24,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,8 +67,7 @@ fun TicTacToe(
             }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = Modifier
-                .weight(0.5f)
+            modifier = Modifier.weight(0.5f)
 
         ) {
             Board(
@@ -82,7 +82,6 @@ fun TicTacToe(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             FullController()
-
             OutlinedButton(
                 onClick = { /*TODO*/ },
                 shape = CutCornerShape(10.dp),
@@ -118,7 +117,6 @@ fun Board(
             .padding(10.dp)
             .fillMaxSize(),
     ) {
-
         Text(
             "Complete a row, diagonal or column",
             fontFamily = playerTextFont4,
@@ -131,11 +129,9 @@ fun Board(
             ) {
                 for (j in 1..3) {
                     val currentIndex = (i - 1) * 3 + (j - 1)
-
                     listOfTileStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(
                             onChooseTile = { bool ->
-                                //only flip state if the tile is not occupied
                                 if (!tileState?.tileIsOccupied!!) {
                                     viewModel.updatePlayerState(
                                         listOfStateIndex = currentIndex, bool = bool
@@ -148,29 +144,21 @@ fun Board(
             }
         }
         Row(
-            modifier = Modifier.width(420.dp), horizontalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = playerTextFont3,
-                    color = Color.Blue,
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .alpha(alpha = 0.40f)
-
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)
-            ) {
-
-                CountdownTimer()
-            }
+            Text(
+                "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = playerTextFont3,
+                color = Color.Blue,
+            textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 20.dp, 5.dp,)
+                    .alpha(alpha = 0.40f)
+                    .weight(1f)
+            )
+            CountdownTimer(modifier.weight(1f))
         }
     }
 }
