@@ -38,6 +38,14 @@ class T3ViewModel : ViewModel() {
     fun checkForVictory(){
 
     }
+
+    fun resetBoard(){
+
+        _tileState.value = _tileState.value?.mapIndexed { _, tileState ->
+            tileState.copy(isPlayer1Turn = true, tileIsOccupied = false, currentTileSymbolState = TileValue.NONE)
+        }
+
+    }
 }
 
 
