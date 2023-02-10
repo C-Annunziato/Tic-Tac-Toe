@@ -1,5 +1,6 @@
 package com.example.tictactoe.ui
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
@@ -12,11 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
+import com.example.tictactoe.Data.Action
+import com.example.tictactoe.Data.Direction
+import com.example.tictactoe.TAG
 import com.example.tictactoe.ui.theme.*
 
 
 @Composable
-fun FullController(modifier: Modifier = Modifier) {
+fun FullController(modifier: Modifier = Modifier, arrowOnClick: (direction: Direction) -> Unit, actionOnClick: (action: Action) -> Unit) {
     Column(
         modifier = modifier,
     ) {
@@ -29,8 +33,8 @@ fun FullController(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(start = 25.dp, end = 35.dp, top = 25.dp, bottom = 25.dp)
             ) {
                 //right arrow button distorts on pixel 4a if not at 1.2f
-                GameControlsLeft(modifier = Modifier.weight(1.2f))
-                GameControlsRight(modifier = Modifier.weight(1f))
+                GameControlsLeft(modifier = Modifier.weight(1.2f), arrowOnClick)
+                GameControlsRight(modifier = Modifier.weight(1f), actionOnClick)
             }
         }
 
@@ -38,37 +42,38 @@ fun FullController(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GameControlsLeft(modifier: Modifier = Modifier) {
+fun GameControlsLeft(modifier: Modifier = Modifier, arrowOnClick: (direction: Direction) -> Unit) {
     Column(
         modifier = modifier
     ) {
+
         Row(verticalAlignment = Alignment.CenterVertically) {
-            ArrowButton(onClick = { /*TODO*/ }, iconRotation = 180f)
+            ArrowButton(onClick = { arrowOnClick(Direction.LEFT) }, iconRotation = 180f)
             Column(
                 verticalArrangement = Arrangement.spacedBy(15.dp),
             ) {
-                ArrowButton(onClick = { /*TODO*/ }, iconRotation = -90f)
-                ArrowButton(onClick = { /*TODO*/ }, iconRotation = 90f)
+                ArrowButton(onClick = { arrowOnClick(Direction.UP) }, iconRotation = -90f)
+                ArrowButton(onClick = { arrowOnClick(Direction.DOWN) }, iconRotation = 90f)
             }
-            ArrowButton(onClick = { /*TODO*/ }, iconRotation = 0f)
+            ArrowButton(onClick = { arrowOnClick(Direction.RIGHT) }, iconRotation = 0f)
         }
     }
 }
 
 @Composable
-fun GameControlsRight(modifier: Modifier = Modifier) {
+fun GameControlsRight(modifier: Modifier = Modifier, actionOnClick: (action: Action) -> Unit) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            ActionButtons(onClick = { /*TODO*/ }, icon = Icons.Filled.AdsClick)
-            ActionButtons(onClick = { /*TODO*/ }, icon = Icons.Filled.Bolt)
+            ActionButtons(onClick = { actionOnClick(Action.PLACE) }, icon = Icons.Filled.AdsClick)
+            ActionButtons(onClick = { actionOnClick (Action.DESTROY)}, icon = Icons.Filled.Bolt)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            ActionButtons(onClick = { /*TODO*/ }, icon = Icons.Filled.Lock)
-            ActionButtons(onClick = { /*TODO*/ }, icon = Icons.Filled.QuestionMark)
+            ActionButtons(onClick = { actionOnClick (Action.LOCK)}, icon = Icons.Filled.Lock)
+            ActionButtons(onClick = { actionOnClick (Action.RANDOM)}, icon = Icons.Filled.QuestionMark)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.tictactoe
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import com.example.tictactoe.Data.ControllerState
 import com.example.tictactoe.Data.TileState
 import com.example.tictactoe.Data.T3ViewModel
 import com.example.tictactoe.Data.listOfState
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            MainScreen(viewModel = vm, liveDataListOfTileStates = vm.tileState)
+            MainScreen(viewModel = vm, liveDataListOfTileStates = vm.tileState, arrowState = vm.arrowButtonState)
         }
     }
 }
@@ -40,11 +42,15 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: T3ViewModel,
-    liveDataListOfTileStates: LiveData<List<TileState>?>
+    liveDataListOfTileStates: LiveData<List<TileState>?>,
+    arrowState: LiveData<ControllerState>
 ) {
 
     val liveBoardstate = liveDataListOfTileStates.observeAsState()
+    val directionalArrowState = arrowState.observeAsState()
 
+
+Log.i(TAG, "Current button hit is $directionalArrowState")
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -59,7 +65,8 @@ fun MainScreen(
         ) {
             TicTacToeBoard(
                 listOfTileStates = liveBoardstate.value ?: listOfState,
-                viewModel = viewModel
+                viewModel = viewModel,
+                arrowState = directionalArrowState
             )
         }
         Column(
@@ -69,7 +76,8 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            FullController()
+            FullController(arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+                actionOnClick = { })
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },
                 shape = CutCornerShape(10.dp),

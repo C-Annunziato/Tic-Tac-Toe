@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tictactoe.Data.ControllerState
 import com.example.tictactoe.Data.T3ViewModel
 import com.example.tictactoe.Data.TileState
 import com.example.tictactoe.Data.TileValue
@@ -29,7 +31,10 @@ import com.example.tictactoe.ui.theme.*
 
 @Composable
 fun TicTacToeBoard(
-    modifier: Modifier = Modifier, listOfTileStates: List<TileState>?, viewModel: T3ViewModel
+    modifier: Modifier = Modifier,
+    listOfTileStates: List<TileState>?,
+    viewModel: T3ViewModel,
+    arrowState: State<ControllerState?>
 ) {
 
     Column(
@@ -53,6 +58,9 @@ fun TicTacToeBoard(
                     val currentIndex = (i - 1) * 3 + (j - 1)
                     listOfTileStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(
+                            // UserEvent -> if tile is chosen and not occupied update the state
+                            // given a bool based on players turn
+                            // and a current index 0 through 8
                             onChooseTile = { bool ->
                                 if (!tileState?.tileIsOccupied!!) {
                                     viewModel.updatePlayerState(
@@ -113,6 +121,7 @@ fun Tile(
             })
             .drawBehind {
                 drawRoundRect(
+                    //if selectedState draw pink else black
                     color = Color.Black,
                     size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
                     cornerRadius = CornerRadius(x = 30f, y = 30f)

@@ -1,5 +1,6 @@
 package com.example.tictactoe.Data
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,9 @@ class T3ViewModel : ViewModel() {
 
     private val _tileState = MutableLiveData(listOfState)
     val tileState: LiveData<List<TileState>?> = _tileState
+
+    private val _arrowButtonState = MutableLiveData(ControllerState())
+    val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
 
     private var currentTileIndex: Int by mutableStateOf(0)
 
@@ -44,9 +48,45 @@ class T3ViewModel : ViewModel() {
         _tileState.value = _tileState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = true, tileIsOccupied = false, currentTileSymbolState = TileValue.NONE)
         }
-
     }
+
+
+    fun updateArrowButtonState(direction: Direction) {
+
+        when (direction) {
+
+            Direction.UP ->   Log.i(TAG,"Direction up ")
+            Direction.DOWN -> Log.i(TAG,"Direction down ")
+            Direction.LEFT -> Log.i(TAG,"Direction left ")
+            Direction.RIGHT -> Log.i(TAG,"Direction right ")
+
+            Direction.UP -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.UP)
+            Direction.DOWN -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.DOWN)
+            Direction.LEFT -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.LEFT)
+            Direction.RIGHT -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.RIGHT)
+        }
+    }
+
+   //viewmodelscope.launch
+
+fun updateActionButtonState(){
+
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
