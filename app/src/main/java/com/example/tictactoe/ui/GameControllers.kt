@@ -30,133 +30,21 @@ import androidx.compose.ui.unit.sp
 import com.example.tictactoe.ui.theme.*
 import kotlinx.coroutines.delay
 
-
-//@Composable
-//fun GameControlsLeft(modifier: Modifier = Modifier) {
-//    Column(
-//        modifier = modifier.padding(start = 10.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//    ) {
-//        Button(
-//            onClick = { }, shape = CircleShape, modifier = Modifier.size(80.dp)
-//        ) {
-//            Icon(
-//                Icons.Filled.Refresh, contentDescription = "rewind", modifier = Modifier.size(50.dp)
-//            )
-//        }
-//
-//        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-//            Button(
-//                onClick = { },
-//                shape = CircleShape,
-//                modifier = Modifier.size(80.dp),
-////            colors = ButtonDefaults.buttonColors(backgroundColor = Materialtheme.colors.secondaryVariant)
-//            ) {
-//                ClockIcon()
-//            }
-//            Button(
-//                onClick = { }, shape = CircleShape, modifier = Modifier.size(80.dp)
-//            ) {
-//                Icon(
-//                    Icons.Filled.Clear,
-//                    contentDescription = "remove",
-//                    modifier = Modifier.size(50.dp)
-//                )
-//            }
-//        }
-//        Text("Player 1", fontSize = 30.sp)
-//    }
-//}
-
 @Composable
 fun GameControlsLeft(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Button(
-                onClick = { },
-                shape = CircleShape,
-                modifier = Modifier
-                    .size(55.dp)
-                    .shadow(2.dp, shape = CircleShape),
-                colors = ButtonDefaults.buttonColors(
-                    retroControllerButtons
-                ),
-                border = BorderStroke(2.dp, color = Color.Gray)
-            ) {
-                Icon(
-                    Icons.Filled.PlayArrow,
-                    contentDescription = "left arrow",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .rotate(180f)
-                )
-            }
-
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color.Blue)) {
+           arrowButton(onClick = { /*TODO*/ }, iconRotation =180f )
             Column(
-                verticalArrangement = Arrangement.spacedBy(15.dp)
+                verticalArrangement = Arrangement.spacedBy(15.dp),modifier= Modifier.background(
+                    Color.Magenta)
             ) {
-
-                Button(
-                    onClick = { },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(55.dp)
-                        .shadow(2.dp, shape = CircleShape),
-                    colors = ButtonDefaults.buttonColors(
-                        retroControllerButtons
-                    ),
-                    border = BorderStroke(2.dp, color = Color.Gray)
-                ) {
-                    Icon(
-                        Icons.Filled.PlayArrow,
-                        contentDescription = "up arrow",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .rotate(-90f)
-                    )
-                }
-
-                Button(
-                    onClick = { },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(55.dp)
-                        .shadow(2.dp, shape = CircleShape),
-                    colors = ButtonDefaults.buttonColors(
-                        retroControllerButtons
-                    ),
-                    border = BorderStroke(2.dp, color = Color.Gray)
-                ) {
-                    Icon(
-                        Icons.Filled.PlayArrow,
-                        contentDescription = "down arrow",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .rotate(90f)
-                    )
-                }
+                arrowButton(onClick = { /*TODO*/ }, iconRotation = -90f )
+                arrowButton(onClick = { /*TODO*/ }, iconRotation = 90f )
             }
-            Button(
-                onClick = { },
-                shape = CircleShape,
-                modifier = Modifier
-                    .size(55.dp)
-                    .shadow(2.dp, shape = CircleShape),
-                colors = ButtonDefaults.buttonColors(
-                    retroControllerButtons
-                ),
-                border = BorderStroke(2.dp, color = Color.Gray)
-            ) {
-                Icon(
-                    Icons.Filled.PlayArrow,
-                    contentDescription = "right arrow",
-                    modifier = Modifier.size(50.dp)
-                )
-            }
-
+            arrowButton(onClick = { /*TODO*/ }, iconRotation =0f )
         }
     }
 }

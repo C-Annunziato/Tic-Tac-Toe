@@ -103,9 +103,7 @@ fun Tile(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Card(modifier = Modifier
-            .border(
-                4.dp, Color.Black, shape = RoundedCornerShape(8.dp)
-            )
+            .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
             .size(80.dp)
             .clickable(onClick = {
                 when (state?.isPlayer1Turn) {

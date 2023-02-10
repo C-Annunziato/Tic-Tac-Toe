@@ -20,7 +20,7 @@ class T3ViewModel : ViewModel() {
 
         //global list items change
         currentTileIndex = listOfStateIndex
-        _tileState.value = _tileState.value?.mapIndexed { _, tileState ->
+        _tileState.value = _tileState.value?.map { tileState ->
                 tileState.copy(isPlayer1Turn = !bool)
         }
 
@@ -41,7 +41,7 @@ class T3ViewModel : ViewModel() {
 
     fun resetBoard(){
 
-        _tileState.value = _tileState.value?.mapIndexed { _, tileState ->
+        _tileState.value = _tileState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = true, tileIsOccupied = false, currentTileSymbolState = TileValue.NONE)
         }
 
