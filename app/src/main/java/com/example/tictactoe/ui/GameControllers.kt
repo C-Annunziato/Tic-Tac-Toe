@@ -35,11 +35,10 @@ fun GameControlsLeft(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color.Blue)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
            arrowButton(onClick = { /*TODO*/ }, iconRotation =180f )
             Column(
-                verticalArrangement = Arrangement.spacedBy(15.dp),modifier= Modifier.background(
-                    Color.Magenta)
+                verticalArrangement = Arrangement.spacedBy(15.dp),
             ) {
                 arrowButton(onClick = { /*TODO*/ }, iconRotation = -90f )
                 arrowButton(onClick = { /*TODO*/ }, iconRotation = 90f )
@@ -55,82 +54,16 @@ fun GameControlsRight(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End,
-
-        ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(
-                    onClick = { },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .shadow(2.dp, shape = CircleShape),
-                    colors = ButtonDefaults.buttonColors(
-                        retroControllerButtons
-                    ),
-                    border = BorderStroke(2.dp, color = Color.Gray),
-                ) {
-                    Icon(
-                        Icons.Filled.AdsClick,
-                        contentDescription = "rewind",
-                        modifier = Modifier.size(50.dp)
-                    )
-                }
-
-                Button(
-                    onClick = { },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .shadow(2.dp, shape = CircleShape),
-                    colors = ButtonDefaults.buttonColors(
-                        retroControllerButtons
-                    ),
-                    border = BorderStroke(2.dp, color = Color.Gray),
-                ) {
-                    Icon(
-                        Icons.Filled.Bolt,
-                        contentDescription = "rewind",
-                        modifier = Modifier.size(50.dp)
-                    )
-                }
+                actionButtons(onClick = { /*TODO*/ }, icon =Icons.Filled.AdsClick )
+                actionButtons(onClick = { /*TODO*/ }, icon =Icons.Filled.Bolt )
             }
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(
-                    onClick = { },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .shadow(2.dp, shape = CircleShape),
-                    colors = ButtonDefaults.buttonColors(
-                        retroControllerButtons
-                    ),
-                    border = BorderStroke(2.dp, color = Color.Gray)
-                ) {
-                    Icon(
-                        Icons.Filled.Lock,
-                        contentDescription = "remove",
-                        modifier = Modifier.size(50.dp)
-                    )
-                }
-                TextButton(
-                    onClick = { },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .shadow(2.dp, shape = CircleShape),
-                    colors = ButtonDefaults.buttonColors(
-                        retroControllerButtons
-                    ),
-                    border = BorderStroke(2.dp, color = Color.Gray)
-                ) {
-                    Text("?", fontSize = 30.sp)
-                }
+                actionButtons(onClick = { /*TODO*/ }, icon = Icons.Filled.Lock)
+                actionButtons(onClick = { /*TODO*/ }, icon = Icons.Filled.QuestionMark)
             }
-        }
     }
 }
 
