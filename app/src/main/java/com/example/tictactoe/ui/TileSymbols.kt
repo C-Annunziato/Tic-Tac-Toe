@@ -4,19 +4,15 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.tictactoe.ui.theme.*
 
 
 @Composable
-fun XX(modifier: Modifier = Modifier) {
+fun DrawCross(modifier: Modifier = Modifier) {
 
     val square = Path().apply {
         lineTo(20f, 0f)
@@ -29,7 +25,6 @@ fun XX(modifier: Modifier = Modifier) {
             .size(60.dp)
             .padding(20.dp)
             .padding(end = 10.dp)
-
 
     ) {
         //top left to bottom right
@@ -107,7 +102,6 @@ fun CircleOfSquares(
                 ), size = Size(22f, 22f)
             )
 
-
             drawRect(
                 color = Color(134, 105, 213, 255), topLeft = Offset(
                     x = (radius) * kotlin.math.cos(angleRad) + size.center.x,
@@ -121,61 +115,3 @@ fun CircleOfSquares(
 }
 
 
-@Composable
-fun XOIcon(modifier: Modifier = Modifier) {
-
-
-    Canvas(modifier = Modifier.fillMaxSize()) {
-
-        val canvasWidth = size.width
-        val canvasHeight = size.height
-
-        drawCircle(
-            color = retroBlack,
-            center = Offset(x = canvasWidth / 2, y = canvasHeight / 2),
-            radius = 90f / 2,
-            style = Stroke(10F),
-            alpha = 0.7f,
-
-        )
-
-        drawLine(
-            color = retroBlack,
-            start = Offset(
-                x = 0f +10f, y = 0f + 10f
-            ),
-            end = Offset(x = canvasWidth, y = canvasHeight + 10f),
-            strokeWidth = 10f,
-        )
-
-        drawLine(
-            color = retroBlack,
-            start = Offset(
-                x = canvasWidth, y = 0f - 10f
-            ),
-            end = Offset(x = 0f, y = canvasHeight - 5f),
-            strokeWidth = 10f
-        )
-    }
-
-}
-
-
-//@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
-//@Composable
-//fun Prev() {
-//
-//}
-//
-//private fun createStripeBrush(
-//): Brush {
-//
-//    val colorStops = arrayOf(
-//        0.0f to Color.White,
-//        0.3f to Color.Transparent,
-//    )
-//
-//    return Brush.verticalGradient(
-//        colorStops = colorStops, tileMode = TileMode.Repeated, startY = 0f, endY = 12f
-//    )
-//

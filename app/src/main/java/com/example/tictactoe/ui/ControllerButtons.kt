@@ -7,7 +7,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tictactoe.ui.theme.retroControllerButtons
 
 @Composable
-fun arrowButton(onClick: () -> Unit, iconRotation: Float){
+fun ArrowButton(onClick: () -> Unit, iconRotation: Float){
     Button(
         onClick = { onClick()},
         shape = CircleShape,
@@ -42,7 +41,7 @@ fun arrowButton(onClick: () -> Unit, iconRotation: Float){
 }
 
 @Composable
-fun actionButtons(onClick: () -> Unit, icon: ImageVector){
+fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
     Button(
         onClick = { onClick()},
         shape = CircleShape,

@@ -128,7 +128,7 @@ fun Tile(
             ) {
                 when (state?.currentTileSymbolState?.ordinal) {
                     TileValue.NONE.ordinal -> {}
-                    TileValue.CROSS.ordinal -> XX()
+                    TileValue.CROSS.ordinal -> DrawCross()
                     TileValue.CIRCLE.ordinal -> CircleOfSquares()
                 }
             }
