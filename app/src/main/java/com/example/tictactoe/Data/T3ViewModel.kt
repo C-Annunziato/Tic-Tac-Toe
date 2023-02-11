@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.abs
+import kotlin.math.ceil
 
 const val TAG = "viewmodel"
 
@@ -79,30 +80,29 @@ class T3ViewModel : ViewModel() {
     }
 
 
-    fun moveOnBoard(rows: Int, columns: Int) {
+    private fun moveOnBoard(rows: Int, columns: Int) {
 
-        var currentRow = rows - 1
-        var currentColumns = columns - 1
+        //start in the middle
+        var currentRow = ceil((rows / 2).toDouble()).toInt()
+        var currentColumns = ceil((columns / 2).toDouble()).toInt()
 
         //track current row and column to get a position
-
-        var position: Int
         //if rows and columns are even then your position is a simple multiplication of the row and column your are on
         //else if they are uneven, then you need a correction term which is abs(rows-columns) * rows
         //the correction term does not apply if you only have one row, hence if rows > 1
-        if (currentRow > 1) position =
-            (abs(rows - columns) * rows) + currentRow * currentColumns else position =
+        var position: Int = if (currentRow > 1)
+            currentRow * currentColumns + (abs(rows - columns) * rows) else
             currentRow * currentColumns
 
-        //if current row you are on is > 1
+        //if current row is not an edge
         if (currentRow > 1) {
             when (arrowButtonState.value?.arrowState) {
                 Direction.UP -> {
                     //move up
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //find the new position index
+                        //find the new position index by subtracting an entire row
                         if (position - rows == index) {
-                            //set that index tile-state to true
+                            //set that index tile-state to true, aka move to that index
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
