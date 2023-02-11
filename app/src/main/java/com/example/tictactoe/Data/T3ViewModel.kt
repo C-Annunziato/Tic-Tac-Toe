@@ -19,13 +19,22 @@ class T3ViewModel : ViewModel() {
     val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
 
     private var currentTileIndex: Int by mutableStateOf(0)
+    private var selectedIndex: Int by mutableStateOf(4)
+
+    init {
+        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+            if (index == 4) {
+                tileState.copy(isSelected = true)
+            } else tileState
+        }
+    }
 
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
 
         //global list items change
         currentTileIndex = listOfStateIndex
         _tileState.value = _tileState.value?.map { tileState ->
-                tileState.copy(isPlayer1Turn = !bool)
+            tileState.copy(isPlayer1Turn = !bool)
         }
 
         //specific list item change
@@ -39,48 +48,102 @@ class T3ViewModel : ViewModel() {
         }
     }
 
-    fun checkForVictory(){
-
-    }
-
-    fun resetBoard(){
-
-        _tileState.value = _tileState.value?.map { tileState ->
-            tileState.copy(isPlayer1Turn = true, tileIsOccupied = false, currentTileSymbolState = TileValue.NONE)
-        }
-    }
-
 
     fun updateArrowButtonState(direction: Direction) {
 
         when (direction) {
 
-            Direction.UP ->   Log.i(TAG,"Direction up ")
-            Direction.DOWN -> Log.i(TAG,"Direction down ")
-            Direction.LEFT -> Log.i(TAG,"Direction left ")
-            Direction.RIGHT -> Log.i(TAG,"Direction right ")
+//            Direction.UP -> Log.i(TAG, "Direction up ")
+//            Direction.DOWN -> Log.i(TAG, "Direction down ")
+//            Direction.LEFT -> Log.i(TAG, "Direction left ")
+//            Direction.RIGHT -> Log.i(TAG, "Direction right ")
 
-            Direction.UP -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.UP)
-            Direction.DOWN -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.DOWN)
-            Direction.LEFT -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.LEFT)
-            Direction.RIGHT -> _arrowButtonState.value = _arrowButtonState.value?.copy(arrowState = Direction.RIGHT)
+            Direction.UP -> _arrowButtonState.value =
+                _arrowButtonState.value?.copy(arrowState = Direction.UP)
+            Direction.DOWN -> _arrowButtonState.value =
+                _arrowButtonState.value?.copy(arrowState = Direction.DOWN)
+            Direction.LEFT -> _arrowButtonState.value =
+                _arrowButtonState.value?.copy(arrowState = Direction.LEFT)
+            Direction.RIGHT -> _arrowButtonState.value =
+                _arrowButtonState.value?.copy(arrowState = Direction.RIGHT)
+        }
+        removePriorSelection()
+        moveOnBoard()
+    }
+
+    private fun removePriorSelection() {
+        _tileState.value = _tileState.value?.map { tileState ->
+            tileState.copy(isSelected = false)
         }
     }
 
-   //viewmodelscope.launch
+    private fun moveOnBoard() {
 
-fun updateActionButtonState(){
+        when (arrowButtonState.value?.arrowState) {
+
+            Direction.UP -> {
+                selectedIndex = (selectedIndex - 3).coerceIn(0, 8)
+                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                    if (selectedIndex == index) {
+                        tileState.copy(isSelected = true)
+                    } else tileState
+                }
+            }
+            Direction.DOWN -> {
+                ;  selectedIndex = (selectedIndex + 3).coerceIn(0, 8)
+                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                    if (selectedIndex == index) {
+                        tileState.copy(isSelected = true)
+                    } else tileState
+                }
+            }
+            Direction.LEFT -> {
+
+                selectedIndex = (selectedIndex - 1).coerceIn(0, 8)
+                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                    if (selectedIndex == index) {
+                        tileState.copy(isSelected = true)
+                    } else tileState
+                }
+            }
+
+            Direction.RIGHT -> {
+                selectedIndex = (selectedIndex + 1).coerceIn(0, 8)
+                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                    if (selectedIndex == index) {
+                        tileState.copy(isSelected = true)
+                    } else tileState
+
+                }
+
+            }
+        }
+    }
+
+    //viewmodelscope.launch
+
+    fun updateActionButtonState() {
+
+    }
+
+
+    fun resetBoard() {
+
+        _tileState.value = _tileState.value?.map { tileState ->
+            tileState.copy(
+                isPlayer1Turn = true,
+                tileIsOccupied = false,
+                currentTileSymbolState = TileValue.NONE
+            )
+        }
+    }
+
+
+    fun checkForVictory() {
+
+    }
 
 }
-}
-
-
-
-
-
-
-
-
 
 
 

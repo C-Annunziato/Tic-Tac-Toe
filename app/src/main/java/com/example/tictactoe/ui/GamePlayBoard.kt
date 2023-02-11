@@ -111,7 +111,11 @@ fun Tile(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Card(modifier = Modifier
-            .border(4.dp, Color.Black, shape = RoundedCornerShape(8.dp))
+            .border(
+                4.dp,
+                color = if (state?.isSelected == true) Color.Magenta else Color.Black,
+                shape = RoundedCornerShape(8.dp)
+            )
             .size(80.dp)
             .clickable(onClick = {
                 when (state?.isPlayer1Turn) {
@@ -122,7 +126,7 @@ fun Tile(
             .drawBehind {
                 drawRoundRect(
                     //if selectedState draw pink else black
-                    color = Color.Black,
+                    color = if(state?.isSelected == true) Color.Magenta else Color.Black,
                     size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
                     cornerRadius = CornerRadius(x = 30f, y = 30f)
                 )
