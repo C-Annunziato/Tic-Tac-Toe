@@ -140,26 +140,41 @@ class T3ViewModel : ViewModel() {
             Direction.LEFT -> {
                 if (currentColumn > 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (position-- == index) {
+                        if (position-1 == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                } else {
+                    position-=1
+                    currentColumn-=1
                 }
-                position--
-                currentColumn--
+                else if (currentColumn == 1) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        //moving up
+                        if (position == index) {
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
+                }
+
             }
             Direction.RIGHT -> {
                 if (currentColumn < numOfColumns) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (position++ == index) {
+                        if (position+1 == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                    position++
-                    currentColumn++
-                } else {
-                }
+                    position += 1
+                    currentColumn+=1
+
+                }   else if (currentColumn == 3) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        //moving up
+                        if (position == index) {
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
+                } 
             }
         }
         Log.i(TAG, "position is $position, row is $currentRow, columns is $currentColumn")
