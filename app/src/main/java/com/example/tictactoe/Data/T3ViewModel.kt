@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlin.math.abs
 import kotlin.math.ceil
 
 const val TAG = "viewmodel"
@@ -21,14 +20,18 @@ class T3ViewModel : ViewModel() {
     val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
 
     private var currentTileIndex: Int by mutableStateOf(0)
-    private var selectedIndex: Int by mutableStateOf(4)
+    private var currentRow: Int by mutableStateOf(0)
+    private var currentColumn: Int by mutableStateOf(0)
+    private var numColumns: Int = 3
+    private var numRows: Int = 3
+
+    //init to middle position
+    private var position: Int by mutableStateOf(0)
+//        .coerceIn(0 until (numRows * numColumns)))
 
     init {
-        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            if (index == 4) {
-                tileState.copy(isSelected = true)
-            } else tileState
-        }
+        initToBoardMiddle()
+        Log.i(TAG, "position is $position, row is $currentRow, columns is $currentColumn")
     }
 
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
@@ -54,12 +57,6 @@ class T3ViewModel : ViewModel() {
     fun updateArrowButtonState(direction: Direction) {
 
         when (direction) {
-
-//            Direction.UP -> Log.i(TAG, "Direction up ")
-//            Direction.DOWN -> Log.i(TAG, "Direction down ")
-//            Direction.LEFT -> Log.i(TAG, "Direction left ")
-//            Direction.RIGHT -> Log.i(TAG, "Direction right ")
-
             Direction.UP -> _arrowButtonState.value =
                 _arrowButtonState.value?.copy(arrowState = Direction.UP)
             Direction.DOWN -> _arrowButtonState.value =
@@ -70,121 +67,104 @@ class T3ViewModel : ViewModel() {
                 _arrowButtonState.value?.copy(arrowState = Direction.RIGHT)
         }
         removePriorSelection()
-        moveOnBoard(3, 3)
+
+        moveOnBoard(numRows, numColumns)
     }
+
 
     private fun removePriorSelection() {
         _tileState.value = _tileState.value?.map { tileState ->
             tileState.copy(isSelected = false)
         }
+        Log.i(TAG,"remove prior selection beijng called")
     }
 
 
-    private fun moveOnBoard(rows: Int, columns: Int) {
-
-        //start in the middle
-        var currentRow = ceil((rows / 2).toDouble()).toInt()
-        var currentColumns = ceil((columns / 2).toDouble()).toInt()
+    private fun moveOnBoard(numOfRows: Int, numOfColumns: Int) {
 
         //track current row and column to get a position
         //if rows and columns are even then your position is a simple multiplication of the row and column your are on
         //else if they are uneven, then you need a correction term which is abs(rows-columns) * rows
         //the correction term does not apply if you only have one row, hence if rows > 1
-        var position: Int = if (currentRow > 1)
-            currentRow * currentColumns + (abs(rows - columns) * rows) else
-            currentRow * currentColumns
+//        position = currentRow * currentColumn
+
+//            if (numOfRows > 1) currentRow * currentColumns + (abs(numOfRows - numOfColumns) * numOfRows)
+//            else currentRow * currentColumns
 
         //if current row is not an edge
-        if (currentRow > 1) {
-            when (arrowButtonState.value?.arrowState) {
-                Direction.UP -> {
-                    //move up
+
+        when (arrowButtonState.value?.arrowState) {
+            Direction.UP -> {
+                //can move up
+                if (currentRow > 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //find the new position index by subtracting an entire row
-                        if (position - rows == index) {
-                            //set that index tile-state to true, aka move to that index
+                        //moving up
+                        if ((position - numOfRows) == index) {
+
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
+                    position -= numOfRows
+                    currentRow -= 1
+
+                } else if (currentRow == 1) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        //moving up
+                        if (position == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
                 }
             }
 
+            Direction.DOWN -> {
+                if (currentRow < numOfRows) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        if ((position + numOfRows) == index) {
 
-//        } else if ( rows < )
-
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
+                    position += numOfRows
+                    currentRow += 1
+                }
+                    else if (currentRow == 3) {
+                        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                            //moving up
+                            if (position == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
+                }
+            }
+            Direction.LEFT -> {
+                if (currentColumn > 1) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        if (position-- == index) {
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
+                } else {
+                }
+                position--
+                currentColumn--
+            }
+            Direction.RIGHT -> {
+                if (currentColumn < numOfColumns) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        if (position++ == index) {
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
+                    position++
+                    currentColumn++
+                } else {
+                }
+            }
         }
+        Log.i(TAG, "position is $position, row is $currentRow, columns is $currentColumn")
     }
 
-//    fun moveOnBoard(rows: Int, columns: Int) {
-//        if (rows == columns) {
-//            when (arrowButtonState.value?.arrowState) {
-//                Direction.UP -> {
-//                    selectedIndex -= rows
-//                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//                        if (selectedIndex == index) {
-//                            tileState.copy(isSelected = true)
-//                        } else tileState
-//                    }
-//                }
-//
-//                Direction.DOWN -> {
-//                    selectedIndex += rows
-//
-//                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//                        if (selectedIndex == index) {
-//                            tileState.copy(isSelected = true)
-//                        } else tileState
-//                    }
-////                Direction.LEFT -> selectedIndex
-////                    Direction.RIGHT ->
-//                }
-//            }
-//        }
-//    }
-
-
-//    private fun moveOnBoard() {
-//
-//        when (arrowButtonState.value?.arrowState) {
-//
-//            Direction.UP -> {
-//                selectedIndex = (selectedIndex - 3).coerceIn(0, 8)
-//                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//                    if (selectedIndex == index) {
-//                        tileState.copy(isSelected = true)
-//                    } else tileState
-//                }
-//            }
-//            Direction.DOWN -> {
-//                ;  selectedIndex = (selectedIndex + 3).coerceIn(0, 8)
-//                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//                    if (selectedIndex == index) {
-//                        tileState.copy(isSelected = true)
-//                    } else tileState
-//                }
-//            }
-//            Direction.LEFT -> {
-//
-//                selectedIndex = (selectedIndex - 1).coerceIn(0, 8)
-//                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//                    if (selectedIndex == index) {
-//                        tileState.copy(isSelected = true)
-//                    } else tileState
-//                }
-//            }
-//
-//            Direction.RIGHT -> {
-//                selectedIndex = (selectedIndex + 1).coerceIn(0, 8)
-//                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-//                    if (selectedIndex == index) {
-//                        tileState.copy(isSelected = true)
-//                    } else tileState
-//
-//                }
-//
-//            }
-//        }
-//    }
 
 //viewmodelscope.launch
 
@@ -201,12 +181,12 @@ class T3ViewModel : ViewModel() {
                 tileIsOccupied = false,
                 currentTileSymbolState = TileValue.NONE,
                 isSelected = false,
-                isSelectedIndex = 4
+                isSelectedIndex = returnMiddleOfBoard()
             )
         }
 
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            if (index == 4) {
+            if (index == returnMiddleOfBoard()) {
                 tileState.copy(isSelected = true)
             } else tileState
         }
@@ -214,6 +194,8 @@ class T3ViewModel : ViewModel() {
         _arrowButtonState.value = _arrowButtonState.value?.copy(
             arrowState = Direction.NONE, actionState = Action.NONE
         )
+
+        initToBoardMiddle()
     }
 
 
@@ -221,7 +203,35 @@ class T3ViewModel : ViewModel() {
 
     }
 
+    private fun returnMiddleOfBoard(): Int {
+        val midRow = ceil((numRows.toDouble() / 2)).toInt()
+        val midColumn = ceil((numColumns.toDouble() / 2)).toInt()
+        currentRow = midRow
+        currentColumn = midColumn
+        Log.i(TAG, " calc middle of board ${midRow * midColumn}")
+        return midRow * midColumn
+    }
+
+    private fun initToBoardMiddle() {
+        //find the middle of a square grid
+        //avoid integer division via toDouble cast
+
+        position = returnMiddleOfBoard()
+
+        Log.i(
+            TAG,
+            " init or reset board :: position $position, row $currentRow, column $currentColumn"
+        )
+
+        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+            if (index == position) {
+                tileState.copy(isSelected = true)
+            } else tileState
+        }
+    }
 }
+
+
 
 
 
