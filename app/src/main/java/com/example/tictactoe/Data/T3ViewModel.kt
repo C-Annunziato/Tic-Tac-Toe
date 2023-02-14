@@ -23,20 +23,21 @@ class T3ViewModel : ViewModel() {
     val  currentTileIndex: LiveData<Int> = _currentTileIndex
 
 
-    private var currentPlayerTurn: Boolean by mutableStateOf(true)
     private var currentRow: Int by mutableStateOf(0)
     private var currentColumn: Int by mutableStateOf(0)
     private var numColumns: Int = 3
     private var numRows: Int = 3
 
     //init to middle position
-    private var position: Int by mutableStateOf(0)
+    private var _position: Int by mutableStateOf(0)
+    var position: Int = _position
+
 
 //        .coerceIn(0 until (numRows * numColumns)))
 
     init {
         initToBoardMiddle()
-        Log.i(TAG, "position is $position, row is $currentRow, columns is $currentColumn")
+        Log.i(TAG, "position is $_position, row is $currentRow, columns is $currentColumn")
     }
 
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
@@ -68,11 +69,11 @@ class T3ViewModel : ViewModel() {
                 }
 
                 _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                    if (position == index && tileState.isPlayer1Turn) {
+                    if (_position == index && tileState.isPlayer1Turn) {
                         tileState.copy(
                             currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true
                         )
-                    } else if (position == index && !tileState.isPlayer1Turn ) {
+                    } else if (_position == index && !tileState.isPlayer1Turn ) {
                         tileState.copy(
                             currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true
                         )
@@ -130,18 +131,18 @@ class T3ViewModel : ViewModel() {
                 if (currentRow > 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
-                        if ((position - numOfRows) == index) {
+                        if ((_position - numOfRows) == index) {
 
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                    position -= numOfRows
+                    _position -= numOfRows
                     currentRow -= 1
 
                 } else if (currentRow == 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
-                        if (position == index) {
+                        if (_position == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
@@ -151,17 +152,17 @@ class T3ViewModel : ViewModel() {
             Direction.DOWN -> {
                 if (currentRow < numOfRows) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if ((position + numOfRows) == index) {
+                        if ((_position + numOfRows) == index) {
 
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                    position += numOfRows
+                    _position += numOfRows
                     currentRow += 1
                 } else if (currentRow == 3) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
-                        if (position == index) {
+                        if (_position == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
@@ -170,16 +171,16 @@ class T3ViewModel : ViewModel() {
             Direction.LEFT -> {
                 if (currentColumn > 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (position - 1 == index) {
+                        if (_position - 1 == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                    position -= 1
+                    _position -= 1
                     currentColumn -= 1
                 } else if (currentColumn == 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
-                        if (position == index) {
+                        if (_position == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
@@ -189,24 +190,24 @@ class T3ViewModel : ViewModel() {
             Direction.RIGHT -> {
                 if (currentColumn < numOfColumns) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (position + 1 == index) {
+                        if (_position + 1 == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                    position += 1
+                    _position += 1
                     currentColumn += 1
 
                 } else if (currentColumn == 3) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
-                        if (position == index) {
+                        if (_position == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
                 }
             }
         }
-        Log.i(TAG, "position is $position, row is $currentRow, columns is $currentColumn")
+        Log.i(TAG, "position is $_position, row is $currentRow, columns is $currentColumn")
     }
 
 
@@ -256,15 +257,15 @@ class T3ViewModel : ViewModel() {
         //find the middle of a square grid
         //avoid integer division via toDouble cast
 
-        position = returnMiddleOfBoard()
+        _position = returnMiddleOfBoard()
 
         Log.i(
             TAG,
-            " init or reset board :: position $position, row $currentRow, column $currentColumn"
+            " init or reset board :: position $_position, row $currentRow, column $currentColumn"
         )
 
         _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-            if (index == position) {
+            if (index == _position) {
                 tileState.copy(isSelected = true)
             } else tileState
         }

@@ -85,12 +85,10 @@ fun MainScreen(
         ) {
             FullController(arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
                 actionOnClick = {
-                    Log.i(TAG,"controller position ${tileIndex.value}")
-                    tileIndex.value?.let { index ->
-                        liveBoardstate.value?.getOrNull(index).let { tileState ->
+
+                        liveBoardstate.value?.getOrNull(viewModel.position).let { tileState ->
                             if (!tileState?.tileIsOccupied!!) {
                                 viewModel.updateActionButtonState(action = it)
-                            }
 
                         }
                     }
