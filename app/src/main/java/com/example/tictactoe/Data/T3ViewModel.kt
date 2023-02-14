@@ -19,7 +19,11 @@ class T3ViewModel : ViewModel() {
     private val _arrowButtonState = MutableLiveData(ControllerState())
     val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
 
-    private var currentTileIndex: Int by mutableStateOf(0)
+    private var _currentTileIndex = MutableLiveData(0)
+    val  currentTileIndex: LiveData<Int> = _currentTileIndex
+
+
+    private var currentPlayerTurn: Boolean by mutableStateOf(true)
     private var currentRow: Int by mutableStateOf(0)
     private var currentColumn: Int by mutableStateOf(0)
     private var numColumns: Int = 3
@@ -27,6 +31,7 @@ class T3ViewModel : ViewModel() {
 
     //init to middle position
     private var position: Int by mutableStateOf(0)
+
 //        .coerceIn(0 until (numRows * numColumns)))
 
     init {
@@ -37,7 +42,7 @@ class T3ViewModel : ViewModel() {
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
 
         //global list items change
-        currentTileIndex = listOfStateIndex
+        _currentTileIndex.value = listOfStateIndex
         _tileState.value = _tileState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = !bool)
         }
@@ -50,6 +55,33 @@ class T3ViewModel : ViewModel() {
                 tileState.copy(currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true)
                 //retain the state
             } else tileState
+        }
+    }
+
+    fun updateActionButtonState(action: Action) {
+//                Log.i(TAG, "${tileState.value?.get(position)?.isPlayer1Turn}")
+        when (action) {
+            Action.PLACE -> {
+
+                _tileState.value = _tileState.value?.map { tileState ->
+                    tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
+                }
+
+                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                    if (position == index && tileState.isPlayer1Turn) {
+                        tileState.copy(
+                            currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true
+                        )
+                    } else if (position == index && !tileState.isPlayer1Turn ) {
+                        tileState.copy(
+                            currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true
+                        )
+                        //retain the state
+                    } else tileState
+                }
+
+            }
+
         }
     }
 
@@ -76,7 +108,6 @@ class T3ViewModel : ViewModel() {
         _tileState.value = _tileState.value?.map { tileState ->
             tileState.copy(isSelected = false)
         }
-        Log.i(TAG,"remove prior selection beijng called")
     }
 
 
@@ -127,27 +158,25 @@ class T3ViewModel : ViewModel() {
                     }
                     position += numOfRows
                     currentRow += 1
-                }
-                    else if (currentRow == 3) {
-                        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                            //moving up
-                            if (position == index) {
-                                tileState.copy(isSelected = true)
-                            } else tileState
-                        }
+                } else if (currentRow == 3) {
+                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                        //moving up
+                        if (position == index) {
+                            tileState.copy(isSelected = true)
+                        } else tileState
+                    }
                 }
             }
             Direction.LEFT -> {
                 if (currentColumn > 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (position-1 == index) {
+                        if (position - 1 == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                    position-=1
-                    currentColumn-=1
-                }
-                else if (currentColumn == 1) {
+                    position -= 1
+                    currentColumn -= 1
+                } else if (currentColumn == 1) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
                         if (position == index) {
@@ -160,21 +189,21 @@ class T3ViewModel : ViewModel() {
             Direction.RIGHT -> {
                 if (currentColumn < numOfColumns) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (position+1 == index) {
+                        if (position + 1 == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
                     position += 1
-                    currentColumn+=1
+                    currentColumn += 1
 
-                }   else if (currentColumn == 3) {
+                } else if (currentColumn == 3) {
                     _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
                         //moving up
                         if (position == index) {
                             tileState.copy(isSelected = true)
                         } else tileState
                     }
-                } 
+                }
             }
         }
         Log.i(TAG, "position is $position, row is $currentRow, columns is $currentColumn")
@@ -182,10 +211,6 @@ class T3ViewModel : ViewModel() {
 
 
 //viewmodelscope.launch
-
-    fun updateActionButtonState() {
-
-    }
 
 
     fun resetBoard() {

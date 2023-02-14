@@ -33,7 +33,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            MainScreen(viewModel = vm, liveDataListOfTileStates = vm.tileState, arrowState = vm.arrowButtonState)
+            MainScreen(
+                viewModel = vm,
+                liveDataListOfTileStates = vm.tileState,
+                arrowState = vm.arrowButtonState,
+                currentTileIndex = vm.currentTileIndex
+            )
         }
     }
 }
@@ -43,14 +48,16 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: T3ViewModel,
     liveDataListOfTileStates: LiveData<List<TileState>?>,
-    arrowState: LiveData<ControllerState>
+    arrowState: LiveData<ControllerState>,
+    currentTileIndex: LiveData<Int>
 ) {
 
     val liveBoardstate = liveDataListOfTileStates.observeAsState()
     val directionalArrowState = arrowState.observeAsState()
+    val tileIndex =  currentTileIndex.observeAsState()
 
 
-Log.i(TAG, "Current button hit is $directionalArrowState")
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -77,7 +84,17 @@ Log.i(TAG, "Current button hit is $directionalArrowState")
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             FullController(arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
-                actionOnClick = { })
+                actionOnClick = {
+                    Log.i(TAG,"controller position ${tileIndex.value}")
+                    tileIndex.value?.let { index ->
+                        liveBoardstate.value?.getOrNull(index).let { tileState ->
+                            if (!tileState?.tileIsOccupied!!) {
+                                viewModel.updateActionButtonState(action = it)
+                            }
+
+                        }
+                    }
+                })
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },
                 shape = CutCornerShape(10.dp),
