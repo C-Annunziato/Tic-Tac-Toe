@@ -20,7 +20,7 @@ class T3ViewModel : ViewModel() {
     val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
 
     private var _currentTileIndex = MutableLiveData(0)
-    val  currentTileIndex: LiveData<Int> = _currentTileIndex
+    val currentTileIndex: LiveData<Int> = _currentTileIndex
 
 
     private var currentRow: Int by mutableStateOf(0)
@@ -30,7 +30,11 @@ class T3ViewModel : ViewModel() {
 
     //init to middle position
     private var _position: Int by mutableStateOf(0)
-    var position: Int = _position
+//    private var position: Int by mutableStateOf(_position)
+    private var position: Int
+    get() = _position
+    set(value)  {_position = value}
+
 
 
 //        .coerceIn(0 until (numRows * numColumns)))
@@ -60,32 +64,34 @@ class T3ViewModel : ViewModel() {
     }
 
     fun updateActionButtonState(action: Action) {
-//                Log.i(TAG, "${tileState.value?.get(position)?.isPlayer1Turn}")
-        when (action) {
-            Action.PLACE -> {
+        tileState.value?.getOrNull(position)?.let { tileState ->
+            if (!tileState.tileIsOccupied) {
 
-                _tileState.value = _tileState.value?.map { tileState ->
-                    tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
+                when (action) {
+                    Action.PLACE -> {
+                        _tileState.value = _tileState.value?.map { tileState ->
+                            tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
+                        }
+
+                        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+                            if (_position == index && tileState.isPlayer1Turn) {
+                                tileState.copy(
+                                    currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true
+                                )
+                            } else if (_position == index && !tileState.isPlayer1Turn) {
+                                tileState.copy(
+                                    currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true
+                                )
+                                //retain the state
+                            } else tileState
+                        }
+
+                    }
+
                 }
-
-                _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                    if (_position == index && tileState.isPlayer1Turn) {
-                        tileState.copy(
-                            currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true
-                        )
-                    } else if (_position == index && !tileState.isPlayer1Turn ) {
-                        tileState.copy(
-                            currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true
-                        )
-                        //retain the state
-                    } else tileState
-                }
-
             }
-
         }
     }
-
 
     fun updateArrowButtonState(direction: Direction) {
 

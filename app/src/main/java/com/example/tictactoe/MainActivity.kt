@@ -84,15 +84,7 @@ fun MainScreen(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             FullController(arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
-                actionOnClick = {
-
-                        liveBoardstate.value?.getOrNull(viewModel.position).let { tileState ->
-                            if (!tileState?.tileIsOccupied!!) {
-                                viewModel.updateActionButtonState(action = it)
-
-                        }
-                    }
-                })
+                actionOnClick = { viewModel.updateActionButtonState(action = it) })
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },
                 shape = CutCornerShape(10.dp),
