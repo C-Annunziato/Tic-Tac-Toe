@@ -1,6 +1,8 @@
 package com.example.tictactoe.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
@@ -23,12 +25,13 @@ fun ArrowButton(onClick: () -> Unit, iconRotation: Float){
         onClick = { onClick()},
         shape = CircleShape,
         modifier = Modifier
-            .size(55.dp)
+            .offset((-5).dp)
+            .size(56.dp)
             .shadow(2.dp, shape = CircleShape),
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons
         ),
-        border = BorderStroke(2.dp, color = Color.Gray)
+        border = BorderStroke(2.dp, color = Color.Gray),
     ) {
         Icon(
             imageVector = Icons.Filled.PlayArrow,

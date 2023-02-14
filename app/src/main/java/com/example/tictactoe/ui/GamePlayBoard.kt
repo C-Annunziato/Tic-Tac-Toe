@@ -117,12 +117,12 @@ fun Tile(
                 shape = RoundedCornerShape(8.dp)
             )
             .size(80.dp)
-            .clickable(onClick = {
-                when (state?.isPlayer1Turn) {
-                    true -> onChooseTile(true)
-                    false -> onChooseTile(false)
-                }
-            })
+//            .clickable(onClick = {
+//                when (state?.isPlayer1Turn) {
+//                    true -> onChooseTile(true)
+//                    false -> onChooseTile(false)
+//                }
+//            })
             .drawBehind {
                 drawRoundRect(
                     //if selectedState draw pink else black

@@ -79,13 +79,14 @@ fun DrawCross(modifier: Modifier = Modifier) {
 
 @Composable
 fun CircleOfSquares(
-    numberOfSquares: Int = 32,
+    numberOfSquares: Int = 38,
 ) {
     Canvas(
         modifier = Modifier
             .size(70.dp)
             .padding(end = 6.dp)
     ) {
+        val squareSize = 25f
 
         val radius = (size.width * .5f - 20f) - (.25f * (size.width * .5f - 20f))
         val lineDegree = (360f * 2) / numberOfSquares
@@ -99,14 +100,14 @@ fun CircleOfSquares(
                 color = Color(69, 157, 172, 255), topLeft = Offset(
                     x = (radius) * kotlin.math.cos(angleRad) + size.center.x,
                     y = (radius) * kotlin.math.sin(angleRad) + size.center.y - 20f
-                ), size = Size(22f, 22f)
+                ), size = Size(squareSize, squareSize)
             )
 
             drawRect(
                 color = Color(134, 105, 213, 255), topLeft = Offset(
                     x = (radius) * kotlin.math.cos(angleRad) + size.center.x,
                     y = (radius) * kotlin.math.sin(angleRad) + size.center.y
-                ), size = Size(22f, 22f)
+                ), size = Size(squareSize, squareSize)
             )
 
 
