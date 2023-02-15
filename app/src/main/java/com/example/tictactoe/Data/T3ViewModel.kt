@@ -109,15 +109,14 @@ class T3ViewModel : ViewModel() {
                 )
             } else tileState
         }
+
+        _tileAndGameState.value = _tileAndGameState.value?.map { tileAndGameState ->
+            tileAndGameState.copy(tileIsOccupied = true)
+        }
     }
 
     private fun checkForVictory(tileValue: TileValue): Boolean {
-//        when {
-//            getTileValue(0) == tileValue && getTileValue(1) == tileValue && getTileValue(2) == tileValue -> {
-//                updateVictoryState(first = 0, second = 1, third = 2)
-//                return true
-//            }
-//        }
+
         val winningCombinations = arrayOf(
             intArrayOf(0, 1, 2),
             intArrayOf(3, 4, 5),
@@ -132,8 +131,6 @@ class T3ViewModel : ViewModel() {
         for (intArr in winningCombinations) {
             //get and store the values of each combo in a reusable Triple
             val (firstIndex, secondIndex, thirdIndex) = Triple(intArr[0], intArr[1], intArr[2])
-
-            Log.i(TAG,"$firstIndex, $secondIndex, $thirdIndex")
                     //get the 3 symbols in the Tiles at a specific winning combo
                     val tileValues = Triple(
                         getTileValue(firstIndex),
@@ -145,8 +142,6 @@ class T3ViewModel : ViewModel() {
                         //place stars in the winning tile line
                         updateVictoryState(firstIndex, secondIndex, thirdIndex)
                         return true
-
-
             }
         }
         return false
