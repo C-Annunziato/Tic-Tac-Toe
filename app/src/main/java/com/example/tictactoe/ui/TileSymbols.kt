@@ -8,7 +8,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import java.lang.Math.cos
+import java.lang.Math.sin
 
 
 @Composable
@@ -113,6 +117,88 @@ fun CircleOfSquares(
 
         }
     }
+}
+
+
+@Composable
+fun Star() {
+
+    Canvas(modifier = Modifier
+        .size(50.dp)
+        .padding(8.dp)
+        .offset(-5.dp, -5.dp)) {
+        val starRadius = size.minDimension / 2f
+        val outerRadius = starRadius
+        val innerRadius = starRadius / 2f
+        val numPoints = 5
+
+        val points = mutableListOf<Offset>()
+        for (i in 0 until numPoints * 2) {
+            val radius = if (i % 2 == 0) outerRadius else innerRadius
+            val x = size.width / 2 + radius * cos(i * Math.PI / numPoints)
+            val y = size.height / 2 + radius * sin(i * Math.PI / numPoints)
+            points.add(Offset(x.toFloat(), y.toFloat()))
+        }
+        val square = Path().apply {
+            lineTo(17f, 0f)
+            lineTo(17f, 17f)
+            lineTo(0f, 17f)
+            close()
+        }
+
+
+        drawPath(
+            path = Path().apply {
+                moveTo(points.first().x, points.first().y)
+                points.forEachIndexed { index, point ->
+                    if (index == 0) {
+                        return@forEachIndexed
+                    }
+                    lineTo(point.x , point.y + 15)
+                }
+                close()
+            },
+            color = Color(189, 45, 153, 255),
+            style = Stroke(
+                pathEffect = PathEffect.stampedPathEffect(
+                    shape = square,
+                    style = StampedPathEffectStyle.Translate,
+                    phase = 0f,
+                    advance = 15f
+                )
+            )
+        )
+
+        drawPath(
+            path = Path().apply {
+                moveTo(points.first().x, points.first().y)
+                points.forEachIndexed { index, point ->
+                    if (index == 0) {
+                        return@forEachIndexed
+                    }
+                    lineTo(point.x, point.y)
+                }
+                close()
+            },
+            color = Color(224, 199, 77, 255),
+            style = Stroke(
+                pathEffect = PathEffect.stampedPathEffect(
+                    shape = square,
+                    style = StampedPathEffectStyle.Translate,
+                    phase = 0f,
+                    advance = 15f
+                )
+            )
+        )
+
+
+    }
+}
+
+@Preview
+@Composable
+fun Prev() {
+    Star()
 }
 
 

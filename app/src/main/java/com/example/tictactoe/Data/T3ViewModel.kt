@@ -13,8 +13,8 @@ const val TAG = "viewmodel"
 
 class T3ViewModel : ViewModel() {
 
-    private val _tileState = MutableLiveData(listOfState)
-    val tileState: LiveData<List<TileState>?> = _tileState
+    private val _tileAndGameState = MutableLiveData(listOfState)
+    val tileAndGameState: LiveData<List<TileAndGameState>?> = _tileAndGameState
 
     private val _arrowButtonState = MutableLiveData(ControllerState())
     val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
@@ -30,11 +30,13 @@ class T3ViewModel : ViewModel() {
 
     //init to middle position
     private var _position: Int by mutableStateOf(0)
-//    private var position: Int by mutableStateOf(_position)
-    private var position: Int
-    get() = _position
-    set(value)  {_position = value}
 
+    //    private var position: Int by mutableStateOf(_position)
+    private var position: Int
+        get() = _position
+        set(value) {
+            _position = value
+        }
 
 
 //        .coerceIn(0 until (numRows * numColumns)))
@@ -48,49 +50,88 @@ class T3ViewModel : ViewModel() {
 
         //global list items change
         _currentTileIndex.value = listOfStateIndex
-        _tileState.value = _tileState.value?.map { tileState ->
+        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = !bool)
         }
 
         //specific list item change
-        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (listOfStateIndex == index && tileState.isPlayer1Turn) {
-                tileState.copy(currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true)
+                tileState.copy(symbolInTile = TileValue.CROSS, tileIsOccupied = true)
             } else if (listOfStateIndex == index && !tileState.isPlayer1Turn) {
-                tileState.copy(currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true)
+                tileState.copy(symbolInTile = TileValue.CIRCLE, tileIsOccupied = true)
                 //retain the state
             } else tileState
         }
     }
 
     fun updateActionButtonState(action: Action) {
-        tileState.value?.getOrNull(position)?.let { tileState ->
+        tileAndGameState.value?.getOrNull(position)?.let { tileState ->
             if (!tileState.tileIsOccupied) {
-
                 when (action) {
                     Action.PLACE -> {
-                        _tileState.value = _tileState.value?.map { tileState ->
+                        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
                             tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
                         }
+                        _tileAndGameState.value =
+                            _tileAndGameState.value?.mapIndexed { index, tileState ->
+                                if (_position == index && tileState.isPlayer1Turn) {
+                                    tileState.copy(
+                                        symbolInTile = TileValue.CROSS, tileIsOccupied = true
+                                    )
 
-                        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                            if (_position == index && tileState.isPlayer1Turn) {
-                                tileState.copy(
-                                    currentTileSymbolState = TileValue.CROSS, tileIsOccupied = true
-                                )
-                            } else if (_position == index && !tileState.isPlayer1Turn) {
-                                tileState.copy(
-                                    currentTileSymbolState = TileValue.CIRCLE, tileIsOccupied = true
-                                )
-                                //retain the state
-                            } else tileState
-                        }
+                                } else if (_position == index && !tileState.isPlayer1Turn) {
+                                    tileState.copy(
+                                        symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
+                                    )
+                                    //retain the state
+                                } else tileState
 
+                            }
+                        checkForVictory(TileValue.CROSS)
+                        checkForVictory(TileValue.CIRCLE)
                     }
-
                 }
             }
         }
+    }
+
+    private fun getTileValue(index: Int): TileValue? {
+        return tileAndGameState.value?.get(index)?.symbolInTile
+    }
+
+    private fun checkForVictory(tileValue: TileValue): Boolean {
+        when {
+            getTileValue(0) == tileValue && getTileValue(1) == tileValue && getTileValue(2) == tileValue -> {
+                _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
+                    tileState.copy(
+                        victoryType = VictoryType.HORIZONTALLINE1,
+                        winningIndexes = Triple(0, 1, 2)
+                    )
+                }
+                _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
+                    if (index == tileState.winningIndexes.first || index == tileState.winningIndexes.second || index == tileState.winningIndexes.third) {
+                        tileState.copy(
+                            symbolInTile = TileValue.STAR, victoryType = VictoryType.HORIZONTALLINE1
+                        )
+                    } else tileState
+                }
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun victoryScreen() {
+
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
+            if (_position == index && tileState.isPlayer1Turn) {
+                tileState.copy(
+                    symbolInTile = TileValue.STAR, tileIsOccupied = true
+                )
+            } else tileState
+        }
+
     }
 
     fun updateArrowButtonState(direction: Direction) {
@@ -112,7 +153,7 @@ class T3ViewModel : ViewModel() {
 
 
     private fun removePriorSelection() {
-        _tileState.value = _tileState.value?.map { tileState ->
+        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(isSelected = false)
         }
     }
@@ -135,81 +176,89 @@ class T3ViewModel : ViewModel() {
             Direction.UP -> {
                 //can move up
                 if (currentRow > 1) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //moving up
-                        if ((_position - numOfRows) == index) {
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            //moving up
+                            if ((_position - numOfRows) == index) {
 
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                     _position -= numOfRows
                     currentRow -= 1
 
                 } else if (currentRow == 1) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //moving up
-                        if (_position == index) {
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            //moving up
+                            if (_position == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                 }
             }
 
             Direction.DOWN -> {
                 if (currentRow < numOfRows) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if ((_position + numOfRows) == index) {
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            if ((_position + numOfRows) == index) {
 
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                     _position += numOfRows
                     currentRow += 1
                 } else if (currentRow == 3) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //moving up
-                        if (_position == index) {
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            //moving up
+                            if (_position == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                 }
             }
             Direction.LEFT -> {
                 if (currentColumn > 1) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (_position - 1 == index) {
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            if (_position - 1 == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                     _position -= 1
                     currentColumn -= 1
                 } else if (currentColumn == 1) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //moving up
-                        if (_position == index) {
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            //moving up
+                            if (_position == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                 }
 
             }
             Direction.RIGHT -> {
                 if (currentColumn < numOfColumns) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        if (_position + 1 == index) {
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            if (_position + 1 == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                     _position += 1
                     currentColumn += 1
 
                 } else if (currentColumn == 3) {
-                    _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
-                        //moving up
-                        if (_position == index) {
-                            tileState.copy(isSelected = true)
-                        } else tileState
-                    }
+                    _tileAndGameState.value =
+                        _tileAndGameState.value?.mapIndexed { index, tileState ->
+                            //moving up
+                            if (_position == index) {
+                                tileState.copy(isSelected = true)
+                            } else tileState
+                        }
                 }
             }
         }
@@ -222,17 +271,17 @@ class T3ViewModel : ViewModel() {
 
     fun resetBoard() {
 
-        _tileState.value = _tileState.value?.map { tileState ->
+        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(
                 isPlayer1Turn = true,
                 tileIsOccupied = false,
-                currentTileSymbolState = TileValue.NONE,
+                symbolInTile = TileValue.NONE,
                 isSelected = false,
                 isSelectedIndex = returnMiddleOfBoard()
             )
         }
 
-        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (index == returnMiddleOfBoard()) {
                 tileState.copy(isSelected = true)
             } else tileState
@@ -245,10 +294,6 @@ class T3ViewModel : ViewModel() {
         initToBoardMiddle()
     }
 
-
-    fun checkForVictory() {
-
-    }
 
     private fun returnMiddleOfBoard(): Int {
         val midRow = ceil((numRows.toDouble() / 2)).toInt()
@@ -270,7 +315,7 @@ class T3ViewModel : ViewModel() {
             " init or reset board :: position $_position, row $currentRow, column $currentColumn"
         )
 
-        _tileState.value = _tileState.value?.mapIndexed { index, tileState ->
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (index == _position) {
                 tileState.copy(isSelected = true)
             } else tileState

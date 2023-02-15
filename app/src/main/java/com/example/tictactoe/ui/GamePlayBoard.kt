@@ -5,11 +5,12 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -23,20 +24,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tictactoe.Data.ControllerState
-import com.example.tictactoe.Data.T3ViewModel
-import com.example.tictactoe.Data.TileState
-import com.example.tictactoe.Data.TileValue
+import com.example.tictactoe.Data.*
 import com.example.tictactoe.ui.theme.*
 
 @Composable
 fun TicTacToeBoard(
     modifier: Modifier = Modifier,
-    listOfTileStates: List<TileState>?,
+    listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
-    arrowState: State<ControllerState?>
+    arrowState: State<ControllerState?>,
 ) {
-
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +53,7 @@ fun TicTacToeBoard(
             ) {
                 for (j in 1..3) {
                     val currentIndex = (i - 1) * 3 + (j - 1)
-                    listOfTileStates?.getOrNull(currentIndex).let { tileState ->
+                    listOfTileAndGameStates?.getOrNull(currentIndex).let { tileState ->
                         Tile(
                             // UserEvent -> if tile is chosen and not occupied update the state
                             // given a bool based on players turn
@@ -77,7 +74,7 @@ fun TicTacToeBoard(
             modifier = Modifier
         ) {
             Text(
-                "${if (listOfTileStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
+                "${if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = playerTextFont3,
@@ -101,7 +98,7 @@ fun TicTacToeBoard(
 fun Tile(
     modifier: Modifier = Modifier,
     onChooseTile: (Boolean) -> Unit,
-    state: TileState?,
+    state: TileAndGameState?,
     currentIndex: Int,
     viewModel: T3ViewModel,
 ) {
@@ -126,7 +123,7 @@ fun Tile(
             .drawBehind {
                 drawRoundRect(
                     //if selectedState draw pink else black
-                    color = if(state?.isSelected == true) Color.Magenta else Color.Black,
+                    color = if (state?.isSelected == true) Color.Magenta else Color.Black,
                     size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
                     cornerRadius = CornerRadius(x = 30f, y = 30f)
                 )
@@ -136,19 +133,19 @@ fun Tile(
             backgroundColor = retroNearWhite
         ) {
             AnimatedVisibility(
-                visible = viewModel.tileState.value?.get(currentIndex)?.currentTileSymbolState != TileValue.NONE,
+                visible = viewModel.tileAndGameState.value?.get(currentIndex)?.symbolInTile != TileValue.NONE,
                 enter = scaleIn(tween(150))
             ) {
-                when (state?.currentTileSymbolState?.ordinal) {
+                when (state?.symbolInTile?.ordinal) {
                     TileValue.NONE.ordinal -> {}
                     TileValue.CROSS.ordinal -> DrawCross()
                     TileValue.CIRCLE.ordinal -> CircleOfSquares()
+                    TileValue.STAR.ordinal -> Star()
                 }
             }
         }
     }
 }
-
 
 
 

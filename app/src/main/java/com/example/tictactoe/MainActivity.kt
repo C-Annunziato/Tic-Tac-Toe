@@ -1,7 +1,6 @@
 package com.example.tictactoe
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -20,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.tictactoe.Data.ControllerState
-import com.example.tictactoe.Data.TileState
+import com.example.tictactoe.Data.TileAndGameState
 import com.example.tictactoe.Data.T3ViewModel
 import com.example.tictactoe.Data.listOfState
 import com.example.tictactoe.ui.*
@@ -35,7 +34,7 @@ class MainActivity : ComponentActivity() {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
             MainScreen(
                 viewModel = vm,
-                liveDataListOfTileStates = vm.tileState,
+                liveDataListOfTileAndGameStates = vm.tileAndGameState,
                 arrowState = vm.arrowButtonState,
                 currentTileIndex = vm.currentTileIndex
             )
@@ -47,12 +46,12 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: T3ViewModel,
-    liveDataListOfTileStates: LiveData<List<TileState>?>,
+    liveDataListOfTileAndGameStates: LiveData<List<TileAndGameState>?>,
     arrowState: LiveData<ControllerState>,
     currentTileIndex: LiveData<Int>
 ) {
 
-    val liveBoardstate = liveDataListOfTileStates.observeAsState()
+    val liveBoardstate = liveDataListOfTileAndGameStates.observeAsState()
     val directionalArrowState = arrowState.observeAsState()
     val tileIndex =  currentTileIndex.observeAsState()
 
@@ -71,7 +70,7 @@ fun MainScreen(
 
         ) {
             TicTacToeBoard(
-                listOfTileStates = liveBoardstate.value ?: listOfState,
+                listOfTileAndGameStates = liveBoardstate.value ?: listOfState,
                 viewModel = viewModel,
                 arrowState = directionalArrowState
             )
