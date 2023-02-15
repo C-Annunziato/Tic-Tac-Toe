@@ -100,23 +100,53 @@ class T3ViewModel : ViewModel() {
         return tileAndGameState.value?.get(index)?.symbolInTile
     }
 
+    private fun updateVictoryState(first: Int, second: Int, third: Int) {
+        //specific update of Tile to produce a Star
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
+            if (index == first || index == second || index == third) {
+                tileState.copy(
+                    symbolInTile = TileValue.STAR
+                )
+            } else tileState
+        }
+    }
+
     private fun checkForVictory(tileValue: TileValue): Boolean {
-        when {
-            getTileValue(0) == tileValue && getTileValue(1) == tileValue && getTileValue(2) == tileValue -> {
-                _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
-                    tileState.copy(
-                        victoryType = VictoryType.HORIZONTALLINE1,
-                        winningIndexes = Triple(0, 1, 2)
+//        when {
+//            getTileValue(0) == tileValue && getTileValue(1) == tileValue && getTileValue(2) == tileValue -> {
+//                updateVictoryState(first = 0, second = 1, third = 2)
+//                return true
+//            }
+//        }
+        val winningCombinations = arrayOf(
+            intArrayOf(0, 1, 2),
+            intArrayOf(3, 4, 5),
+            intArrayOf(6, 7, 8),
+            intArrayOf(0, 3, 6),
+            intArrayOf(1, 4, 7),
+            intArrayOf(2, 5, 8),
+            intArrayOf(0, 4, 8),
+            intArrayOf(2, 4, 6)
+        )
+
+        for (intArr in winningCombinations) {
+            //get and store the values of each combo in a reusable Triple
+            val (firstIndex, secondIndex, thirdIndex) = Triple(intArr[0], intArr[1], intArr[2])
+
+            Log.i(TAG,"$firstIndex, $secondIndex, $thirdIndex")
+                    //get the 3 symbols in the Tiles at a specific winning combo
+                    val tileValues = Triple(
+                        getTileValue(firstIndex),
+                        getTileValue(secondIndex),
+                        getTileValue(thirdIndex)
                     )
-                }
-                _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
-                    if (index == tileState.winningIndexes.first || index == tileState.winningIndexes.second || index == tileState.winningIndexes.third) {
-                        tileState.copy(
-                            symbolInTile = TileValue.STAR, victoryType = VictoryType.HORIZONTALLINE1
-                        )
-                    } else tileState
-                }
-                return true
+                    //check if the symbols match entirely X or O and therefore 3 are in a row
+                    if ((tileValues.first == tileValue && tileValues.second == tileValue && tileValues.third == tileValue)) {
+                        //place stars in the winning tile line
+                        updateVictoryState(firstIndex, secondIndex, thirdIndex)
+                        return true
+
+
             }
         }
         return false

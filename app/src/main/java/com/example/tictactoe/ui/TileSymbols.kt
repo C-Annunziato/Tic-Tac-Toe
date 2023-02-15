@@ -126,7 +126,7 @@ fun Star() {
     Canvas(modifier = Modifier
         .size(50.dp)
         .padding(8.dp)
-        .offset(-5.dp, -5.dp)) {
+        .offset((-4).dp, (-5).dp)) {
         val starRadius = size.minDimension / 2f
         val outerRadius = starRadius
         val innerRadius = starRadius / 2f
