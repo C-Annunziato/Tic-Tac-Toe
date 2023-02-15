@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.ceil
+import kotlin.random.Random
 
 const val TAG = "viewmodel"
 
@@ -43,7 +44,6 @@ class T3ViewModel : ViewModel() {
 
     init {
         initToBoardMiddle()
-        Log.i(TAG, "position is $_position, row is $currentRow, columns is $currentColumn")
     }
 
     fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
@@ -67,32 +67,35 @@ class T3ViewModel : ViewModel() {
 
     fun updateActionButtonState(action: Action) {
         tileAndGameState.value?.getOrNull(position)?.let { tileState ->
-            if (!tileState.tileIsOccupied) {
                 when (action) {
                     Action.PLACE -> {
-                        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
-                            tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
-                        }
-                        _tileAndGameState.value =
-                            _tileAndGameState.value?.mapIndexed { index, tileState ->
-                                if (_position == index && tileState.isPlayer1Turn) {
-                                    tileState.copy(
-                                        symbolInTile = TileValue.CROSS, tileIsOccupied = true
-                                    )
-
-                                } else if (_position == index && !tileState.isPlayer1Turn) {
-                                    tileState.copy(
-                                        symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
-                                    )
-                                    //retain the state
-                                } else tileState
-
+                        if (!tileState.tileIsOccupied) {
+                            _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
+                                tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
                             }
-                        checkForVictory(TileValue.CROSS)
-                        checkForVictory(TileValue.CIRCLE)
+                            _tileAndGameState.value =
+                                _tileAndGameState.value?.mapIndexed { index, tileState ->
+                                    if (_position == index && tileState.isPlayer1Turn) {
+                                        tileState.copy(
+                                            symbolInTile = TileValue.CROSS, tileIsOccupied = true
+                                        )
+
+                                    } else if (_position == index && !tileState.isPlayer1Turn) {
+                                        tileState.copy(
+                                            symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
+                                        )
+                                        //retain the state
+                                    } else tileState
+                                }
+                            checkForVictory(TileValue.CROSS)
+                            checkForVictory(TileValue.CIRCLE)
+                        }
                     }
+                    Action.DESTROY -> {
+                        destroyRandomTiles()
+                    }
+                    else -> {}
                 }
-            }
         }
     }
 
@@ -131,36 +134,21 @@ class T3ViewModel : ViewModel() {
         for (intArr in winningCombinations) {
             //get and store the values of each combo in a reusable Triple
             val (firstIndex, secondIndex, thirdIndex) = Triple(intArr[0], intArr[1], intArr[2])
-                    //get the 3 symbols in the Tiles at a specific winning combo
-                    val tileValues = Triple(
-                        getTileValue(firstIndex),
-                        getTileValue(secondIndex),
-                        getTileValue(thirdIndex)
-                    )
-                    //check if the symbols match entirely X or O and therefore 3 are in a row
-                    if ((tileValues.first == tileValue && tileValues.second == tileValue && tileValues.third == tileValue)) {
-                        //place stars in the winning tile line
-                        updateVictoryState(firstIndex, secondIndex, thirdIndex)
-                        return true
+            //get the 3 symbols in the Tiles at a specific winning combo
+            val tileValues = Triple(
+                getTileValue(firstIndex), getTileValue(secondIndex), getTileValue(thirdIndex)
+            )
+            //check if the symbols match entirely X or O and therefore 3 are in a row
+            if ((tileValues.first == tileValue && tileValues.second == tileValue && tileValues.third == tileValue)) {
+                //place stars in the winning tile line
+                updateVictoryState(firstIndex, secondIndex, thirdIndex)
+                return true
             }
         }
         return false
     }
 
-    private fun victoryScreen() {
-
-        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
-            if (_position == index && tileState.isPlayer1Turn) {
-                tileState.copy(
-                    symbolInTile = TileValue.STAR, tileIsOccupied = true
-                )
-            } else tileState
-        }
-
-    }
-
     fun updateArrowButtonState(direction: Direction) {
-
         when (direction) {
             Direction.UP -> _arrowButtonState.value =
                 _arrowButtonState.value?.copy(arrowState = Direction.UP)
@@ -172,7 +160,6 @@ class T3ViewModel : ViewModel() {
                 _arrowButtonState.value?.copy(arrowState = Direction.RIGHT)
         }
         removePriorSelection()
-
         moveOnBoard(numRows, numColumns)
     }
 
@@ -185,37 +172,25 @@ class T3ViewModel : ViewModel() {
 
 
     private fun moveOnBoard(numOfRows: Int, numOfColumns: Int) {
-
-        //track current row and column to get a position
-        //if rows and columns are even then your position is a simple multiplication of the row and column your are on
-        //else if they are uneven, then you need a correction term which is abs(rows-columns) * rows
-        //the correction term does not apply if you only have one row, hence if rows > 1
-//        position = currentRow * currentColumn
-
-//            if (numOfRows > 1) currentRow * currentColumns + (abs(numOfRows - numOfColumns) * numOfRows)
-//            else currentRow * currentColumns
-
-        //if current row is not an edge
-
         when (arrowButtonState.value?.arrowState) {
             Direction.UP -> {
                 //can move up
+                //if current row is not an edge i.e. > 1
                 if (currentRow > 1) {
                     _tileAndGameState.value =
                         _tileAndGameState.value?.mapIndexed { index, tileState ->
-                            //moving up
+                            //subtract a row (3), which is equivalent to moving up, find the tile and select it
                             if ((_position - numOfRows) == index) {
-
                                 tileState.copy(isSelected = true)
                             } else tileState
                         }
                     _position -= numOfRows
                     currentRow -= 1
-
+                    //if it is an edge keep it selected but
                 } else if (currentRow == 1) {
                     _tileAndGameState.value =
                         _tileAndGameState.value?.mapIndexed { index, tileState ->
-                            //moving up
+
                             if (_position == index) {
                                 tileState.copy(isSelected = true)
                             } else tileState
@@ -287,11 +262,27 @@ class T3ViewModel : ViewModel() {
                 }
             }
         }
-        Log.i(TAG, "position is $_position, row is $currentRow, columns is $currentColumn")
+//        Log.i(TAG, "position is $_position, row is $currentRow, columns is $currentColumn")
     }
 
+    private fun destroyRandomTiles() {
+        Log.i(TAG, "destroy triggerd")
+        val possibleTilesToDestroy = arrayOf(
+            intArrayOf(0, 2, 6, 8),
+            intArrayOf(4),
+            intArrayOf(1, 3, 5, 7),
+            intArrayOf(0, 2, 4, 6, 8),
+            intArrayOf(1, 3, 4, 5, 7)
+        )
+        val randomDestruction = possibleTilesToDestroy[Random.nextInt(possibleTilesToDestroy.size)]
 
-//viewmodelscope.launch
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+            if (index in randomDestruction) {
+                Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
+                tileAndGameState.copy(symbolInTile = TileValue.NONE)
+            } else tileAndGameState
+        }
+    }
 
 
     fun resetBoard() {
@@ -325,7 +316,6 @@ class T3ViewModel : ViewModel() {
         val midColumn = ceil((numColumns.toDouble() / 2)).toInt()
         currentRow = midRow
         currentColumn = midColumn
-        Log.i(TAG, " calc middle of board ${midRow * midColumn}")
         return midRow * midColumn
     }
 
@@ -335,10 +325,6 @@ class T3ViewModel : ViewModel() {
 
         _position = returnMiddleOfBoard()
 
-        Log.i(
-            TAG,
-            " init or reset board :: position $_position, row $currentRow, column $currentColumn"
-        )
 
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (index == _position) {
