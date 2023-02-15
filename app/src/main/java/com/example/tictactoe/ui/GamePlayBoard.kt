@@ -2,8 +2,11 @@ package com.example.tictactoe.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -134,13 +137,15 @@ fun Tile(
         ) {
             AnimatedVisibility(
                 visible = viewModel.tileAndGameState.value?.get(currentIndex)?.symbolInTile != TileValue.NONE,
-                enter = scaleIn(tween(150))
+                enter = scaleIn(tween(150)),
             ) {
                 when (state?.symbolInTile?.ordinal) {
+
                     TileValue.NONE.ordinal -> {}
                     TileValue.CROSS.ordinal -> DrawCross()
                     TileValue.CIRCLE.ordinal -> CircleOfSquares()
                     TileValue.STAR.ordinal -> Star()
+                    TileValue.DESTROYED.ordinal -> Destroyed()
                 }
             }
         }

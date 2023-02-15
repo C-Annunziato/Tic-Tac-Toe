@@ -21,7 +21,7 @@ val listOfState = List(9) { id ->
 }
 
 enum class TileValue {
-    NONE, CROSS, CIRCLE, STAR
+    NONE, CROSS, CIRCLE, STAR, DESTROYED
 }
 
 enum class VictoryType {

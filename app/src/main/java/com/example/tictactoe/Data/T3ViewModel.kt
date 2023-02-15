@@ -7,6 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.random.Random
 
@@ -276,12 +280,24 @@ class T3ViewModel : ViewModel() {
         )
         val randomDestruction = possibleTilesToDestroy[Random.nextInt(possibleTilesToDestroy.size)]
 
-        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-            if (index in randomDestruction) {
-                Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
-                tileAndGameState.copy(symbolInTile = TileValue.NONE)
-            } else tileAndGameState
+        viewModelScope.launch {
+            _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                if (index in randomDestruction) {
+                    Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
+                    tileAndGameState.copy(symbolInTile = TileValue.DESTROYED)
+                } else tileAndGameState
+            }
+
+            delay(2000)
+
+            _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                if (index in randomDestruction) {
+                    Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
+                    tileAndGameState.copy(symbolInTile = TileValue.NONE)
+                } else tileAndGameState
+            }
         }
+
     }
 
 

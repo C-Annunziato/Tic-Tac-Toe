@@ -2,6 +2,12 @@ package com.example.tictactoe.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbDownAlt
+import androidx.compose.material.icons.filled.ThumbDownOffAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -123,10 +129,12 @@ fun CircleOfSquares(
 @Composable
 fun Star() {
 
-    Canvas(modifier = Modifier
-        .size(50.dp)
-        .padding(8.dp)
-        .offset((-4).dp, (-5).dp)) {
+    Canvas(
+        modifier = Modifier
+            .size(50.dp)
+            .padding(8.dp)
+            .offset((-4).dp, (-5).dp)
+    ) {
         val starRadius = size.minDimension / 2f
         val outerRadius = starRadius
         val innerRadius = starRadius / 2f
@@ -154,12 +162,10 @@ fun Star() {
                     if (index == 0) {
                         return@forEachIndexed
                     }
-                    lineTo(point.x , point.y + 15)
+                    lineTo(point.x, point.y + 15)
                 }
                 close()
-            },
-            color = Color(189, 45, 153, 255),
-            style = Stroke(
+            }, color = Color(189, 45, 153, 255), style = Stroke(
                 pathEffect = PathEffect.stampedPathEffect(
                     shape = square,
                     style = StampedPathEffectStyle.Translate,
@@ -179,9 +185,7 @@ fun Star() {
                     lineTo(point.x, point.y)
                 }
                 close()
-            },
-            color = Color(224, 199, 77, 255),
-            style = Stroke(
+            }, color = Color(224, 199, 77, 255), style = Stroke(
                 pathEffect = PathEffect.stampedPathEffect(
                     shape = square,
                     style = StampedPathEffectStyle.Translate,
@@ -190,15 +194,22 @@ fun Star() {
                 )
             )
         )
-
-
     }
+}
+
+@Composable
+fun Destroyed() {
+    Icon(
+        imageVector = Icons.Filled.ThumbDown,
+        contentDescription = "destroyed icon",
+        modifier = Modifier.size(20.dp).padding(20.dp)
+    )
 }
 
 @Preview
 @Composable
 fun Prev() {
-    Star()
+    Destroyed()
 }
 
 
