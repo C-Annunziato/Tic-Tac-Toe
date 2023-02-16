@@ -96,7 +96,9 @@ class T3ViewModel : ViewModel() {
                         }
                     }
                     Action.DESTROY -> {
-                        destroyRandomTiles()
+                        if(!tileState.gameIsComplete) {
+                            destroyRandomTiles()
+                        }
                     }
                     else -> {}
                 }
@@ -108,6 +110,11 @@ class T3ViewModel : ViewModel() {
     }
 
     private fun updateVictoryState(first: Int, second: Int, third: Int) {
+
+        _tileAndGameState.value = _tileAndGameState.value?.map { tileAndGameState ->
+            tileAndGameState.copy(tileIsOccupied = true, gameIsComplete = true)
+        }
+
         //specific update of Tile to produce a Star
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (index == first || index == second || index == third) {
@@ -117,9 +124,7 @@ class T3ViewModel : ViewModel() {
             } else tileState
         }
 
-        _tileAndGameState.value = _tileAndGameState.value?.map { tileAndGameState ->
-            tileAndGameState.copy(tileIsOccupied = true)
-        }
+
     }
 
     private fun checkForVictory(tileValue: TileValue): Boolean {
@@ -293,7 +298,7 @@ class T3ViewModel : ViewModel() {
             _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                 if (index in randomDestruction) {
                     Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
-                    tileAndGameState.copy(symbolInTile = TileValue.NONE)
+                    tileAndGameState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false)
                 } else tileAndGameState
             }
         }
@@ -309,7 +314,8 @@ class T3ViewModel : ViewModel() {
                 tileIsOccupied = false,
                 symbolInTile = TileValue.NONE,
                 isSelected = false,
-                isSelectedIndex = returnMiddleOfBoard()
+                isSelectedIndex = returnMiddleOfBoard(),
+                gameIsComplete = false
             )
         }
 

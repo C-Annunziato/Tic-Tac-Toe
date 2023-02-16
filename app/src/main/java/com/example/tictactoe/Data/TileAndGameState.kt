@@ -9,11 +9,8 @@ data class TileAndGameState(
     val isSelectedIndex: Int = 0,
     //gamestate
     val isPlayer1Turn: Boolean = true,
-    val victoryType: VictoryType = VictoryType.NONE,
-    val isWinner: Boolean = false,
-    val winningIndexes: Triple<Int, Int, Int> = Triple(0, 0, 0)
-
-
+    val winningIndexes: Triple<Int, Int, Int> = Triple(0, 0, 0),
+    val gameIsComplete: Boolean = false
 )
 
 val listOfState = List(9) { id ->
@@ -22,17 +19,5 @@ val listOfState = List(9) { id ->
 
 enum class TileValue {
     NONE, CROSS, CIRCLE, STAR, DESTROYED
-}
-
-enum class VictoryType {
-    HORIZONTALLINE1,
-    HORIZONTALLINE2,
-    HORIZONTALLINE3,
-    VERTICAL1,
-    VERTICAL2,
-    VERTICAL3,
-    DIAGONAL1,
-    DIAGONAL2,
-    NONE
 }
 
