@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
             MainScreen(
                 viewModel = vm,
                 liveDataListOfTileAndGameStates = vm.tileAndGameState,
-                controllerState = vm.arrowButtonState,
+                controllerState = vm.controllerState,
             )
         }
     }
@@ -83,7 +83,8 @@ fun MainScreen(
             FullController(
                 arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
                 actionOnClick = { viewModel.updateActionButtonState(action = it) },
-                onCooldown = { !controllerState.value?.buttonIsOnCooldown!! }
+                buttonOnCooldown = { controllerState.value?.buttonIsOnCooldown!! },
+                cooldownLeft = { controllerState.value?.cooldownLeft ?: 0 }
             )
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },

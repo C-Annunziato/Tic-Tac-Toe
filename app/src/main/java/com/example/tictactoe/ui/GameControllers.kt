@@ -2,13 +2,11 @@ package com.example.tictactoe.ui
 
 import android.util.Log
 import androidx.compose.foundation.border
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,16 +15,16 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import com.example.tictactoe.Data.Action
 import com.example.tictactoe.Data.Direction
-import com.example.tictactoe.TAG
 import com.example.tictactoe.ui.theme.*
 
-
+const val TAG = "controller"
 @Composable
 fun FullController(
     modifier: Modifier = Modifier,
     arrowOnClick: (direction: Direction) -> Unit,
     actionOnClick: (action: Action) -> Unit,
-    onCooldown: () -> Boolean
+    buttonOnCooldown: () -> Boolean,
+    cooldownLeft: () -> Int
 ) {
     Column(
         modifier = modifier,
@@ -41,7 +39,12 @@ fun FullController(
             ) {
                 //right arrow button distorts on pixel 4a if not at 1.2f
                 GameControlsLeft(modifier = Modifier.weight(1.2f), arrowOnClick)
-                GameControlsRight(modifier = Modifier.weight(1f), actionOnClick,onCooldown )
+                GameControlsRight(
+                    modifier = Modifier.weight(1f),
+                    actionOnClick,
+                    buttonOnCooldown,
+                    cooldownLeft
+                )
             }
         }
 
@@ -49,7 +52,10 @@ fun FullController(
 }
 
 @Composable
-fun GameControlsLeft(modifier: Modifier = Modifier, arrowOnClick: (direction: Direction) -> Unit) {
+fun GameControlsLeft(
+    modifier: Modifier = Modifier,
+    arrowOnClick: (direction: Direction) -> Unit
+) {
     Column(
         modifier = modifier
     ) {
@@ -68,7 +74,12 @@ fun GameControlsLeft(modifier: Modifier = Modifier, arrowOnClick: (direction: Di
 }
 
 @Composable
-fun GameControlsRight(modifier: Modifier = Modifier, actionOnClick: (action: Action) -> Unit, onCooldown: () -> Boolean) {
+fun GameControlsRight(
+    modifier: Modifier = Modifier,
+    actionOnClick: (action: Action) -> Unit,
+    buttonOnCooldown: () -> Boolean,
+    cooldownLeft: () -> Int
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End,
@@ -76,10 +87,11 @@ fun GameControlsRight(modifier: Modifier = Modifier, actionOnClick: (action: Act
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ActionButtons(onClick = { actionOnClick(Action.PLACE) }, icon = Icons.Filled.AdsClick)
-            if (onCooldown()) {
-                ActionButtons(onClick = { actionOnClick(Action.DESTROY) }, icon = Icons.Filled.Bolt)
+            Log.i(TAG,"button on cooldown ${buttonOnCooldown()}")
+            if (buttonOnCooldown()) {
+                DeadButton(cooldownLeft())
             } else {
-                DeadButton()
+                ActionButtons(onClick = { actionOnClick(Action.DESTROY) }, icon = Icons.Filled.Bolt)
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {

@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Delay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -21,30 +20,20 @@ class T3ViewModel : ViewModel() {
     private val _tileAndGameState = MutableLiveData(listOfState)
     val tileAndGameState: LiveData<List<TileAndGameState>?> = _tileAndGameState
 
-    private val _arrowButtonState = MutableLiveData(ControllerState())
-    val arrowButtonState: LiveData<ControllerState> = _arrowButtonState
-
-    private var _currentTileIndex = MutableLiveData(0)
-    val currentTileIndex: LiveData<Int> = _currentTileIndex
-
+    private val _controllerState = MutableLiveData(ControllerState())
+    val controllerState: LiveData<ControllerState> = _controllerState
 
     private var currentRow: Int by mutableStateOf(0)
     private var currentColumn: Int by mutableStateOf(0)
     private var numColumns: Int = 3
     private var numRows: Int = 3
 
-    //init to middle position
     private var _position: Int by mutableStateOf(0)
-
-    //    private var position: Int by mutableStateOf(_position)
     private var position: Int
         get() = _position
         set(value) {
             _position = value
         }
-
-
-//        .coerceIn(0 until (numRows * numColumns)))
 
     init {
         initToBoardMiddle()
@@ -52,41 +41,54 @@ class T3ViewModel : ViewModel() {
 
     fun updateActionButtonState(action: Action) {
         tileAndGameState.value?.getOrNull(position)?.let { tileState ->
-                when (action) {
-                    Action.PLACE -> {
-                        if (!tileState.tileIsOccupied) {
-                            _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
-                                tileState.copy(
-                                    isPlayer1Turn = !tileState.isPlayer1Turn,
-                                    turnsTakenPlace = tileState.turnsTakenPlace + 1
-                                )
-                            }
-                            _tileAndGameState.value =
-                                _tileAndGameState.value?.mapIndexed { index, tileState ->
-                                    if (_position == index && tileState.isPlayer1Turn) {
-                                        tileState.copy(
-                                            symbolInTile = TileValue.CROSS, tileIsOccupied = true
-                                        )
+            when (action) {
+                Action.PLACE -> {
+                    if (!tileState.tileIsOccupied) {
+                        _controllerState.value = controllerState.value?.cooldownLeft?.let {
+                            _controllerState.value?.copy(
+                                cooldownLeft = it.minus(1).coerceAtLeast(0)
+                            )
+                        }
+                        Log.i(TAG,"cooldown left ${controllerState.value?.cooldownLeft}")
+                        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
+                            tileState.copy(
+                                isPlayer1Turn = !tileState.isPlayer1Turn,
+                                turnsTakenPlace = tileState.turnsTakenPlace + 1,
+                            )
+                        }
+                        _tileAndGameState.value =
+                            _tileAndGameState.value?.mapIndexed { index, tileState ->
+                                if (_position == index && tileState.isPlayer1Turn) {
+                                    tileState.copy(
+                                        symbolInTile = TileValue.CROSS, tileIsOccupied = true
+                                    )
 
-                                    } else if (_position == index && !tileState.isPlayer1Turn) {
-                                        tileState.copy(
-                                            symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
-                                        )
-                                        //retain the state
-                                    } else tileState
-                                }
-                            checkForVictory(TileValue.CROSS)
-                            checkForVictory(TileValue.CIRCLE)
-                        }
+                                } else if (_position == index && !tileState.isPlayer1Turn) {
+                                    tileState.copy(
+                                        symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
+                                    )
+                                    //retain the state
+                                } else tileState
+                            }
+                        checkForVictory(TileValue.CROSS)
+                        checkForVictory(TileValue.CIRCLE)
                     }
-                    Action.DESTROY -> {
-                        if(!tileState.gameIsComplete) {
-                            destroyRandomTiles()
-                            _arrowButtonState.value = _arrowButtonState.value?.copy(buttonIsOnCooldown = true)
-                        }
+                    if (controllerState.value?.buttonIsOnCooldown == true && controllerState.value?.cooldownLeft!! == 0) {
+                        Log.i(TAG,"this is being triggered")
+                        _controllerState.value = _controllerState.value?.copy(buttonIsOnCooldown = false, cooldownLeft = 0)
                     }
-                    else -> {}
                 }
+                Action.DESTROY -> {
+                    if (!tileState.gameIsComplete && !controllerState.value?.buttonIsOnCooldown!!) {
+                        destroyRandomTiles()
+                        _controllerState.value = _controllerState.value?.copy(
+                            buttonIsOnCooldown = true,
+                            cooldownLeft = 4
+                        )
+                    }
+                }
+                else -> {}
+            }
         }
     }
 
@@ -142,14 +144,14 @@ class T3ViewModel : ViewModel() {
 
     fun updateArrowButtonState(direction: Direction) {
         when (direction) {
-            Direction.UP -> _arrowButtonState.value =
-                _arrowButtonState.value?.copy(arrowState = Direction.UP)
-            Direction.DOWN -> _arrowButtonState.value =
-                _arrowButtonState.value?.copy(arrowState = Direction.DOWN)
-            Direction.LEFT -> _arrowButtonState.value =
-                _arrowButtonState.value?.copy(arrowState = Direction.LEFT)
-            Direction.RIGHT -> _arrowButtonState.value =
-                _arrowButtonState.value?.copy(arrowState = Direction.RIGHT)
+            Direction.UP -> _controllerState.value =
+                _controllerState.value?.copy(arrowState = Direction.UP)
+            Direction.DOWN -> _controllerState.value =
+                _controllerState.value?.copy(arrowState = Direction.DOWN)
+            Direction.LEFT -> _controllerState.value =
+                _controllerState.value?.copy(arrowState = Direction.LEFT)
+            Direction.RIGHT -> _controllerState.value =
+                _controllerState.value?.copy(arrowState = Direction.RIGHT)
         }
         removePriorSelection()
         moveOnBoard(numRows, numColumns)
@@ -164,7 +166,7 @@ class T3ViewModel : ViewModel() {
 
 
     private fun moveOnBoard(numOfRows: Int, numOfColumns: Int) {
-        when (arrowButtonState.value?.arrowState) {
+        when (controllerState.value?.arrowState) {
             Direction.UP -> {
                 //can move up
                 //if current row is not an edge i.e. > 1
@@ -268,19 +270,21 @@ class T3ViewModel : ViewModel() {
         val randomDestruction = possibleTilesToDestroy[Random.nextInt(possibleTilesToDestroy.size)]
 
         viewModelScope.launch {
-            _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                if (index in randomDestruction) {
-                    tileAndGameState.copy(symbolInTile = TileValue.DESTROYED)
-                } else tileAndGameState
-            }
+            _tileAndGameState.value =
+                _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                    if (index in randomDestruction) {
+                        tileAndGameState.copy(symbolInTile = TileValue.DESTROYED)
+                    } else tileAndGameState
+                }
 
             delay(2000)
 
-            _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                if (index in randomDestruction) {
-                    tileAndGameState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false)
-                } else tileAndGameState
-            }
+            _tileAndGameState.value =
+                _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                    if (index in randomDestruction) {
+                        tileAndGameState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false)
+                    } else tileAndGameState
+                }
         }
 
     }
@@ -305,10 +309,12 @@ class T3ViewModel : ViewModel() {
             } else tileState
         }
 
-        _arrowButtonState.value = _arrowButtonState.value?.copy(
-            arrowState = Direction.NONE, actionState = Action.NONE
+        _controllerState.value = _controllerState.value?.copy(
+            arrowState = Direction.NONE,
+            actionState = Action.NONE,
+            buttonIsOnCooldown = false,
+            cooldownLeft = 0
         )
-
         initToBoardMiddle()
     }
 

@@ -67,7 +67,7 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
 }
 
 @Composable
-fun DeadButton (){
+fun DeadButton (onCooldown: Int){
     Button(
         onClick = { },
         shape = CircleShape,
@@ -79,7 +79,7 @@ fun DeadButton (){
         ),
         border = BorderStroke(2.dp, color = Color.Gray)
     ) {
-        Text("4")
+            Text("$onCooldown")
     }
 }
 
