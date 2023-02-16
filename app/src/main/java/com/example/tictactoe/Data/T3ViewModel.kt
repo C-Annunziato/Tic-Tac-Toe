@@ -82,6 +82,7 @@ class T3ViewModel : ViewModel() {
                     Action.DESTROY -> {
                         if(!tileState.gameIsComplete) {
                             destroyRandomTiles()
+                            _arrowButtonState.value = _arrowButtonState.value?.copy(buttonIsOnCooldown = true)
                         }
                     }
                     else -> {}
@@ -107,8 +108,6 @@ class T3ViewModel : ViewModel() {
                 )
             } else tileState
         }
-
-
     }
 
     private fun checkForVictory(tileValue: TileValue): Boolean {

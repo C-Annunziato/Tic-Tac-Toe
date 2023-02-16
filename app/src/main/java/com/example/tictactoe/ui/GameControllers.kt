@@ -22,7 +22,12 @@ import com.example.tictactoe.ui.theme.*
 
 
 @Composable
-fun FullController(modifier: Modifier = Modifier, arrowOnClick: (direction: Direction) -> Unit, actionOnClick: (action: Action) -> Unit) {
+fun FullController(
+    modifier: Modifier = Modifier,
+    arrowOnClick: (direction: Direction) -> Unit,
+    actionOnClick: (action: Action) -> Unit,
+    onCooldown: () -> Boolean
+) {
     Column(
         modifier = modifier,
     ) {
@@ -36,7 +41,7 @@ fun FullController(modifier: Modifier = Modifier, arrowOnClick: (direction: Dire
             ) {
                 //right arrow button distorts on pixel 4a if not at 1.2f
                 GameControlsLeft(modifier = Modifier.weight(1.2f), arrowOnClick)
-                GameControlsRight(modifier = Modifier.weight(1f), actionOnClick)
+                GameControlsRight(modifier = Modifier.weight(1f), actionOnClick,onCooldown )
             }
         }
 
@@ -63,7 +68,7 @@ fun GameControlsLeft(modifier: Modifier = Modifier, arrowOnClick: (direction: Di
 }
 
 @Composable
-fun GameControlsRight(modifier: Modifier = Modifier, actionOnClick: (action: Action) -> Unit) {
+fun GameControlsRight(modifier: Modifier = Modifier, actionOnClick: (action: Action) -> Unit, onCooldown: () -> Boolean) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End,
@@ -71,11 +76,17 @@ fun GameControlsRight(modifier: Modifier = Modifier, actionOnClick: (action: Act
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ActionButtons(onClick = { actionOnClick(Action.PLACE) }, icon = Icons.Filled.AdsClick)
-            ActionButtons(onClick = { actionOnClick (Action.DESTROY)}, icon = Icons.Filled.Bolt)
+            if (onCooldown()) {
+                ActionButtons(onClick = { actionOnClick(Action.DESTROY) }, icon = Icons.Filled.Bolt)
+            } else {
+                DeadButton()
+            }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            ActionButtons(onClick = { actionOnClick (Action.LOCK)}, icon = Icons.Filled.Lock)
-            ActionButtons(onClick = { actionOnClick (Action.RANDOM)}, icon = Icons.Filled.QuestionMark)
+            ActionButtons(onClick = { actionOnClick(Action.LOCK) }, icon = Icons.Filled.Lock)
+            ActionButtons(
+                onClick = { actionOnClick(Action.RANDOM) }, icon = Icons.Filled.QuestionMark
+            )
         }
     }
 }

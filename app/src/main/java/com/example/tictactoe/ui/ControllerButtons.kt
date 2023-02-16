@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
@@ -65,10 +66,22 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
     }
 }
 
-
-
-
-
+@Composable
+fun DeadButton (){
+    Button(
+        onClick = { },
+        shape = CircleShape,
+        modifier = Modifier
+            .size(60.dp)
+            .shadow(2.dp, shape = CircleShape),
+        colors = ButtonDefaults.buttonColors(
+            retroControllerButtons
+        ),
+        border = BorderStroke(2.dp, color = Color.Gray)
+    ) {
+        Text("4")
+    }
+}
 
 
 

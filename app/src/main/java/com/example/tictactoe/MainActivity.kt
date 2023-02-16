@@ -35,8 +35,7 @@ class MainActivity : ComponentActivity() {
             MainScreen(
                 viewModel = vm,
                 liveDataListOfTileAndGameStates = vm.tileAndGameState,
-                arrowState = vm.arrowButtonState,
-                currentTileIndex = vm.currentTileIndex
+                controllerState = vm.arrowButtonState,
             )
         }
     }
@@ -47,13 +46,12 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: T3ViewModel,
     liveDataListOfTileAndGameStates: LiveData<List<TileAndGameState>?>,
-    arrowState: LiveData<ControllerState>,
-    currentTileIndex: LiveData<Int>
-) {
+    controllerState: LiveData<ControllerState>,
+
+    ) {
 
     val liveBoardstate = liveDataListOfTileAndGameStates.observeAsState()
-    val directionalArrowState = arrowState.observeAsState()
-    val tileIndex =  currentTileIndex.observeAsState()
+    val controllerState = controllerState.observeAsState()
 
 
 
@@ -72,7 +70,7 @@ fun MainScreen(
             TicTacToeBoard(
                 listOfTileAndGameStates = liveBoardstate.value ?: listOfState,
                 viewModel = viewModel,
-                arrowState = directionalArrowState
+                arrowState = controllerState
             )
         }
         Column(
@@ -82,8 +80,11 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            FullController(arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
-                actionOnClick = { viewModel.updateActionButtonState(action = it) })
+            FullController(
+                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+                actionOnClick = { viewModel.updateActionButtonState(action = it) },
+                onCooldown = { !controllerState.value?.buttonIsOnCooldown!! }
+            )
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },
                 shape = CutCornerShape(10.dp),
