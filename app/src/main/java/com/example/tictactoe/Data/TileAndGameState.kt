@@ -10,7 +10,8 @@ data class TileAndGameState(
     //gamestate
     val isPlayer1Turn: Boolean = true,
     val winningIndexes: Triple<Int, Int, Int> = Triple(0, 0, 0),
-    val gameIsComplete: Boolean = false
+    val gameIsComplete: Boolean = false,
+    val turnsTakenPlace: Int = 0
 )
 
 val listOfState = List(9) { id ->

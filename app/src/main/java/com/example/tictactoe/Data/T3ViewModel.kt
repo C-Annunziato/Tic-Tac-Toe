@@ -50,32 +50,16 @@ class T3ViewModel : ViewModel() {
         initToBoardMiddle()
     }
 
-    fun updatePlayerState(listOfStateIndex: Int, bool: Boolean) {
-
-        //global list items change
-        _currentTileIndex.value = listOfStateIndex
-        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
-            tileState.copy(isPlayer1Turn = !bool)
-        }
-
-        //specific list item change
-        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
-            if (listOfStateIndex == index && tileState.isPlayer1Turn) {
-                tileState.copy(symbolInTile = TileValue.CROSS, tileIsOccupied = true)
-            } else if (listOfStateIndex == index && !tileState.isPlayer1Turn) {
-                tileState.copy(symbolInTile = TileValue.CIRCLE, tileIsOccupied = true)
-                //retain the state
-            } else tileState
-        }
-    }
-
     fun updateActionButtonState(action: Action) {
         tileAndGameState.value?.getOrNull(position)?.let { tileState ->
                 when (action) {
                     Action.PLACE -> {
                         if (!tileState.tileIsOccupied) {
                             _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
-                                tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
+                                tileState.copy(
+                                    isPlayer1Turn = !tileState.isPlayer1Turn,
+                                    turnsTakenPlace = tileState.turnsTakenPlace + 1
+                                )
                             }
                             _tileAndGameState.value =
                                 _tileAndGameState.value?.mapIndexed { index, tileState ->
@@ -275,7 +259,6 @@ class T3ViewModel : ViewModel() {
     }
 
     private fun destroyRandomTiles() {
-        Log.i(TAG, "destroy triggerd")
         val possibleTilesToDestroy = arrayOf(
             intArrayOf(0, 2, 6, 8),
             intArrayOf(4),
@@ -288,7 +271,6 @@ class T3ViewModel : ViewModel() {
         viewModelScope.launch {
             _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                 if (index in randomDestruction) {
-                    Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
                     tileAndGameState.copy(symbolInTile = TileValue.DESTROYED)
                 } else tileAndGameState
             }
@@ -297,7 +279,6 @@ class T3ViewModel : ViewModel() {
 
             _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                 if (index in randomDestruction) {
-                    Log.i(TAG, "index = $index, is index in randomdest: ${index in randomDestruction}")
                     tileAndGameState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false)
                 } else tileAndGameState
             }

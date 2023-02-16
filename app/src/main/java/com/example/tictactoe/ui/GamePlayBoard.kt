@@ -2,18 +2,13 @@ package com.example.tictactoe.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -56,20 +51,11 @@ fun TicTacToeBoard(
             ) {
                 for (j in 1..3) {
                     val currentIndex = (i - 1) * 3 + (j - 1)
-                    listOfTileAndGameStates?.getOrNull(currentIndex).let { tileState ->
-                        Tile(
-                            // UserEvent -> if tile is chosen and not occupied update the state
-                            // given a bool based on players turn
-                            // and a current index 0 through 8
-                            onChooseTile = { bool ->
-                                if (!tileState?.tileIsOccupied!!) {
-                                    viewModel.updatePlayerState(
-                                        listOfStateIndex = currentIndex, bool = bool
-                                    )
-                                }
-                            }, state = tileState, currentIndex = currentIndex, viewModel = viewModel
-                        )
-                    }
+                    Tile(
+                        state = listOfTileAndGameStates?.getOrNull(currentIndex),
+                        currentIndex = currentIndex,
+                        viewModel = viewModel
+                    )
                 }
             }
         }
@@ -100,7 +86,6 @@ fun TicTacToeBoard(
 @Composable
 fun Tile(
     modifier: Modifier = Modifier,
-    onChooseTile: (Boolean) -> Unit,
     state: TileAndGameState?,
     currentIndex: Int,
     viewModel: T3ViewModel,
@@ -117,12 +102,6 @@ fun Tile(
                 shape = RoundedCornerShape(8.dp)
             )
             .size(80.dp)
-//            .clickable(onClick = {
-//                when (state?.isPlayer1Turn) {
-//                    true -> onChooseTile(true)
-//                    false -> onChooseTile(false)
-//                }
-//            })
             .drawBehind {
                 drawRoundRect(
                     //if selectedState draw pink else black
