@@ -47,7 +47,7 @@ fun ArrowButton(onClick: () -> Unit, iconRotation: Float){
 @Composable
 fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
     Button(
-        onClick = { onClick()},
+        onClick = {onClick()},
         shape = CircleShape,
         modifier = Modifier
             .size(60.dp)

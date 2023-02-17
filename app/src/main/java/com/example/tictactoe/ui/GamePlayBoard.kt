@@ -125,6 +125,7 @@ fun Tile(
                     TileValue.CIRCLE.ordinal -> CircleOfSquares()
                     TileValue.STAR.ordinal -> Star()
                     TileValue.DESTROYED.ordinal -> Destroyed()
+                    TileValue.LOCKED.ordinal -> Locked()
                 }
             }
         }

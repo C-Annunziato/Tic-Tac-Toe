@@ -4,10 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.ThumbDown
-import androidx.compose.material.icons.filled.ThumbDownAlt
-import androidx.compose.material.icons.filled.ThumbDownOffAlt
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -202,6 +199,15 @@ fun Destroyed() {
     Icon(
         imageVector = Icons.Filled.ThumbDown,
         contentDescription = "destroyed icon",
+        modifier = Modifier.size(20.dp).padding(20.dp)
+    )
+}
+
+@Composable
+fun Locked(){
+    Icon(
+        imageVector = Icons.Filled.DisabledByDefault,
+        contentDescription = "disabled icon",
         modifier = Modifier.size(20.dp).padding(20.dp)
     )
 }

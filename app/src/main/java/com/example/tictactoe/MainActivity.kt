@@ -50,7 +50,7 @@ fun MainScreen(
 
     ) {
 
-    val liveBoardstate = liveDataListOfTileAndGameStates.observeAsState()
+    val liveBoardState = liveDataListOfTileAndGameStates.observeAsState()
     val controllerState = controllerState.observeAsState()
 
 
@@ -68,7 +68,7 @@ fun MainScreen(
 
         ) {
             TicTacToeBoard(
-                listOfTileAndGameStates = liveBoardstate.value ?: listOfState,
+                listOfTileAndGameStates = liveBoardState.value ?: listOfState,
                 viewModel = viewModel,
                 arrowState = controllerState
             )
@@ -83,8 +83,10 @@ fun MainScreen(
             FullController(
                 arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
                 actionOnClick = { viewModel.updateActionButtonState(action = it) },
-                buttonOnCooldown = { controllerState.value?.buttonIsOnCooldown!! },
-                cooldownLeft = { controllerState.value?.cooldownLeft ?: 0 }
+                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldown!! },
+                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeft ?: 0 },
+                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldown!! } ,
+                lockCooldownLeft = { controllerState.value?.lockCooldownLeft ?: 0 },
             )
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },

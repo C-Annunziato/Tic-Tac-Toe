@@ -40,16 +40,32 @@ class T3ViewModel : ViewModel() {
     }
 
     fun updateActionButtonState(action: Action) {
+        //get the tile at the position of the arrow controls as tileState
         tileAndGameState.value?.getOrNull(position)?.let { tileState ->
             when (action) {
                 Action.PLACE -> {
+                    //everytime a symbol is placed in a non occupied tile do the following:
                     if (!tileState.tileIsOccupied) {
-                        _controllerState.value = controllerState.value?.cooldownLeft?.let {
+                        _controllerState.value = _controllerState.value?.destroyCooldownLeft?.let {
                             _controllerState.value?.copy(
-                                cooldownLeft = it.minus(1).coerceAtLeast(0)
+                                destroyCooldownLeft = it.minus(1).coerceAtLeast(0),
                             )
                         }
-                        Log.i(TAG,"cooldown left ${controllerState.value?.cooldownLeft}")
+                        _controllerState.value = _controllerState.value?.lockCooldownLeft?.let {
+                            _controllerState.value?.copy(
+                                lockCooldownLeft = it.minus(1).coerceAtLeast(0),
+                            )
+                        }
+
+                        _controllerState.value =
+                            _controllerState.value?.lockOnTileCooldownLeft?.let {
+                                if (it > 0) {
+                                    _controllerState.value?.copy(
+                                        lockOnTileCooldownLeft = it.minus(1).coerceAtLeast(0)
+                                    )
+                                } else controllerState.value
+                            }
+
                         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
                             tileState.copy(
                                 isPlayer1Turn = !tileState.isPlayer1Turn,
@@ -73,22 +89,68 @@ class T3ViewModel : ViewModel() {
                         checkForVictory(TileValue.CROSS)
                         checkForVictory(TileValue.CIRCLE)
                     }
-                    if (controllerState.value?.buttonIsOnCooldown == true && controllerState.value?.cooldownLeft!! == 0) {
-                        Log.i(TAG,"this is being triggered")
-                        _controllerState.value = _controllerState.value?.copy(buttonIsOnCooldown = false, cooldownLeft = 0)
+                    if (controllerState.value?.destroyButtonIsOnCooldown == true && controllerState.value?.destroyCooldownLeft!! == 0) {
+                        _controllerState.value =
+                            _controllerState.value?.copy(destroyButtonIsOnCooldown = false)
                     }
+                    if (controllerState.value?.lockButtonIsOnCooldown == true && controllerState.value?.lockCooldownLeft!! == 0) {
+                        _controllerState.value =
+                            _controllerState.value?.copy(lockButtonIsOnCooldown = false)
+                    }
+
+                    if (controllerState.value?.tileIsLocked == true && controllerState.value?.lockOnTileCooldownLeft!! == 0) {
+                        _controllerState.value =
+                            _controllerState.value?.copy(tileIsLocked = false)
+
+                        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed {index,  tileState ->
+                            Log.i(TAG,"lock on tile ${tileState.lockOnTile}")
+                            if(index == tileState.lockOnTile){
+                                tileState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false )
+                            } else tileState
+                        }
+                    }
+                    Log.i(TAG, "tile is locked : ${controllerState.value?.tileIsLocked}")
+
                 }
                 Action.DESTROY -> {
-                    if (!tileState.gameIsComplete && !controllerState.value?.buttonIsOnCooldown!!) {
+                    if (!tileState.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldown!!) {
                         destroyRandomTiles()
                         _controllerState.value = _controllerState.value?.copy(
-                            buttonIsOnCooldown = true,
-                            cooldownLeft = 4
+                            destroyButtonIsOnCooldown = true, destroyCooldownLeft = 4
                         )
+                    } else {
+
+                    }
+                }
+                Action.LOCK -> {
+                    if (!tileState.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldown!! && !tileState.tileIsOccupied) {
+                        _controllerState.value = _controllerState.value?.copy(
+                            lockButtonIsOnCooldown = true,
+                            lockCooldownLeft = 5,
+                            tileIsLocked = true,
+                            lockOnTileCooldownLeft = 3
+                        )
+
+                    lockSpecificTile()
+                } else {
+
                     }
                 }
                 else -> {}
             }
+        }
+    }
+
+    private fun lockSpecificTile() {
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
+            if (position == index) {
+                tileState.copy(
+                    symbolInTile = if (controllerState.value?.tileIsLocked == true) TileValue.LOCKED else TileValue.NONE,
+                    //if the lock cooldown is not zero then tile is occupied
+                    tileIsOccupied = controllerState.value!!.lockCooldownLeft != 0,
+                    lockOnTile = tileState.id
+                )
+            } else tileState
         }
     }
 
@@ -299,7 +361,9 @@ class T3ViewModel : ViewModel() {
                 symbolInTile = TileValue.NONE,
                 isSelected = false,
                 isSelectedIndex = returnMiddleOfBoard(),
-                gameIsComplete = false
+                gameIsComplete = false,
+                turnsTakenPlace = 0,
+                lockOnTile = 0
             )
         }
 
@@ -312,8 +376,12 @@ class T3ViewModel : ViewModel() {
         _controllerState.value = _controllerState.value?.copy(
             arrowState = Direction.NONE,
             actionState = Action.NONE,
-            buttonIsOnCooldown = false,
-            cooldownLeft = 0
+            destroyButtonIsOnCooldown = false,
+            destroyCooldownLeft = 0,
+            lockButtonIsOnCooldown = false,
+            lockCooldownLeft = 0,
+            tileIsLocked = false,
+            lockOnTileCooldownLeft = 0
         )
         initToBoardMiddle()
     }

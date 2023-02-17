@@ -23,8 +23,10 @@ fun FullController(
     modifier: Modifier = Modifier,
     arrowOnClick: (direction: Direction) -> Unit,
     actionOnClick: (action: Action) -> Unit,
-    buttonOnCooldown: () -> Boolean,
-    cooldownLeft: () -> Int
+    destroyButtonOnCooldown: () -> Boolean,
+    destroyCooldownLeft: () -> Int,
+    lockButtonOnCooldown: () -> Boolean,
+    lockCooldownLeft: () -> Int,
 ) {
     Column(
         modifier = modifier,
@@ -42,8 +44,10 @@ fun FullController(
                 GameControlsRight(
                     modifier = Modifier.weight(1f),
                     actionOnClick,
-                    buttonOnCooldown,
-                    cooldownLeft
+                    destroyButtonOnCooldown,
+                    destroyCooldownLeft,
+                    lockButtonOnCooldown,
+                    lockCooldownLeft
                 )
             }
         }
@@ -77,8 +81,10 @@ fun GameControlsLeft(
 fun GameControlsRight(
     modifier: Modifier = Modifier,
     actionOnClick: (action: Action) -> Unit,
-    buttonOnCooldown: () -> Boolean,
-    cooldownLeft: () -> Int
+    destroyButtonOnCooldown: () -> Boolean,
+    destroyCooldownLeft: () -> Int,
+    lockButtonOnCooldown: () -> Boolean,
+    lockCooldownLeft: () -> Int,
 ) {
     Column(
         modifier = modifier,
@@ -87,15 +93,19 @@ fun GameControlsRight(
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ActionButtons(onClick = { actionOnClick(Action.PLACE) }, icon = Icons.Filled.AdsClick)
-            Log.i(TAG,"button on cooldown ${buttonOnCooldown()}")
-            if (buttonOnCooldown()) {
-                DeadButton(cooldownLeft())
+            Log.i(TAG,"button on cooldown ${destroyButtonOnCooldown()}")
+            if (destroyButtonOnCooldown()) {
+                DeadButton(destroyCooldownLeft())
             } else {
                 ActionButtons(onClick = { actionOnClick(Action.DESTROY) }, icon = Icons.Filled.Bolt)
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            ActionButtons(onClick = { actionOnClick(Action.LOCK) }, icon = Icons.Filled.Lock)
+            if(lockButtonOnCooldown()){
+                DeadButton(lockCooldownLeft())
+            } else {
+                ActionButtons(onClick = { actionOnClick(Action.LOCK) }, icon = Icons.Filled.Lock)
+            }
             ActionButtons(
                 onClick = { actionOnClick(Action.RANDOM) }, icon = Icons.Filled.QuestionMark
             )
