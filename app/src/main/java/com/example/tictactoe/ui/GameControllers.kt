@@ -27,6 +27,8 @@ fun FullController(
     destroyCooldownLeft: () -> Int,
     lockButtonOnCooldown: () -> Boolean,
     lockCooldownLeft: () -> Int,
+    transposeButtonOnCooldown: () -> Boolean,
+    transposeCooldownLeft: () -> Int
 ) {
     Column(
         modifier = modifier,
@@ -47,7 +49,9 @@ fun FullController(
                     destroyButtonOnCooldown,
                     destroyCooldownLeft,
                     lockButtonOnCooldown,
-                    lockCooldownLeft
+                    lockCooldownLeft,
+                    transposeButtonOnCooldown,
+                    transposeCooldownLeft
                 )
             }
         }
@@ -85,6 +89,8 @@ fun GameControlsRight(
     destroyCooldownLeft: () -> Int,
     lockButtonOnCooldown: () -> Boolean,
     lockCooldownLeft: () -> Int,
+    transposeButtonOnCooldown: () -> Boolean,
+    transposeCooldownLeft: () -> Int
 ) {
     Column(
         modifier = modifier,
@@ -93,7 +99,6 @@ fun GameControlsRight(
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ActionButtons(onClick = { actionOnClick(Action.PLACE) }, icon = Icons.Filled.AdsClick)
-            Log.i(TAG,"button on cooldown ${destroyButtonOnCooldown()}")
             if (destroyButtonOnCooldown()) {
                 DeadButton(destroyCooldownLeft())
             } else {
@@ -106,9 +111,13 @@ fun GameControlsRight(
             } else {
                 ActionButtons(onClick = { actionOnClick(Action.LOCK) }, icon = Icons.Filled.Lock)
             }
-            ActionButtons(
-                onClick = { actionOnClick(Action.RANDOM) }, icon = Icons.Filled.QuestionMark
-            )
+            if(transposeButtonOnCooldown()){
+                DeadButton(transposeCooldownLeft())
+            } else {
+                ActionButtons(
+                    onClick = { actionOnClick(Action.TRANSPOSE) }, icon = Icons.Filled.Shuffle
+                )
+            }
         }
     }
 }

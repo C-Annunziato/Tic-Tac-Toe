@@ -56,7 +56,11 @@ class T3ViewModel : ViewModel() {
                                 lockCooldownLeft = it.minus(1).coerceAtLeast(0),
                             )
                         }
-
+                        _controllerState.value = _controllerState.value?.transposeCooldownLeft?.let {
+                            _controllerState.value?.copy(
+                                transposeCooldownLeft = it.minus(1).coerceAtLeast(0),
+                            )
+                        }
                         _controllerState.value =
                             _controllerState.value?.lockOnTileCooldownLeft?.let {
                                 if (it > 0) {
@@ -109,6 +113,12 @@ class T3ViewModel : ViewModel() {
                             } else tileState
                         }
                     }
+
+                    if (controllerState.value?.transposeButtonIsOnCooldown == true && controllerState.value?.transposeCooldownLeft!! == 0) {
+                        _controllerState.value =
+                            _controllerState.value?.copy(transposeButtonIsOnCooldown = false)
+                    }
+
                     Log.i(TAG, "tile is locked : ${controllerState.value?.tileIsLocked}")
 
                 }
@@ -116,7 +126,8 @@ class T3ViewModel : ViewModel() {
                     if (!tileState.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldown!!) {
                         destroyRandomTiles()
                         _controllerState.value = _controllerState.value?.copy(
-                            destroyButtonIsOnCooldown = true, destroyCooldownLeft = 4
+                            destroyButtonIsOnCooldown = true,
+                            destroyCooldownLeft = 4
                         )
                     } else {
 
@@ -136,9 +147,25 @@ class T3ViewModel : ViewModel() {
 
                     }
                 }
+
+                Action.TRANSPOSE -> {
+                    if(!tileState.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldown!! && tileState.tileIsOccupied ){
+                        _controllerState.value = _controllerState.value?.copy(
+                            transposeButtonIsOnCooldown = true,
+                            transposeCooldownLeft = 4
+                        )
+                        transposeTiles()
+                    } else {
+
+                    }
+                }
                 else -> {}
             }
         }
+    }
+
+    private fun transposeTiles(){
+
     }
 
     private fun lockSpecificTile() {
@@ -242,7 +269,7 @@ class T3ViewModel : ViewModel() {
                         }
                     _position -= numOfRows
                     currentRow -= 1
-                    //if it is an edge keep it selected but
+                    //if it is an edge keep it selected
                 } else if (currentRow == 1) {
                     _tileAndGameState.value =
                         _tileAndGameState.value?.mapIndexed { index, tileState ->
@@ -268,7 +295,6 @@ class T3ViewModel : ViewModel() {
                 } else if (currentRow == 3) {
                     _tileAndGameState.value =
                         _tileAndGameState.value?.mapIndexed { index, tileState ->
-                            //moving up
                             if (_position == index) {
                                 tileState.copy(isSelected = true)
                             } else tileState
@@ -288,7 +314,6 @@ class T3ViewModel : ViewModel() {
                 } else if (currentColumn == 1) {
                     _tileAndGameState.value =
                         _tileAndGameState.value?.mapIndexed { index, tileState ->
-                            //moving up
                             if (_position == index) {
                                 tileState.copy(isSelected = true)
                             } else tileState
@@ -310,7 +335,6 @@ class T3ViewModel : ViewModel() {
                 } else if (currentColumn == 3) {
                     _tileAndGameState.value =
                         _tileAndGameState.value?.mapIndexed { index, tileState ->
-                            //moving up
                             if (_position == index) {
                                 tileState.copy(isSelected = true)
                             } else tileState
@@ -318,7 +342,6 @@ class T3ViewModel : ViewModel() {
                 }
             }
         }
-//        Log.i(TAG, "position is $_position, row is $currentRow, columns is $currentColumn")
     }
 
     private fun destroyRandomTiles() {

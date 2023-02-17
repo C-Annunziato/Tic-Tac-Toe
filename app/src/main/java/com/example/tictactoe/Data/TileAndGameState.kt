@@ -7,12 +7,12 @@ data class TileAndGameState(
     val symbolInTile: TileValue = TileValue.NONE,
     val isSelected: Boolean = false,
     val isSelectedIndex: Int = 0,
+    val lockOnTile: Int = -1 ,
     //gamestate
     val isPlayer1Turn: Boolean = true,
     val winningIndexes: Triple<Int, Int, Int> = Triple(0, 0, 0),
     val gameIsComplete: Boolean = false,
     val turnsTakenPlace: Int = 0,
-    val lockOnTile: Int = -1
 
 )
 

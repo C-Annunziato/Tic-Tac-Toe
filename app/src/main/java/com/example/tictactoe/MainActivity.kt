@@ -53,8 +53,6 @@ fun MainScreen(
     val liveBoardState = liveDataListOfTileAndGameStates.observeAsState()
     val controllerState = controllerState.observeAsState()
 
-
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -85,8 +83,10 @@ fun MainScreen(
                 actionOnClick = { viewModel.updateActionButtonState(action = it) },
                 destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldown!! },
                 destroyCooldownLeft = { controllerState.value?.destroyCooldownLeft ?: 0 },
-                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldown!! } ,
+                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldown!! },
                 lockCooldownLeft = { controllerState.value?.lockCooldownLeft ?: 0 },
+                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldown!! },
+                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeft ?: 0 },
             )
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },

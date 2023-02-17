@@ -9,8 +9,8 @@ data class ControllerState(
     val lockCooldownLeft: Int = 0,
     val tileIsLocked: Boolean = false,
     val lockOnTileCooldownLeft: Int = 0,
-
-
+    val transposeButtonIsOnCooldown: Boolean = false,
+    val transposeCooldownLeft: Int = 0
 )
 
 enum class Direction {
@@ -25,7 +25,7 @@ enum class Action {
     PLACE,
     DESTROY,
     LOCK,
-    RANDOM,
+    TRANSPOSE,
     NONE
 }
         
