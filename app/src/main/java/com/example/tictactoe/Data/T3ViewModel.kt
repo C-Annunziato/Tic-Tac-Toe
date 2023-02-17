@@ -103,8 +103,8 @@ class T3ViewModel : ViewModel() {
                             _controllerState.value?.copy(tileIsLocked = false)
 
                         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed {index,  tileState ->
-                            Log.i(TAG,"lock on tile ${tileState.lockOnTile}")
                             if(index == tileState.lockOnTile){
+                                Log.i(TAG," tilestate.id ${tileState.id}")
                                 tileState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false )
                             } else tileState
                         }
@@ -145,9 +145,9 @@ class T3ViewModel : ViewModel() {
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (position == index) {
                 tileState.copy(
-                    symbolInTile = if (controllerState.value?.tileIsLocked == true) TileValue.LOCKED else TileValue.NONE,
+                    symbolInTile = TileValue.LOCKED,
                     //if the lock cooldown is not zero then tile is occupied
-                    tileIsOccupied = controllerState.value!!.lockCooldownLeft != 0,
+                    tileIsOccupied = true,
                     lockOnTile = tileState.id
                 )
             } else tileState
@@ -363,14 +363,9 @@ class T3ViewModel : ViewModel() {
                 isSelectedIndex = returnMiddleOfBoard(),
                 gameIsComplete = false,
                 turnsTakenPlace = 0,
-                lockOnTile = 0
+                lockOnTile = -1,
+                winningIndexes = Triple(0,0,0)
             )
-        }
-
-        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
-            if (index == returnMiddleOfBoard()) {
-                tileState.copy(isSelected = true)
-            } else tileState
         }
 
         _controllerState.value = _controllerState.value?.copy(
@@ -383,6 +378,13 @@ class T3ViewModel : ViewModel() {
             tileIsLocked = false,
             lockOnTileCooldownLeft = 0
         )
+
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
+            if (index == returnMiddleOfBoard()) {
+                tileState.copy(isSelected = true)
+            } else tileState
+        }
+
         initToBoardMiddle()
     }
 
