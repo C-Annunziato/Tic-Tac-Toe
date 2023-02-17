@@ -56,11 +56,12 @@ class T3ViewModel : ViewModel() {
                                 lockCooldownLeft = it.minus(1).coerceAtLeast(0),
                             )
                         }
-                        _controllerState.value = _controllerState.value?.transposeCooldownLeft?.let {
-                            _controllerState.value?.copy(
-                                transposeCooldownLeft = it.minus(1).coerceAtLeast(0),
-                            )
-                        }
+                        _controllerState.value =
+                            _controllerState.value?.transposeCooldownLeft?.let {
+                                _controllerState.value?.copy(
+                                    transposeCooldownLeft = it.minus(1).coerceAtLeast(0),
+                                )
+                            }
                         _controllerState.value =
                             _controllerState.value?.lockOnTileCooldownLeft?.let {
                                 if (it > 0) {
@@ -78,12 +79,12 @@ class T3ViewModel : ViewModel() {
                         }
                         _tileAndGameState.value =
                             _tileAndGameState.value?.mapIndexed { index, tileState ->
-                                if (_position == index && tileState.isPlayer1Turn) {
+                                if (position == index && tileState.isPlayer1Turn) {
                                     tileState.copy(
                                         symbolInTile = TileValue.CROSS, tileIsOccupied = true
                                     )
 
-                                } else if (_position == index && !tileState.isPlayer1Turn) {
+                                } else if (position == index && !tileState.isPlayer1Turn) {
                                     tileState.copy(
                                         symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
                                     )
@@ -103,15 +104,16 @@ class T3ViewModel : ViewModel() {
                     }
 
                     if (controllerState.value?.tileIsLocked == true && controllerState.value?.lockOnTileCooldownLeft!! == 0) {
-                        _controllerState.value =
-                            _controllerState.value?.copy(tileIsLocked = false)
+                        _controllerState.value = _controllerState.value?.copy(tileIsLocked = false)
 
-                        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed {index,  tileState ->
-                            if(index == tileState.lockOnTile){
-                                Log.i(TAG," tilestate.id ${tileState.id}")
-                                tileState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false )
-                            } else tileState
-                        }
+                        _tileAndGameState.value =
+                            _tileAndGameState.value?.mapIndexed { index, tileState ->
+                                if (index == tileState.lockOnTile) {
+                                    tileState.copy(
+                                        symbolInTile = TileValue.NONE, tileIsOccupied = false
+                                    )
+                                } else tileState
+                            }
                     }
 
                     if (controllerState.value?.transposeButtonIsOnCooldown == true && controllerState.value?.transposeCooldownLeft!! == 0) {
@@ -126,8 +128,7 @@ class T3ViewModel : ViewModel() {
                     if (!tileState.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldown!!) {
                         destroyRandomTiles()
                         _controllerState.value = _controllerState.value?.copy(
-                            destroyButtonIsOnCooldown = true,
-                            destroyCooldownLeft = 4
+                            destroyButtonIsOnCooldown = true, destroyCooldownLeft = 4
                         )
                     } else {
 
@@ -142,17 +143,16 @@ class T3ViewModel : ViewModel() {
                             lockOnTileCooldownLeft = 3
                         )
 
-                    lockSpecificTile()
-                } else {
+                        lockSpecificTile()
+                    } else {
 
                     }
                 }
 
                 Action.TRANSPOSE -> {
-                    if(!tileState.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldown!! && tileState.tileIsOccupied ){
+                    if (!tileState.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldown!! && tileState.tileIsOccupied) {
                         _controllerState.value = _controllerState.value?.copy(
-                            transposeButtonIsOnCooldown = true,
-                            transposeCooldownLeft = 4
+                            transposeButtonIsOnCooldown = true, transposeCooldownLeft = 4
                         )
                         transposeTiles()
                     } else {
@@ -164,8 +164,61 @@ class T3ViewModel : ViewModel() {
         }
     }
 
-    private fun transposeTiles(){
+    private fun transposeTiles() {
 
+        val pairArray = arrayOf(
+            Pair(0, 8),
+            Pair(2, 6),
+            Pair(1, 7),
+            Pair(3, 5),
+        )
+        val middleOption = Pair(4, arrayOf(0, 1, 2, 3, 5, 6, 7, 8))
+
+        for (pair in pairArray) {
+            if (position == pair.first || position == pair.second) {
+
+                val firstIndexSymbol = tileAndGameState.value?.get(pair.first)?.symbolInTile!!
+                val secondIndexSymbol = tileAndGameState.value?.get(pair.second)?.symbolInTile!!
+
+                _tileAndGameState.value =
+                    _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                        when (index) {
+                            pair.first -> {
+                                tileAndGameState.copy(symbolInTile = secondIndexSymbol)
+                            }
+                            pair.second -> {
+                                tileAndGameState.copy(symbolInTile = firstIndexSymbol)
+                            }
+                            else -> tileAndGameState
+                        }
+                    }
+
+            }
+        }
+        if (position == middleOption.first) {
+
+                var randomChoice = middleOption.first
+            while (randomChoice == middleOption.first){
+                randomChoice = Random.nextInt(numColumns * numRows)
+            }
+
+                val randomSymbolAroundMiddle =
+                    tileAndGameState.value?.get(if (randomChoice != middleOption.first) randomChoice else middleOption.first)?.symbolInTile!!
+                Log.i(TAG,"random tile symbol is $randomSymbolAroundMiddle")
+                val middleOptionSymbol = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
+
+                _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                    when(index){
+                        middleOption.first -> {
+                            tileAndGameState.copy(symbolInTile = randomSymbolAroundMiddle)
+                        }
+                        randomChoice -> {
+                            tileAndGameState.copy(symbolInTile = middleOptionSymbol)
+                        }
+                        else -> tileAndGameState
+                    }
+                }
+        }
     }
 
     private fun lockSpecificTile() {
@@ -174,8 +227,7 @@ class T3ViewModel : ViewModel() {
                 tileState.copy(
                     symbolInTile = TileValue.LOCKED,
                     //if the lock cooldown is not zero then tile is occupied
-                    tileIsOccupied = true,
-                    lockOnTile = tileState.id
+                    tileIsOccupied = true, lockOnTile = tileState.id
                 )
             } else tileState
         }
@@ -387,7 +439,7 @@ class T3ViewModel : ViewModel() {
                 gameIsComplete = false,
                 turnsTakenPlace = 0,
                 lockOnTile = -1,
-                winningIndexes = Triple(0,0,0)
+                winningIndexes = Triple(0, 0, 0)
             )
         }
 
@@ -399,7 +451,9 @@ class T3ViewModel : ViewModel() {
             lockButtonIsOnCooldown = false,
             lockCooldownLeft = 0,
             tileIsLocked = false,
-            lockOnTileCooldownLeft = 0
+            lockOnTileCooldownLeft = 0,
+            transposeButtonIsOnCooldown = false,
+            transposeCooldownLeft = 0
         )
 
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
