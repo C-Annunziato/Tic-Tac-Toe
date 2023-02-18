@@ -155,6 +155,8 @@ class T3ViewModel : ViewModel() {
                             transposeButtonIsOnCooldown = true, transposeCooldownLeft = 4
                         )
                         transposeTiles()
+                        checkForVictory(TileValue.CROSS)
+                        checkForVictory(TileValue.CIRCLE)
                     } else {
 
                     }
