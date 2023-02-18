@@ -186,31 +186,44 @@ class T3ViewModel : ViewModel() {
                     _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                         when (index) {
                             pair.first -> {
-                                tileAndGameState.copy(symbolInTile = secondIndexSymbol)
+                                if (secondIndexSymbol == TileValue.NONE) {
+                                    tileAndGameState.copy(
+                                        symbolInTile = secondIndexSymbol, tileIsOccupied = false
+                                    )
+                                } else tileAndGameState.copy(
+                                    symbolInTile = secondIndexSymbol, tileIsOccupied = true
+                                )
                             }
                             pair.second -> {
-                                tileAndGameState.copy(symbolInTile = firstIndexSymbol)
+                                if (firstIndexSymbol == TileValue.NONE) {
+                                    tileAndGameState.copy(
+                                        symbolInTile = firstIndexSymbol, tileIsOccupied = false
+                                    )
+                                } else tileAndGameState.copy(
+                                    symbolInTile = firstIndexSymbol, tileIsOccupied = true
+                                )
                             }
-                            else -> tileAndGameState
+                            else -> {
+                                tileAndGameState
+                            }
                         }
                     }
-
             }
         }
         if (position == middleOption.first) {
 
-                var randomChoice = middleOption.first
-            while (randomChoice == middleOption.first){
+            var randomChoice = middleOption.first
+            while (randomChoice == middleOption.first) {
                 randomChoice = Random.nextInt(numColumns * numRows)
             }
 
-                val randomSymbolAroundMiddle =
-                    tileAndGameState.value?.get(if (randomChoice != middleOption.first) randomChoice else middleOption.first)?.symbolInTile!!
-                Log.i(TAG,"random tile symbol is $randomSymbolAroundMiddle")
-                val middleOptionSymbol = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
+            val randomSymbolAroundMiddle =
+                tileAndGameState.value?.get(if (randomChoice != middleOption.first) randomChoice else middleOption.first)?.symbolInTile!!
+            val middleOptionSymbol = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
 
-                _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                    when(index){
+            _tileAndGameState.value =
+                _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                    when (index) {
                         middleOption.first -> {
                             tileAndGameState.copy(symbolInTile = randomSymbolAroundMiddle)
                         }
@@ -270,7 +283,9 @@ class T3ViewModel : ViewModel() {
 
         for (intArr in winningCombinations) {
             //get and store the values of each combo in a reusable Triple
-            val (firstIndex, secondIndex, thirdIndex) = Triple(intArr[0], intArr[1], intArr[2])
+            val (firstIndex, secondIndex, thirdIndex) = Triple(
+                intArr[0], intArr[1], intArr[2]
+            )
             //get the 3 symbols in the Tiles at a specific winning combo
             val tileValues = Triple(
                 getTileValue(firstIndex), getTileValue(secondIndex), getTileValue(thirdIndex)
@@ -421,7 +436,9 @@ class T3ViewModel : ViewModel() {
             _tileAndGameState.value =
                 _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                     if (index in randomDestruction && index != tileAndGameState.lockOnTile) {
-                        tileAndGameState.copy(symbolInTile = TileValue.NONE, tileIsOccupied = false)
+                        tileAndGameState.copy(
+                            symbolInTile = TileValue.NONE, tileIsOccupied = false
+                        )
                     } else tileAndGameState
                 }
         }
