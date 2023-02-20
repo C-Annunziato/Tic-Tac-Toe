@@ -67,11 +67,11 @@ fun TicTacToeBoard(
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = playerTextFont3,
-                color = Color.Blue,
+                color = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroDarkGreen,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(start = 20.dp, 5.dp,)
-                    .alpha(alpha = 0.40f)
+                    .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
                     .weight(1f)
             )
             CountdownTimer(modifier.weight(1f))

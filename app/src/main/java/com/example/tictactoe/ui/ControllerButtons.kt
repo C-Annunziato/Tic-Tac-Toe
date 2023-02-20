@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.example.tictactoe.ui.theme.retroControllerButtons
+import com.example.tictactoe.ui.theme.*
 
 @Composable
 fun ArrowButton(onClick: () -> Unit, iconRotation: Float){
@@ -55,7 +55,7 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons
         ),
-        border = BorderStroke(2.dp, color = Color.Gray)
+        border = BorderStroke(2.dp, color = retroGreen)
     ) {
         Icon(
             imageVector = icon,

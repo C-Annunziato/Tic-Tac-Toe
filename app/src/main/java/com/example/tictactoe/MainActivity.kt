@@ -78,16 +78,32 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            FullController(
-                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
-                actionOnClick = { viewModel.updateActionButtonState(action = it) },
-                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldown!! },
-                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeft ?: 0 },
-                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldown!! },
-                lockCooldownLeft = { controllerState.value?.lockCooldownLeft ?: 0 },
-                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldown!! },
-                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeft ?: 0 },
-            )
+            if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
+
+                FullController(
+                    arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+                    actionOnClick = { viewModel.updateActionButtonState(action = it) },
+                    destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
+                    destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
+                    lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
+                    lockCooldownLeft = { controllerState.value?.lockCooldownLeftP2 ?: 0 },
+                    transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
+                    transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+                )
+            } else {
+
+                FullController(
+                    arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+                    actionOnClick = { viewModel.updateActionButtonState(action = it) },
+                    destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
+                    destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
+                    lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
+                    lockCooldownLeft = { controllerState.value?.lockCooldownLeftP2 ?: 0 },
+                    transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
+                    transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+                )
+            }
+
             OutlinedButton(
                 onClick = { viewModel.resetBoard() },
                 shape = CutCornerShape(10.dp),

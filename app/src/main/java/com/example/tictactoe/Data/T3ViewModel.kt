@@ -46,20 +46,20 @@ class T3ViewModel : ViewModel() {
                 Action.PLACE -> {
                     //everytime a symbol is placed in a non occupied tile do the following:
                     if (!tileState.tileIsOccupied) {
-                        _controllerState.value = _controllerState.value?.destroyCooldownLeft?.let {
+                        _controllerState.value = _controllerState.value?.destroyCooldownLeftP2?.let {
                             _controllerState.value?.copy(
-                                destroyCooldownLeft = it.minus(1).coerceAtLeast(0),
+                                destroyCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
                             )
                         }
-                        _controllerState.value = _controllerState.value?.lockCooldownLeft?.let {
+                        _controllerState.value = _controllerState.value?.lockCooldownLeftP2?.let {
                             _controllerState.value?.copy(
-                                lockCooldownLeft = it.minus(1).coerceAtLeast(0),
+                                lockCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
                             )
                         }
                         _controllerState.value =
-                            _controllerState.value?.transposeCooldownLeft?.let {
+                            _controllerState.value?.transposeCooldownLeftP2?.let {
                                 _controllerState.value?.copy(
-                                    transposeCooldownLeft = it.minus(1).coerceAtLeast(0),
+                                    transposeCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
                                 )
                             }
                         _controllerState.value =
@@ -94,13 +94,13 @@ class T3ViewModel : ViewModel() {
                         checkForVictory(TileValue.CROSS)
                         checkForVictory(TileValue.CIRCLE)
                     }
-                    if (controllerState.value?.destroyButtonIsOnCooldown == true && controllerState.value?.destroyCooldownLeft!! == 0) {
+                    if (controllerState.value?.destroyButtonIsOnCooldownP2 == true && controllerState.value?.destroyCooldownLeftP2!! == 0) {
                         _controllerState.value =
-                            _controllerState.value?.copy(destroyButtonIsOnCooldown = false)
+                            _controllerState.value?.copy(destroyButtonIsOnCooldownP2 = false)
                     }
-                    if (controllerState.value?.lockButtonIsOnCooldown == true && controllerState.value?.lockCooldownLeft!! == 0) {
+                    if (controllerState.value?.lockButtonIsOnCooldownP2 == true && controllerState.value?.lockCooldownLeftP2!! == 0) {
                         _controllerState.value =
-                            _controllerState.value?.copy(lockButtonIsOnCooldown = false)
+                            _controllerState.value?.copy(lockButtonIsOnCooldownP2 = false)
                     }
 
                     if (controllerState.value?.tileIsLocked == true && controllerState.value?.lockOnTileCooldownLeft!! == 0) {
@@ -116,27 +116,27 @@ class T3ViewModel : ViewModel() {
                             }
                     }
 
-                    if (controllerState.value?.transposeButtonIsOnCooldown == true && controllerState.value?.transposeCooldownLeft!! == 0) {
+                    if (controllerState.value?.transposeButtonIsOnCooldownP2 == true && controllerState.value?.transposeCooldownLeftP2!! == 0) {
                         _controllerState.value =
-                            _controllerState.value?.copy(transposeButtonIsOnCooldown = false)
+                            _controllerState.value?.copy(transposeButtonIsOnCooldownP2 = false)
                     } else tileState
 
                 }
                 Action.DESTROY -> {
-                    if (!tileState.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldown!!) {
+                    if (!tileState.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP2!!) {
                         destroyRandomTiles()
                         _controllerState.value = _controllerState.value?.copy(
-                            destroyButtonIsOnCooldown = true, destroyCooldownLeft = 4
+                            destroyButtonIsOnCooldownP2 = true, destroyCooldownLeftP2 = 4
                         )
                     } else {
 
                     }
                 }
                 Action.LOCK -> {
-                    if (!tileState.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldown!! && !tileState.tileIsOccupied) {
+                    if (!tileState.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP2!! && !tileState.tileIsOccupied) {
                         _controllerState.value = _controllerState.value?.copy(
-                            lockButtonIsOnCooldown = true,
-                            lockCooldownLeft = 5,
+                            lockButtonIsOnCooldownP2 = true,
+                            lockCooldownLeftP2 = 5,
                             tileIsLocked = true,
                             lockOnTileCooldownLeft = 3
                         )
@@ -148,7 +148,7 @@ class T3ViewModel : ViewModel() {
                 }
 
                 Action.TRANSPOSE -> {
-                    if (!tileState.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldown!!) {
+                    if (!tileState.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP2!!) {
 //                        Log.i(TAG,"value of transpose tiles is ${transposeTiles()}")
                             transposeTiles()
 
@@ -223,7 +223,7 @@ class T3ViewModel : ViewModel() {
                                 }
                             }
                         _controllerState.value = _controllerState.value?.copy(
-                            transposeButtonIsOnCooldown = true, transposeCooldownLeft = 4
+                            transposeButtonIsOnCooldownP2 = true, transposeCooldownLeftP2 = 4
                         )
                     }
                 }
@@ -254,7 +254,7 @@ class T3ViewModel : ViewModel() {
                             }
                         }
                     _controllerState.value = _controllerState.value?.copy(
-                        transposeButtonIsOnCooldown = true, transposeCooldownLeft = 4
+                        transposeButtonIsOnCooldownP2 = true, transposeCooldownLeftP2 = 4
                     )
                 }
             }
@@ -488,14 +488,14 @@ class T3ViewModel : ViewModel() {
         _controllerState.value = _controllerState.value?.copy(
             arrowState = Direction.NONE,
             actionState = Action.NONE,
-            destroyButtonIsOnCooldown = false,
-            destroyCooldownLeft = 0,
-            lockButtonIsOnCooldown = false,
-            lockCooldownLeft = 0,
+            destroyButtonIsOnCooldownP2 = false,
+            destroyCooldownLeftP2 = 0,
+            lockButtonIsOnCooldownP2 = false,
+            lockCooldownLeftP2 = 0,
             tileIsLocked = false,
             lockOnTileCooldownLeft = 0,
-            transposeButtonIsOnCooldown = false,
-            transposeCooldownLeft = 0
+            transposeButtonIsOnCooldownP2 = false,
+            transposeCooldownLeftP2 = 0
         )
 
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->

@@ -20,6 +20,7 @@ import com.example.tictactoe.ui.theme.*
 const val TAG = "controller"
 @Composable
 fun FullController(
+
     modifier: Modifier = Modifier,
     arrowOnClick: (direction: Direction) -> Unit,
     actionOnClick: (action: Action) -> Unit,
