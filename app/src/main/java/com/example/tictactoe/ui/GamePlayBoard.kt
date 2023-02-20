@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -60,26 +61,38 @@ fun TicTacToeBoard(
             }
         }
         Row(
-            modifier = Modifier
+            modifier = Modifier,
         ) {
-            Text(
-                "${if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = playerTextFont3,
-                color = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroDarkGreen,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(start = 20.dp, 5.dp,)
-                    .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
-                    .weight(1f)
-            )
-            CountdownTimer(modifier.weight(1f))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "${if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = playerTextFont3,
+                    color = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroDarkGreen,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(start = 33.dp, 5.dp)
+                        .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.20f else 1.0f)
+                )
+                Text(
+                    text = "${if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 2" else "Player 1"}",
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = playerTextFont3,
+                    color = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroDarkGreen,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(start = 33.dp, 5.dp)
+                        .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
+                )
+            }
+            CountdownTimer(modifier.weight(1.2f))
         }
     }
 }
-
-
 
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -95,21 +108,22 @@ fun Tile(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Card(modifier = Modifier
-            .border(
-                4.dp,
-                color = if (state?.isSelected == true) Color.Magenta else Color.Black,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .size(80.dp)
-            .drawBehind {
-                drawRoundRect(
-                    //if selectedState draw pink else black
+        Card(
+            modifier = Modifier
+                .border(
+                    4.dp,
                     color = if (state?.isSelected == true) Color.Magenta else Color.Black,
-                    size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
-                    cornerRadius = CornerRadius(x = 30f, y = 30f)
+                    shape = RoundedCornerShape(8.dp)
                 )
-            },
+                .size(80.dp)
+                .drawBehind {
+                    drawRoundRect(
+                        //if selectedState draw pink else black
+                        color = if (state?.isSelected == true) Color.Magenta else Color.Black,
+                        size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
+                        cornerRadius = CornerRadius(x = 30f, y = 30f)
+                    )
+                },
             elevation = 5.dp,
             shape = RoundedCornerShape(8.dp),
             backgroundColor = retroNearWhite
