@@ -66,25 +66,30 @@ fun TicTacToeBoard(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)
             ) {
-
                 Text(
-                    text = "${if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 2" else "Player 1"}",
+                    text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) "GAME"
+                    else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 2" else "Player 1",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = playerTextFont3,
-                    color = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
+                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else
+                           if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(start = 33.dp, 5.dp)
-                        .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f)
+                        .alpha(alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else
+                        if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f)
+
                 )
 
                 Text(
-                    text = "${if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2"}",
+                    text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) "OVER"
+                    else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2",
                     fontSize = 21.sp,
                     fontWeight = FontWeight.ExtraBold,
                     fontFamily = playerTextFont3,
-                    color = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroGreen,
+                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else
+                        if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroGreen,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(start = 33.dp, 5.dp)

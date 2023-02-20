@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
@@ -103,26 +104,35 @@ fun MainScreen(
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
                 )
             }
-
-            OutlinedButton(
-                onClick = { viewModel.resetBoard() },
-                shape = CutCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    retroPurple
-                ),
-                elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
-                border = BorderStroke(5.dp, color = Color.Black),
-                modifier = Modifier.size(140.dp, 60.dp)
-            ) {
+            if (liveBoardState.value?.get(0)?.gameIsComplete == true) {
+                OutlinedButton(
+                    onClick = { viewModel.resetBoard() },
+                    shape = CutCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        retroPurple
+                    ),
+                    elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
+                    border = BorderStroke(5.dp, color = Color.Black),
+                    modifier = Modifier.size(140.dp, 60.dp)
+                ) {
+                    Text(
+                        "Reset",
+                        modifier = Modifier.padding(top = 8.dp, start = 5.dp),
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        fontFamily = playerTextFont5
+                    )
+                }
+            } else {
                 Text(
-                    "Reset",
-                    modifier = Modifier.padding(top = 8.dp, start = 5.dp),
+                    "Place  Destroy  Lock Transpose",
+                    fontFamily = playerTextFont4,
+                    color = Color.DarkGray,
                     fontSize = 16.sp,
-                    color = Color.White,
-                    fontFamily = playerTextFont5
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(15.dp)
                 )
             }
-
         }
     }
 }
