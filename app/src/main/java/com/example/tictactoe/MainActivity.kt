@@ -103,24 +103,24 @@ fun MainScreen(
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
                 )
             }
-                OutlinedButton(
-                    onClick = { viewModel.resetBoard() },
-                    shape = CutCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        retroPurple
-                    ),
-                    elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
-                    border = BorderStroke(5.dp, color = Color.Black),
-                    modifier = Modifier.size(140.dp, 60.dp)
-                ) {
-                    Text(
-                        "Reset",
-                        modifier = Modifier.padding(top = 8.dp, start = 5.dp),
-                        fontSize = 16.sp,
-                        color = Color.White,
-                        fontFamily = playerTextFont5
-                    )
-                }
+            OutlinedButton(
+                onClick = { viewModel.resetBoard() },
+                shape = CutCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    retroPurple
+                ),
+                elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
+                border = BorderStroke(5.dp, color = Color.Black),
+                modifier = Modifier.size(140.dp, 60.dp)
+            ) {
+                Text(
+                    "Reset",
+                    modifier = Modifier.padding(top = 8.dp, start = 5.dp),
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontFamily = playerTextFont5
+                )
+            }
         }
     }
 }

@@ -245,7 +245,7 @@ class T3ViewModel : ViewModel() {
                         _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                             when (index) {
                                 middleOption.first -> {
-                                    tileAndGameState.copy(symbolInTile = randomSymbolAroundMiddle)
+                                    tileAndGameState.copy(symbolInTile = randomSymbolAroundMiddle, tileIsOccupied = false)
                                 }
                                 randomChoice -> {
                                     tileAndGameState.copy(symbolInTile = middleOptionSymbol)
