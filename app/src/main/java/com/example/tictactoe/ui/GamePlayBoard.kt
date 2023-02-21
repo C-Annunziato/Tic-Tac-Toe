@@ -85,7 +85,7 @@ fun TicTacToeBoard(
                 Text(
                     text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) "OVER"
                     else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2",
-                    fontSize = 21.sp,
+                    fontSize = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 20.sp else 21.sp,
                     fontWeight = FontWeight.ExtraBold,
                     fontFamily = playerTextFont3,
                     color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else

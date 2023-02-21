@@ -63,8 +63,7 @@ fun MainScreen(
             }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = Modifier.weight(0.5f)
-
+            modifier = Modifier.weight(0.54f)
         ) {
             TicTacToeBoard(
                 listOfTileAndGameStates = liveBoardState.value ?: listOfState,
@@ -77,7 +76,7 @@ fun MainScreen(
                 .weight(0.50f)
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceAround
         ) {
             if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
 
@@ -104,7 +103,6 @@ fun MainScreen(
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
                 )
             }
-            if (liveBoardState.value?.get(0)?.gameIsComplete == true) {
                 OutlinedButton(
                     onClick = { viewModel.resetBoard() },
                     shape = CutCornerShape(10.dp),
@@ -123,16 +121,6 @@ fun MainScreen(
                         fontFamily = playerTextFont5
                     )
                 }
-            } else {
-                Text(
-                    "Place  Destroy  Lock Transpose",
-                    fontFamily = playerTextFont4,
-                    color = Color.DarkGray,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(15.dp)
-                )
-            }
         }
     }
 }

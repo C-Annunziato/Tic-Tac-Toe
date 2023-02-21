@@ -45,10 +45,10 @@ fun CountdownTimer(modifier: Modifier) {
 
             color = retroDarkBlue,
             fontSize = 15.sp,
-            modifier = Modifier.padding(5.dp) .alpha(alpha = if(timeLeftForTurn == 0) 1.0f else 0.4f),
+            modifier = Modifier.padding(5.dp) .alpha(alpha = if(timeLeftForTurn == 0) 0.8f else 0.4f),
             textAlign = TextAlign.Center,
             fontFamily = playerTextFont3,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Medium
         )
 
         Text(
