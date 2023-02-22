@@ -1,6 +1,5 @@
 package com.example.tictactoe.ui
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
@@ -18,6 +17,7 @@ import com.example.tictactoe.Data.Direction
 import com.example.tictactoe.ui.theme.*
 
 const val TAG = "controller"
+
 @Composable
 fun FullController(
 
@@ -29,7 +29,8 @@ fun FullController(
     lockButtonOnCooldown: () -> Boolean,
     lockCooldownLeft: () -> Int,
     transposeButtonOnCooldown: () -> Boolean,
-    transposeCooldownLeft: () -> Int
+    transposeCooldownLeft: () -> Int,
+    buttonBorderColor: Color
 ) {
     Column(
         modifier = modifier,
@@ -52,7 +53,8 @@ fun FullController(
                     lockButtonOnCooldown,
                     lockCooldownLeft,
                     transposeButtonOnCooldown,
-                    transposeCooldownLeft
+                    transposeCooldownLeft,
+                    buttonBorderColor
                 )
             }
         }
@@ -62,8 +64,7 @@ fun FullController(
 
 @Composable
 fun GameControlsLeft(
-    modifier: Modifier = Modifier,
-    arrowOnClick: (direction: Direction) -> Unit
+    modifier: Modifier = Modifier, arrowOnClick: (direction: Direction) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -91,7 +92,8 @@ fun GameControlsRight(
     lockButtonOnCooldown: () -> Boolean,
     lockCooldownLeft: () -> Int,
     transposeButtonOnCooldown: () -> Boolean,
-    transposeCooldownLeft: () -> Int
+    transposeCooldownLeft: () -> Int,
+    buttonBorderColor: Color
 ) {
     Column(
         modifier = modifier,
@@ -99,24 +101,38 @@ fun GameControlsRight(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            ActionButtons(onClick = { actionOnClick(Action.PLACE) }, icon = Icons.Filled.AdsClick)
+            ActionButtons(
+                onClick = { actionOnClick(Action.PLACE) },
+                icon = Icons.Filled.AdsClick,
+                borderColor = buttonBorderColor
+            )
             if (destroyButtonOnCooldown()) {
                 DeadButton(destroyCooldownLeft())
             } else {
-                ActionButtons(onClick = { actionOnClick(Action.DESTROY) }, icon = Icons.Filled.Bolt)
+                ActionButtons(
+                    onClick = { actionOnClick(Action.DESTROY) },
+                    icon = Icons.Filled.Bolt,
+                    borderColor = buttonBorderColor
+                )
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            if(lockButtonOnCooldown()){
+            if (lockButtonOnCooldown()) {
                 DeadButton(lockCooldownLeft())
             } else {
-                ActionButtons(onClick = { actionOnClick(Action.LOCK) }, icon = Icons.Filled.Lock)
+                ActionButtons(
+                    onClick = { actionOnClick(Action.LOCK) },
+                    icon = Icons.Filled.Lock,
+                    borderColor = buttonBorderColor
+                )
             }
-            if(transposeButtonOnCooldown()){
+            if (transposeButtonOnCooldown()) {
                 DeadButton(transposeCooldownLeft())
             } else {
                 ActionButtons(
-                    onClick = { actionOnClick(Action.TRANSPOSE) }, icon = Icons.Filled.Shuffle
+                    onClick = { actionOnClick(Action.TRANSPOSE) },
+                    icon = Icons.Filled.Shuffle,
+                    borderColor = buttonBorderColor
                 )
             }
         }

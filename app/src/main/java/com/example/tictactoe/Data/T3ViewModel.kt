@@ -149,12 +149,7 @@ class T3ViewModel : ViewModel() {
 
                 Action.TRANSPOSE -> {
                     if (!tileState.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP2!!) {
-//                        Log.i(TAG,"value of transpose tiles is ${transposeTiles()}")
                             transposeTiles()
-
-//                            _controllerState.value = _controllerState.value?.copy(
-//                                transposeButtonIsOnCooldown = true, transposeCooldownLeft = 4
-//                            )
 
                         checkForVictory(TileValue.CROSS)
                         checkForVictory(TileValue.CIRCLE)
@@ -180,12 +175,9 @@ class T3ViewModel : ViewModel() {
         for (pair in pairArray) {
             if (position == pair.first || position == pair.second) {
 
-
                 val firstIndexSymbol = tileAndGameState.value?.get(pair.first)?.symbolInTile!!
                 val secondIndexSymbol = tileAndGameState.value?.get(pair.second)?.symbolInTile!!
 
-
-                Log.i(TAG,"first and second symbol is ${firstIndexSymbol != TileValue.NONE}, ${secondIndexSymbol != TileValue.NONE}")
                 //at least one needs to have a symbol
                 if (firstIndexSymbol != TileValue.NONE || secondIndexSymbol != TileValue.NONE) {
                     if(firstIndexSymbol != TileValue.LOCKED && secondIndexSymbol != TileValue.LOCKED) {

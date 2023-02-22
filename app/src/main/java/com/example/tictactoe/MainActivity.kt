@@ -89,6 +89,7 @@ fun MainScreen(
                     lockCooldownLeft = { controllerState.value?.lockCooldownLeftP2 ?: 0 },
                     transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+                    buttonBorderColor = retroPurple
                 )
             } else {
 
@@ -101,6 +102,7 @@ fun MainScreen(
                     lockCooldownLeft = { controllerState.value?.lockCooldownLeftP2 ?: 0 },
                     transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+                    buttonBorderColor = retroGreen
                 )
             }
             OutlinedButton(

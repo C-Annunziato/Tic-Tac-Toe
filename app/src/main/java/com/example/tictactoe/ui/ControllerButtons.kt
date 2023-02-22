@@ -2,7 +2,6 @@ package com.example.tictactoe.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
@@ -45,7 +44,7 @@ fun ArrowButton(onClick: () -> Unit, iconRotation: Float){
 }
 
 @Composable
-fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
+fun ActionButtons(onClick: () -> Unit, icon: ImageVector, borderColor: Color){
     Button(
         onClick = {onClick()},
         shape = CircleShape,
@@ -55,7 +54,7 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector){
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons
         ),
-        border = BorderStroke(2.dp, color = retroGreen)
+        border = BorderStroke(2.dp, color = borderColor)
     ) {
         Icon(
             imageVector = icon,
