@@ -450,7 +450,7 @@ class T3ViewModel : ViewModel() {
             _tileAndGameState.value =
                 _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                     if (index in randomDestruction && index != tileAndGameState.lockOnTile) {
-                        tileAndGameState.copy(symbolInTile = TileValue.DESTROYED)
+                        tileAndGameState.copy(symbolInTile = TileValue.DESTROYED, tileIsOccupied = true)
                     } else tileAndGameState
                 }
 
