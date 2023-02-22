@@ -83,12 +83,12 @@ fun MainScreen(
                 FullController(
                     arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
                     actionOnClick = { viewModel.updateActionButtonState(action = it) },
-                    destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
-                    destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
-                    lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
-                    lockCooldownLeft = { controllerState.value?.lockCooldownLeftP2 ?: 0 },
-                    transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
-                    transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+                    destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
+                    destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
+                    lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
+                    lockCooldownLeft = { controllerState.value?.lockCooldownLeftP1 ?: 0 },
+                    transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
+                    transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
                     buttonBorderColor = retroPurple
                 )
             } else {
