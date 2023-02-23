@@ -58,9 +58,9 @@ class T3ViewModel : ViewModel() {
 
                             //lock cd
                             _controllerState.value =
-                                _controllerState.value?.lockCooldownLeftP1?.let {
+                                _controllerState.value?.lockButtonCooldownLeftP1?.let {
                                     _controllerState.value?.copy(
-                                        lockCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
+                                        lockButtonCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
                                     )
                                 }
 
@@ -83,9 +83,9 @@ class T3ViewModel : ViewModel() {
 
                             //lock cd
                             _controllerState.value =
-                                _controllerState.value?.lockCooldownLeftP2?.let {
+                                _controllerState.value?.lockButtonCooldownLeftP2?.let {
                                     _controllerState.value?.copy(
-                                        lockCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
+                                        lockButtonCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
                                     )
                                 }
 
@@ -148,20 +148,20 @@ class T3ViewModel : ViewModel() {
 
                     // if player 1
                     if (ts.isPlayer1Turn) {
-                        if (controllerState.value?.lockButtonIsOnCooldownP1 == true && controllerState.value?.lockCooldownLeftP1!! == 0) {
+                        if (controllerState.value?.lockButtonIsOnCooldownP1 == true && controllerState.value?.lockButtonCooldownLeftP1!! == 0) {
                             _controllerState.value =
                                 _controllerState.value?.copy(lockButtonIsOnCooldownP1 = false)
                         }
 
-                        if (controllerState.value?.tileIsLocked == true && controllerState.value?.lockOnTileCooldownLeftP1!! == 0) {
+                        if (controllerState.value?.tileIsLockedP1 == true && controllerState.value?.lockOnTileCooldownLeftP1!! == 0) {
                             _controllerState.value =
-                                _controllerState.value?.copy(tileIsLocked = false)
+                                _controllerState.value?.copy(tileIsLockedP1 = false)
                             Log.i(TAG, "Tile num p1 ${ts.lockOnTileP1}")
                             _tileAndGameState.value =
                                 _tileAndGameState.value?.mapIndexed { index, tileState ->
                                     if (index == tileState.lockOnTileP1) {
                                         tileState.copy(
-                                            symbolInTile = TileValue.NONE, tileIsOccupied = false
+                                            symbolInTile = TileValue.NONE, tileIsOccupied = false, lockOnTileP1 = -1
                                         )
                                     } else tileState
                                 }
@@ -170,20 +170,20 @@ class T3ViewModel : ViewModel() {
 
                     // if player 2
                     if (!ts.isPlayer1Turn) {
-                        if (controllerState.value?.lockButtonIsOnCooldownP2 == true && controllerState.value?.lockCooldownLeftP2!! == 0) {
+                        if (controllerState.value?.lockButtonIsOnCooldownP2 == true && controllerState.value?.lockButtonCooldownLeftP2!! == 0) {
                             _controllerState.value =
                                 _controllerState.value?.copy(lockButtonIsOnCooldownP2 = false)
                         }
 
-                        if (controllerState.value?.tileIsLocked == true && controllerState.value?.lockOnTileCooldownLeftP2!! == 0) {
+                        if (controllerState.value?.tileIsLockedP2 == true && controllerState.value?.lockOnTileCooldownLeftP2!! == 0) {
                             _controllerState.value =
-                                _controllerState.value?.copy(tileIsLocked = false)
+                                _controllerState.value?.copy(tileIsLockedP2 = false)
                             Log.i(TAG, "Tile num p2 ${ts.lockOnTileP2}")
                             _tileAndGameState.value =
                                 _tileAndGameState.value?.mapIndexed { index, tileState ->
                                     if (index == tileState.lockOnTileP2) {
                                         tileState.copy(
-                                            symbolInTile = TileValue.NONE, tileIsOccupied = false
+                                            symbolInTile = TileValue.NONE, tileIsOccupied = false, lockOnTileP2 = -1
                                         )
                                     } else tileState
                                 }
@@ -220,9 +220,9 @@ class T3ViewModel : ViewModel() {
                     if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP1!! && !ts.tileIsOccupied && ts.isPlayer1Turn) {
                         _controllerState.value = _controllerState.value?.copy(
                             lockButtonIsOnCooldownP1 = true,
-                            lockCooldownLeftP1 = 3,
-                            tileIsLocked = true,
-                            lockOnTileCooldownLeftP1 = 3
+                            lockButtonCooldownLeftP1 = 2,
+                            tileIsLockedP1 = true,
+                            lockOnTileCooldownLeftP1 = 2
                         )
                         lockSpecificTile()
                     }
@@ -230,9 +230,9 @@ class T3ViewModel : ViewModel() {
                     if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP2!! && !ts.tileIsOccupied && !ts.isPlayer1Turn) {
                         _controllerState.value = _controllerState.value?.copy(
                             lockButtonIsOnCooldownP2 = true,
-                            lockCooldownLeftP2 = 3,
-                            tileIsLocked = true,
-                            lockOnTileCooldownLeftP2 = 3
+                            lockButtonCooldownLeftP2 = 2,
+                            tileIsLockedP2 = true,
+                            lockOnTileCooldownLeftP2 = 2
                         )
                         lockSpecificTile()
                     } else controllerState
@@ -575,7 +575,6 @@ class T3ViewModel : ViewModel() {
                 tileIsOccupied = false,
                 symbolInTile = TileValue.NONE,
                 isSelected = false,
-                isSelectedIndex = returnMiddleOfBoard(),
                 gameIsComplete = false,
                 lockOnTileP2 = -1,
                 lockOnTileP1 = -1,
@@ -589,14 +588,14 @@ class T3ViewModel : ViewModel() {
             destroyButtonIsOnCooldownP2 = false,
             destroyCooldownLeftP2 = 0,
             lockButtonIsOnCooldownP2 = false,
-            lockCooldownLeftP2 = 0,
-            tileIsLocked = false,
+            lockButtonCooldownLeftP2 = 0,
+            tileIsLockedP2 = false,
+            tileIsLockedP1 = false,
             lockOnTileCooldownLeftP2 = 0,
             transposeButtonIsOnCooldownP2 = false,
             transposeCooldownLeftP2 = 0,
-            //p1
             lockButtonIsOnCooldownP1 = false,
-            lockCooldownLeftP1 = 0,
+            lockButtonCooldownLeftP1 = 0,
         )
 
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->

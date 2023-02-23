@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
@@ -86,7 +85,7 @@ fun MainScreen(
                     destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
                     destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
                     lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
-                    lockCooldownLeft = { controllerState.value?.lockCooldownLeftP1 ?: 0 },
+                    lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP1 ?: 0 },
                     transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
                     buttonBorderColor = retroPurple
@@ -99,7 +98,7 @@ fun MainScreen(
                     destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
                     destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
                     lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
-                    lockCooldownLeft = { controllerState.value?.lockCooldownLeftP2 ?: 0 },
+                    lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP2 ?: 0 },
                     transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
                     buttonBorderColor = retroGreen

@@ -6,7 +6,6 @@ data class TileAndGameState(
     val tileIsOccupied: Boolean = false,
     val symbolInTile: TileValue = TileValue.NONE,
     val isSelected: Boolean = false,
-    val isSelectedIndex: Int = 0,
     val lockOnTileP2: Int = -1,
     val lockOnTileP1: Int = -1,
     //gamestate
