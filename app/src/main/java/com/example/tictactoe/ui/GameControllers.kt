@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tictactoe.Data.Action
 import com.example.tictactoe.Data.Direction
 import com.example.tictactoe.ui.theme.*
+import kotlin.math.ceil
 
 const val TAG = "controller"
 
@@ -107,7 +108,7 @@ fun GameControlsRight(
                 borderColor = buttonBorderColor
             )
             if (destroyButtonOnCooldown()) {
-                DeadButton(destroyCooldownLeft())
+                DeadButton(ceil(destroyCooldownLeft().toDouble() / 2).toInt())
             } else {
                 ActionButtons(
                     onClick = { actionOnClick(Action.DESTROY) },
@@ -127,7 +128,9 @@ fun GameControlsRight(
                 )
             }
             if (transposeButtonOnCooldown()) {
-                DeadButton(transposeCooldownLeft())
+                //fixes displayed numbers to be representative of the number of turns til CD ready
+                //since each subtraction happens on both turns numbers jump by 2, this fixes it
+                DeadButton(ceil(transposeCooldownLeft().toDouble() / 2).toInt())
             } else {
                 ActionButtons(
                     onClick = { actionOnClick(Action.TRANSPOSE) },
