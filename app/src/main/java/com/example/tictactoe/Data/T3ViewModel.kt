@@ -125,6 +125,14 @@ class T3ViewModel : ViewModel() {
                                 )
                             }
 
+                        //destroy
+                        _controllerState.value =
+                            _controllerState.value?.destroyCooldownLeftP1?.let {
+                                _controllerState.value?.copy(
+                                    destroyCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
+                                )
+                            }
+
 
                         //player turn change
                         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
@@ -206,6 +214,11 @@ class T3ViewModel : ViewModel() {
 
 
                     //destroy
+                    if (controllerState.value?.destroyButtonIsOnCooldownP1 == true && controllerState.value?.destroyCooldownLeftP1!! == 0) {
+                        _controllerState.value =
+                            _controllerState.value?.copy(destroyButtonIsOnCooldownP1 = false)
+                    }
+                    //destroy
                     if (controllerState.value?.destroyButtonIsOnCooldownP2 == true && controllerState.value?.destroyCooldownLeftP2!! == 0) {
                         _controllerState.value =
                             _controllerState.value?.copy(destroyButtonIsOnCooldownP2 = false)
@@ -217,8 +230,8 @@ class T3ViewModel : ViewModel() {
                             _controllerState.value?.copy(transposeButtonIsOnCooldownP2 = false)
                     }
 
-                    Log.i(TAG,"transpose cd 1: ${controllerState.value?.transposeCooldownLeftP1}")
-                    Log.i(TAG,"transpose cd 2: ${controllerState.value?.transposeCooldownLeftP2}")
+                    Log.i(TAG, "transpose cd 1: ${controllerState.value?.transposeCooldownLeftP1}")
+                    Log.i(TAG, "transpose cd 2: ${controllerState.value?.transposeCooldownLeftP2}")
                     //transpose
                     if (controllerState.value?.transposeButtonIsOnCooldownP1 == true && controllerState.value?.transposeCooldownLeftP1!! == 0) {
                         _controllerState.value =
@@ -226,14 +239,23 @@ class T3ViewModel : ViewModel() {
                     } else ts
                 }
                 Action.DESTROY -> {
-                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP2!!) {
+
+                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP1!! && ts.isPlayer1Turn) {
+                        destroyRandomTiles()
+                        _controllerState.value = _controllerState.value?.copy(
+                            destroyButtonIsOnCooldownP1 = true, destroyCooldownLeftP1 = 4
+                        )
+                    }
+
+                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP2!! && !ts.isPlayer1Turn) {
                         destroyRandomTiles()
                         _controllerState.value = _controllerState.value?.copy(
                             destroyButtonIsOnCooldownP2 = true, destroyCooldownLeftP2 = 4
                         )
                     } else {
-
                     }
+
+
                 }
                 Action.LOCK -> {
 
@@ -585,10 +607,11 @@ class T3ViewModel : ViewModel() {
         )
         val randomDestruction = possibleTilesToDestroy[Random.nextInt(possibleTilesToDestroy.size)]
 
+
         viewModelScope.launch {
             _tileAndGameState.value =
                 _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                    if (index in randomDestruction && index != tileAndGameState.lockOnTileP2) {
+                    if (index in randomDestruction && index != tileAndGameState.lockOnTileP2 && index != tileAndGameState.lockOnTileP1) {
                         tileAndGameState.copy(
                             symbolInTile = TileValue.DESTROYED, tileIsOccupied = true
                         )
@@ -599,14 +622,13 @@ class T3ViewModel : ViewModel() {
 
             _tileAndGameState.value =
                 _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                    if (index in randomDestruction && index != tileAndGameState.lockOnTileP2) {
+                    if (index in randomDestruction && index != tileAndGameState.lockOnTileP2 && index != tileAndGameState.lockOnTileP1) {
                         tileAndGameState.copy(
                             symbolInTile = TileValue.NONE, tileIsOccupied = false
                         )
                     } else tileAndGameState
                 }
         }
-
     }
 
 
@@ -629,7 +651,9 @@ class T3ViewModel : ViewModel() {
             arrowState = Direction.NONE,
             actionState = Action.NONE,
             destroyButtonIsOnCooldownP2 = false,
+            destroyButtonIsOnCooldownP1 = false,
             destroyCooldownLeftP2 = 0,
+            destroyCooldownLeftP1 = 0,
             lockButtonIsOnCooldownP2 = false,
             lockButtonCooldownLeftP2 = 0,
             tileIsLockedP2 = false,
