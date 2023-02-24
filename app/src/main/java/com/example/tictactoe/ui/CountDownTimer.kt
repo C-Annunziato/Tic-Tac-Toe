@@ -38,13 +38,13 @@ fun CountdownTimer(modifier: Modifier) {
                 12, 11, 10, 9, 8, 7 -> "T I M E"
                 6, 5, 4, 3, 2, 1 -> "T I M E"
                 0 -> {
-                    "Insert Coins"
+                    "Hit Reset"
                 }
                 else -> ""
             },
 
             color = retroDarkBlue,
-            fontSize = 15.sp,
+            fontSize = 16.sp,
             modifier = Modifier.padding(5.dp) .alpha(alpha = if(timeLeftForTurn == 0) 0.8f else 0.4f),
             textAlign = TextAlign.Center,
             fontFamily = playerTextFont3,
