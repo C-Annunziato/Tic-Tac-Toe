@@ -54,7 +54,7 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector, borderColor: Color){
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons
         ),
-        border = BorderStroke(2.dp, color = borderColor)
+        border = BorderStroke(3.dp, color = borderColor)
     ) {
         Icon(
             imageVector = icon,

@@ -8,12 +8,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
@@ -32,14 +38,61 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            MainScreen(
-                viewModel = vm,
-                liveDataListOfTileAndGameStates = vm.tileAndGameState,
-                controllerState = vm.controllerState,
+            Scaffold(topBar = { AppBar() }) {
+                MainScreen(
+                    viewModel = vm,
+                    liveDataListOfTileAndGameStates = vm.tileAndGameState,
+                    controllerState = vm.controllerState,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun AppBar() {
+
+    var expanded by remember { mutableStateOf(false) }
+    var checkedState by remember { mutableStateOf(false) }
+
+    TopAppBar(title = {
+        Text("Tic Tac No", color = Color.White)
+    }, actions = {
+        IconButton(onClick = {}) {
+            Icon(
+                imageVector = Icons.Filled.Help,
+                contentDescription = "game rules",
+                tint = Color.White
+            )
+        }
+        IconButton(onClick = {expanded = true}) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "drop down menu",
+                tint = Color.White
+            )
+        }
+
+    }, backgroundColor = Color(112, 41, 213, 255), elevation = 2.dp)
+
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false },
+        offset = DpOffset(x = (-10).dp, y = (-120).dp)
+    ) {
+
+        DropdownMenuItem(onClick = { }) {
+            Text("Turn On Board Touch")
+            Switch(
+                checked = checkedState,
+                onCheckedChange = { checkedState = it },
+                modifier = Modifier
+                    .padding(start = 20.dp)
             )
         }
     }
 }
+
 
 @Composable
 fun MainScreen(
