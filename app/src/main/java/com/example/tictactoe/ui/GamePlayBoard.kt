@@ -40,11 +40,11 @@ fun TicTacToeBoard(
             .padding(10.dp)
             .fillMaxSize(),
     ) {
-        Text(
-            "Complete a row, diagonal or column",
-            fontFamily = playerTextFont4,
-            color = Color.DarkGray
-        )
+//        Text(
+//            "Complete a row, diagonal or column",
+//            fontFamily = playerTextFont4,
+//            color = Color.DarkGray
+//        )
         for (i in 1..3) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(14.dp),

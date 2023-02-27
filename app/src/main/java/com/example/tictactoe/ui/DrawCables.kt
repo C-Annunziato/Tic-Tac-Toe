@@ -89,7 +89,7 @@ fun DrawScope.drawCableUI(){
     drawBezierCables(
         stroke = 12f,
         startx = 0.5f,
-        starty = 0.573f,
+        starty = 0.565f,
         endx = 0.5f,
         endy = 0.4f,
         firstControlPointx = 0.5f,
@@ -183,7 +183,7 @@ fun DrawScope.drawCableUI(){
     drawStraightConnectorLines(xStart = 0.53f, yStart = 0.24f, xEnd = 0.53f, yEnd = 0.14f)
     drawStraightConnectorLines(xStart = 0.2f, yStart = 0.14f, xEnd = 0.5f, yEnd = 0.14f)
     drawStraightConnectorLines(xStart = 0.5f, yStart = 0.12f, xEnd = 0.83f, yEnd = 0.12f)
-    drawStraightConnectorLines(xStart = 0.2f, yStart = 0.33f, xEnd = 0.5f, yEnd = 0.33f)
+    drawStraightConnectorLines(xStart = 0.2f, yStart = 0.34f, xEnd = 0.5f, yEnd = 0.34f)
     drawStraightConnectorLines(xStart = 0.71f, yStart = 0.23f, xEnd = 0.71f, yEnd = 0.15f)
     drawStraightConnectorLines(xStart = 0.77f, yStart = 0.38f, xEnd = 0.77f, yEnd = 0.25f)
     drawStraightConnectorLines(xStart = 0.5f, yStart = 0.38f, xEnd = 0.8f, yEnd = 0.38f)

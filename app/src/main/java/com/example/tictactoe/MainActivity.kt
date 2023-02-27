@@ -11,13 +11,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -50,51 +48,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppBar() {
-
-    var expanded by remember { mutableStateOf(false) }
-    var checkedState by remember { mutableStateOf(false) }
-
-    TopAppBar(title = {
-        Text("Tic Tac No", color = Color.White)
-    }, actions = {
-        IconButton(onClick = {}) {
-            Icon(
-                imageVector = Icons.Filled.Help,
-                contentDescription = "game rules",
-                tint = Color.White
-            )
-        }
-        IconButton(onClick = {expanded = true}) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "drop down menu",
-                tint = Color.White
-            )
-        }
-
-    }, backgroundColor = Color(112, 41, 213, 255), elevation = 2.dp)
-
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { expanded = false },
-        offset = DpOffset(x = (-10).dp, y = (-120).dp)
-    ) {
-
-        DropdownMenuItem(onClick = { }) {
-            Text("Turn On Board Touch")
-            Switch(
-                checked = checkedState,
-                onCheckedChange = { checkedState = it },
-                modifier = Modifier
-                    .padding(start = 20.dp)
-            )
-        }
-    }
-}
-
-
-@Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: T3ViewModel,
@@ -115,20 +68,20 @@ fun MainScreen(
             }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = Modifier.weight(0.54f)
+            modifier = Modifier.weight(0.55f)
         ) {
             TicTacToeBoard(
                 listOfTileAndGameStates = liveBoardState.value ?: listOfState,
                 viewModel = viewModel,
-                arrowState = controllerState
+                arrowState = controllerState,
             )
         }
         Column(
             modifier = Modifier
-                .weight(0.50f)
+                .weight(0.45f)
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = Arrangement.Top
         ) {
             if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
 
@@ -141,7 +94,8 @@ fun MainScreen(
                     lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP1 ?: 0 },
                     transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
-                    buttonBorderColor = retroPurple
+                    buttonBorderColor = retroPurple,
+                    modifier = Modifier.padding(bottom = 40.dp)
                 )
             } else {
 
@@ -154,7 +108,8 @@ fun MainScreen(
                     lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP2 ?: 0 },
                     transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
                     transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
-                    buttonBorderColor = retroGreen
+                    buttonBorderColor = retroGreen,
+                    modifier = Modifier.padding(bottom = 40.dp)
                 )
             }
             OutlinedButton(
@@ -179,6 +134,53 @@ fun MainScreen(
     }
 }
 
+
+@Composable
+fun AppBar() {
+
+    var expanded by remember { mutableStateOf(false) }
+    var checkedState by remember { mutableStateOf(false) }
+
+    TopAppBar(title = {
+        Text("Tic Tac No", color = Color.White)
+    }, actions = {
+        IconButton(onClick = {}) {
+            Icon(
+                imageVector = Icons.Filled.Help,
+                contentDescription = "game rules",
+                tint = Color.White
+            )
+        }
+        IconButton(onClick = { expanded = true }, Modifier.padding(end = 10.dp, start = 2.dp)) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "drop down menu",
+                tint = Color.White
+            )
+        }
+    }, backgroundColor = retroAppBarColor, elevation = 2.dp)
+//    Color(112, 41, 213, 255), elevation = 2.dp)
+
+    MaterialTheme( colors = MaterialTheme.colors.copy(surface = retroNearWhite)) {
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            offset = DpOffset(x = (-50).dp, y = (-118).dp),
+        ) {
+
+            DropdownMenuItem(onClick = { }) {
+                Text("Board Touch", color = Color.Black)
+                Switch(
+                    checked = checkedState,
+                    onCheckedChange = { checkedState = it },
+                    modifier = Modifier.padding(start = 20.dp),
+                    colors = SwitchDefaults.colors(uncheckedThumbColor = retroGrey)
+                )
+            }
+        }
+    }
+}
 
 
 
