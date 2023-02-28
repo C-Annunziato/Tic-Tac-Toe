@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -19,6 +18,8 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -59,11 +60,131 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DrawerContent() {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ){
-            Text("hey")
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.linearGradient(
+                        listOf(
+                            retroGrey, Color(139, 137, 137, 255)
+                        )
+                    )
+                ),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            Text("RULES:",
+                fontSize = 26.sp,
+                fontFamily = playerTextFont4,
+                textAlign = TextAlign.Start,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 40.dp, top = 20.dp,)
+            )
+            Text(
+                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & last 1 enemy turn.",
+                fontSize = 21.sp,
+                fontFamily = playerTextFont4,
+                textAlign = TextAlign.Start,
+                color = Color.White,
+                modifier = Modifier.padding(start = 40.dp, end = 30.dp)
+            )
+            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+               Text("\u2022 Actions have cooldowns like ",
+                   fontSize = 21.sp,
+                   fontFamily = playerTextFont4,
+                   textAlign = TextAlign.Start,
+                   color = Color.White,
+                   modifier = Modifier.padding(start = 40.dp).weight(1.8f)
+                   )
+                Box(modifier = Modifier.padding(start = 40.dp).weight(1f)) {
+                    DeadButton(onCooldown = 2)
+                }
+            }
+            Text("ACTIONS:",
+                fontSize = 26.sp,
+                fontFamily = playerTextFont4,
+                textAlign = TextAlign.Start,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 40.dp)
+                )
+            Column(modifier = Modifier.padding(end = 30.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.padding(start = 40.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.AdsClick,
+                        contentDescription = "",
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
+                    )
+                    Text(
+                        "Place an X or O",
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 21.sp,
+                        color = Color.White,
+                        fontFamily = playerTextFont4
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.padding(start = 40.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Bolt,
+                        contentDescription = "",
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
+                    )
+                    Text(
+                        "Destroy tiles\n(random pattern)",
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 21.sp,
+                        color = Color.White,
+                        fontFamily = playerTextFont4
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.padding(start = 40.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Lock,
+                        contentDescription = "",
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
+                    )
+                    Text(
+                        "Lock a tile",
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 21.sp,
+                        color = Color.White,
+                        fontFamily = playerTextFont4
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.padding(start = 40.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Shuffle,
+                        contentDescription = "",
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
+                    )
+                    Text(
+                        "Transpose cross, diagonal or mid\n(mid is random)",
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 21.sp,
+                        color = Color.White,
+                        fontFamily = playerTextFont4
+                    )
+                }
+            }
         }
     }
 }

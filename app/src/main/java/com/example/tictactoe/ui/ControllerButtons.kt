@@ -66,7 +66,7 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector, borderColor: Color){
 }
 
 @Composable
-fun DeadButton (onCooldown: Int){
+fun DeadButton (onCooldown: Int, modifier: Modifier =Modifier){
     Button(
         onClick = { },
         shape = CircleShape,
