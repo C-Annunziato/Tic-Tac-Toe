@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.tictactoe.Data.ControllerState
@@ -138,20 +139,24 @@ fun MainScreen(
 @Composable
 fun AppBar() {
 
-    var expanded by remember { mutableStateOf(false) }
-    var checkedState by remember { mutableStateOf(false) }
+    var expandedMenu by remember { mutableStateOf(false) }
+    var expandedHelp by remember { mutableStateOf(false) }
+    var switchState by remember { mutableStateOf(false) }
 
     TopAppBar(title = {
         Text("Tic Tac No", color = Color.White)
     }, actions = {
-        IconButton(onClick = {}) {
+        IconButton(onClick = { expandedHelp = !expandedHelp }) {
             Icon(
                 imageVector = Icons.Filled.Help,
                 contentDescription = "game rules",
                 tint = Color.White
             )
         }
-        IconButton(onClick = { expanded = true }, Modifier.padding(end = 10.dp, start = 2.dp)) {
+        IconButton(
+            onClick = { expandedMenu = !expandedMenu },
+            Modifier.padding(end = 10.dp, start = 2.dp)
+        ) {
             Icon(
                 imageVector = Icons.Filled.Menu,
                 contentDescription = "drop down menu",
@@ -161,24 +166,40 @@ fun AppBar() {
     }, backgroundColor = retroAppBarColor, elevation = 2.dp)
 //    Color(112, 41, 213, 255), elevation = 2.dp)
 
-    MaterialTheme( colors = MaterialTheme.colors.copy(surface = retroNearWhite)) {
+    MaterialTheme(colors = MaterialTheme.colors.copy(surface = retroNearWhite)) {
+        DropdownMenu(
+            expanded = expandedHelp,
+            onDismissRequest = { expandedHelp = false },
+            offset = DpOffset(x = 100.dp, y = 50.dp),
+
+        ) {
+            DropdownMenuItem(onClick = { }) {
+                Text("hello")
+            }
+        }
+
+//        if(expandedHelp){
+//            Dialog(onDismissRequest = { expandedHelp = false}) {
+//                Text("hello")
+//            }
+//        }
 
         DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
+            expanded = expandedMenu,
+            onDismissRequest = { expandedMenu = false },
             offset = DpOffset(x = (-50).dp, y = (-118).dp),
         ) {
-
             DropdownMenuItem(onClick = { }) {
                 Text("Board Touch", color = Color.Black)
                 Switch(
-                    checked = checkedState,
-                    onCheckedChange = { checkedState = it },
+                    checked = switchState,
+                    onCheckedChange = { switchState = it },
                     modifier = Modifier.padding(start = 20.dp),
                     colors = SwitchDefaults.colors(uncheckedThumbColor = retroGrey)
                 )
             }
         }
+
     }
 }
 
