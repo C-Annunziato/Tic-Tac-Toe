@@ -16,11 +16,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Popup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.tictactoe.Data.ControllerState
@@ -29,6 +33,7 @@ import com.example.tictactoe.Data.T3ViewModel
 import com.example.tictactoe.Data.listOfState
 import com.example.tictactoe.ui.*
 import com.example.tictactoe.ui.theme.*
+import kotlinx.coroutines.launch
 
 const val TAG = "main"
 
@@ -37,13 +42,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            Scaffold(topBar = { AppBar() }) {
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+            Scaffold(scaffoldState = scaffoldState,
+                topBar = { AppBar { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } } },
+                drawerContent = { DrawerContent() }) {
                 MainScreen(
                     viewModel = vm,
                     liveDataListOfTileAndGameStates = vm.tileAndGameState,
                     controllerState = vm.controllerState,
                 )
             }
+        }
+    }
+
+    @Composable
+    fun DrawerContent() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ){
+            Text("hey")
         }
     }
 }
@@ -137,7 +157,7 @@ fun MainScreen(
 
 
 @Composable
-fun AppBar() {
+fun AppBar(scaffoldState: () -> Unit) {
 
     var expandedMenu by remember { mutableStateOf(false) }
     var expandedHelp by remember { mutableStateOf(false) }
@@ -146,7 +166,7 @@ fun AppBar() {
     TopAppBar(title = {
         Text("Tic Tac No", color = Color.White)
     }, actions = {
-        IconButton(onClick = { expandedHelp = !expandedHelp }) {
+        IconButton(onClick = scaffoldState) {
             Icon(
                 imageVector = Icons.Filled.Help,
                 contentDescription = "game rules",
@@ -154,8 +174,7 @@ fun AppBar() {
             )
         }
         IconButton(
-            onClick = { expandedMenu = !expandedMenu },
-            Modifier.padding(end = 10.dp, start = 2.dp)
+            onClick = { expandedMenu = !expandedMenu }, Modifier.padding(end = 10.dp, start = 2.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.Menu,
@@ -167,20 +186,25 @@ fun AppBar() {
 //    Color(112, 41, 213, 255), elevation = 2.dp)
 
     MaterialTheme(colors = MaterialTheme.colors.copy(surface = retroNearWhite)) {
-        DropdownMenu(
-            expanded = expandedHelp,
-            onDismissRequest = { expandedHelp = false },
-            offset = DpOffset(x = 100.dp, y = 50.dp),
-
-        ) {
-            DropdownMenuItem(onClick = { }) {
-                Text("hello")
-            }
-        }
+        val screenWidthCenter = LocalConfiguration.current.screenWidthDp / 2
+        val screenHeightCeneter = LocalConfiguration.current.screenHeightDp / 2
+//        Column(Modifier.size(100.dp)) {
+//            DropdownMenu(
+//                expanded = expandedHelp,
+//                onDismissRequest = { expandedHelp = false },
+//                offset = DpOffset(x = screenWidthCenter.dp -50.dp, y = screenHeightCeneter.dp-50.dp),
+//            ) {
+//                DropdownMenuItem(onClick = { }) {
+//                    Text("hello")
+//                }
+//            }
+//        }
 
 //        if(expandedHelp){
-//            Dialog(onDismissRequest = { expandedHelp = false}) {
-//                Text("hello")
+//            Popup(onDismissRequest = { expandedHelp = false}, offset = IntOffset(x = screenWidthCenter, y = screenHeightCeneter)) {
+//                Column(Modifier.size(200.dp).background(Color.White)){
+//                    Text("hello")
+//                }
 //            }
 //        }
 
@@ -199,7 +223,6 @@ fun AppBar() {
                 )
             }
         }
-
     }
 }
 
