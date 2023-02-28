@@ -29,7 +29,9 @@ val retroPurple = Color(0xFF7E6DE2)
 val retroControllerButtons = Color(0xFFDFE2D9)
 val retroDarkGreen = Color(0xFF15926B)
 val retroDarkGrey = Color(0xB5919191)
-//val retroAppBarColor = Color(0xFF2B8B88)
-val retroAppBarColor = Color(0xFF5E97A2)
-
+val retroAppBarColor = Color(0xFF8A999C)
+//val retroAppBarColor = Color(0xFF968781)
+//val retroAppBarColor = Color(0xFF69574F)
+//val retroAppBarColor = Color(0xFF2B7ADB)
+//val retroAppBarColor = Color(0xFF9B4029)
 

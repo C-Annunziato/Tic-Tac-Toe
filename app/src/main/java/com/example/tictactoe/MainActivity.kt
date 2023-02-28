@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(start = 40.dp, top = 20.dp,)
             )
             Text(
-                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & last 1 enemy turn.",
+                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & lasts 1 enemy turn.",
                 fontSize = 21.sp,
                 fontFamily = playerTextFont4,
                 textAlign = TextAlign.Start,
@@ -304,30 +304,8 @@ fun AppBar(scaffoldState: () -> Unit) {
             )
         }
     }, backgroundColor = retroAppBarColor, elevation = 2.dp)
-//    Color(112, 41, 213, 255), elevation = 2.dp)
 
     MaterialTheme(colors = MaterialTheme.colors.copy(surface = retroNearWhite)) {
-        val screenWidthCenter = LocalConfiguration.current.screenWidthDp / 2
-        val screenHeightCeneter = LocalConfiguration.current.screenHeightDp / 2
-//        Column(Modifier.size(100.dp)) {
-//            DropdownMenu(
-//                expanded = expandedHelp,
-//                onDismissRequest = { expandedHelp = false },
-//                offset = DpOffset(x = screenWidthCenter.dp -50.dp, y = screenHeightCeneter.dp-50.dp),
-//            ) {
-//                DropdownMenuItem(onClick = { }) {
-//                    Text("hello")
-//                }
-//            }
-//        }
-
-//        if(expandedHelp){
-//            Popup(onDismissRequest = { expandedHelp = false}, offset = IntOffset(x = screenWidthCenter, y = screenHeightCeneter)) {
-//                Column(Modifier.size(200.dp).background(Color.White)){
-//                    Text("hello")
-//                }
-//            }
-//        }
 
         DropdownMenu(
             expanded = expandedMenu,
