@@ -738,7 +738,7 @@ class T3ViewModel : ViewModel() {
 
         Log.i(TAG,"outoftime called")
         _tileAndGameState.value = _tileAndGameState.value?.map{ tileState ->
-            tileState.copy(gameIsComplete = true, tileIsOccupied = true)
+            tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
         }
     }
 }

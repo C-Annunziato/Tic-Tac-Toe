@@ -211,7 +211,7 @@ fun MainScreen(
                 listOfTileAndGameStates = liveBoardState.value ?: listOfState,
                 viewModel = viewModel,
                 arrowState = controllerState,
-            gameOver = {viewModel.outOfTime()})
+            turnOver = {viewModel.outOfTime()})
         }
         Column(
             modifier = Modifier

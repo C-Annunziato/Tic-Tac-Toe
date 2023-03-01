@@ -17,7 +17,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 
-fun CountdownTimer(modifier: Modifier, gameOver: () -> Unit) {
+fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit) {
 
     var timeLeftForTurn by remember { mutableStateOf(12) }
     LaunchedEffect(Unit) {
@@ -70,7 +70,7 @@ fun CountdownTimer(modifier: Modifier, gameOver: () -> Unit) {
     }
 
         if(timeLeftForTurn == 0){
-            gameOver()
+            turnOver()
         }
 }
 

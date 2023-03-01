@@ -31,7 +31,7 @@ fun TicTacToeBoard(
     listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
     arrowState: State<ControllerState?>,
-    gameOver: () -> Unit
+    turnOver: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -69,12 +69,14 @@ fun TicTacToeBoard(
                     fontWeight = FontWeight.Medium,
                     fontFamily = playerTextFont3,
                     color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else
-                           if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
+                        if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(start = 33.dp, 5.dp)
-                        .alpha(alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else
-                        if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f)
+                        .alpha(
+                            alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else
+                                if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f
+                        )
                 )
 
                 Text(
@@ -91,10 +93,10 @@ fun TicTacToeBoard(
                         .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
                 )
             }
-            if(viewModel.tileAndGameState.value?.first()?.gameIsComplete == true){
-                CountdownTimer(modifier.weight(1.2f), gameOver = gameOver)
+            if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
+                CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
             } else {
-                CountdownTimer(modifier.weight(1.2f), gameOver = {})
+                CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
             }
         }
     }
