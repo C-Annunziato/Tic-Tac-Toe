@@ -334,7 +334,7 @@ class T3ViewModel : ViewModel() {
                 val secondIndexSymbol = tileAndGameState.value?.get(pair.second)?.symbolInTile!!
 
                 //at least one needs to have a symbol
-                if(firstIndexSymbol != secondIndexSymbol) {
+                if(firstIndexSymbol != secondIndexSymbol && firstIndexSymbol != TileValue.DESTROYED && secondIndexSymbol != TileValue.DESTROYED) {
                     if (firstIndexSymbol != TileValue.NONE || secondIndexSymbol != TileValue.NONE) {
                         if (firstIndexSymbol != TileValue.LOCKED && secondIndexSymbol != TileValue.LOCKED) {
                             _tileAndGameState.value =
@@ -395,42 +395,53 @@ class T3ViewModel : ViewModel() {
                 }
             }
         }
+        //if we are on the middle tile
         if (position == middleOption.first) {
-
+            //init a variable to something that will change
             var randomChoice = middleOption.first
-            while (randomChoice == middleOption.first) {
+            var randomSymbolAroundMiddle =  TileValue.NONE
+            //take anything but the middle as a valid transposition partner i.e. no transpose itself
+            // and anything but NONE in the surrounding tiles
+            //if both false we move on else grab a new index (randomChoice)
+            while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE) {
                 randomChoice = Random.nextInt(numColumns * numRows)
+                randomSymbolAroundMiddle = tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
             }
+            //again produce any index but 4 (middle) to be selected
 
-            val randomSymbolAroundMiddle =
-                tileAndGameState.value?.get(if (randomChoice != middleOption.first) randomChoice else middleOption.first)?.symbolInTile!!
+
+
+
             val middleOptionSymbol = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
-            if (randomSymbolAroundMiddle != TileValue.NONE || middleOptionSymbol != TileValue.NONE) {
-                if (randomSymbolAroundMiddle != TileValue.LOCKED && middleOptionSymbol != TileValue.LOCKED) {
-                    _tileAndGameState.value =
-                        _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                            when (index) {
-                                middleOption.first -> {
-                                    tileAndGameState.copy(
-                                        symbolInTile = randomSymbolAroundMiddle,
-                                        tileIsOccupied = false
-                                    )
+
+            if (middleOptionSymbol != randomSymbolAroundMiddle && middleOptionSymbol != TileValue.DESTROYED && randomSymbolAroundMiddle != TileValue.DESTROYED) {
+                if (randomSymbolAroundMiddle != TileValue.NONE || middleOptionSymbol != TileValue.NONE) {
+                    if (randomSymbolAroundMiddle != TileValue.LOCKED && middleOptionSymbol != TileValue.LOCKED) {
+                        _tileAndGameState.value =
+                            _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                                when (index) {
+                                    middleOption.first -> {
+                                        tileAndGameState.copy(
+                                            symbolInTile = randomSymbolAroundMiddle,
+                                            tileIsOccupied = false
+                                        )
+                                    }
+                                    randomChoice -> {
+                                        tileAndGameState.copy(symbolInTile = middleOptionSymbol)
+                                    }
+                                    else -> tileAndGameState
                                 }
-                                randomChoice -> {
-                                    tileAndGameState.copy(symbolInTile = middleOptionSymbol)
-                                }
-                                else -> tileAndGameState
                             }
+                        if (tileAndGameState.value!!.first().isPlayer1Turn) {
+                            _controllerState.value = _controllerState.value?.copy(
+                                transposeButtonIsOnCooldownP1 = true, transposeCooldownLeftP1 = 3
+                            )
                         }
-                    if (tileAndGameState.value!!.first().isPlayer1Turn) {
-                        _controllerState.value = _controllerState.value?.copy(
-                            transposeButtonIsOnCooldownP1 = true, transposeCooldownLeftP1 = 3
-                        )
-                    }
-                    if (!tileAndGameState.value!!.first().isPlayer1Turn) {
-                        _controllerState.value = _controllerState.value?.copy(
-                            transposeButtonIsOnCooldownP2 = true, transposeCooldownLeftP2 = 3
-                        )
+                        if (!tileAndGameState.value!!.first().isPlayer1Turn) {
+                            _controllerState.value = _controllerState.value?.copy(
+                                transposeButtonIsOnCooldownP2 = true, transposeCooldownLeftP2 = 3
+                            )
+                        }
                     }
                 }
             }
