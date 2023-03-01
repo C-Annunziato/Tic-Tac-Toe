@@ -1,6 +1,5 @@
 package com.example.tictactoe.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
@@ -8,21 +7,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tictactoe.ui.theme.playerTextFont3
 import com.example.tictactoe.ui.theme.retroDarkBlue
-import com.example.tictactoe.ui.theme.retroRed
 import kotlinx.coroutines.delay
 
 @Composable
 
-fun CountdownTimer(modifier: Modifier) {
+fun CountdownTimer(modifier: Modifier, gameOver: () -> Unit) {
 
-    var timeLeftForTurn by remember { mutableStateOf(10) }
+    var timeLeftForTurn by remember { mutableStateOf(12) }
     LaunchedEffect(Unit) {
         for (i in 0 until timeLeftForTurn) {
             delay(1000)
@@ -45,7 +42,9 @@ fun CountdownTimer(modifier: Modifier) {
 
             color = retroDarkBlue,
             fontSize = 16.sp,
-            modifier = Modifier.padding(5.dp) .alpha(alpha = if(timeLeftForTurn == 0) 0.8f else 0.4f),
+            modifier = Modifier
+                .padding(5.dp)
+                .alpha(alpha = if (timeLeftForTurn == 0) 0.8f else 0.4f),
             textAlign = TextAlign.Center,
             fontFamily = playerTextFont3,
             fontWeight = FontWeight.Medium
@@ -70,6 +69,9 @@ fun CountdownTimer(modifier: Modifier) {
         )
     }
 
+        if(timeLeftForTurn == 0){
+            gameOver()
+        }
 }
 
 

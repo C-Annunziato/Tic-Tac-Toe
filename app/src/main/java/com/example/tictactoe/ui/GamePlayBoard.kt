@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +31,7 @@ fun TicTacToeBoard(
     listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
     arrowState: State<ControllerState?>,
+    gameOver: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -40,11 +40,7 @@ fun TicTacToeBoard(
             .padding(10.dp)
             .fillMaxSize(),
     ) {
-//        Text(
-//            "Complete a row, diagonal or column",
-//            fontFamily = playerTextFont4,
-//            color = Color.DarkGray
-//        )
+
         for (i in 1..3) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
@@ -79,7 +75,6 @@ fun TicTacToeBoard(
                         .padding(start = 33.dp, 5.dp)
                         .alpha(alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else
                         if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f)
-
                 )
 
                 Text(
@@ -96,7 +91,11 @@ fun TicTacToeBoard(
                         .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
                 )
             }
-            CountdownTimer(modifier.weight(1.2f))
+            if(viewModel.tileAndGameState.value?.first()?.gameIsComplete == true){
+                CountdownTimer(modifier.weight(1.2f), gameOver = gameOver)
+            } else {
+                CountdownTimer(modifier.weight(1.2f), gameOver = {})
+            }
         }
     }
 }

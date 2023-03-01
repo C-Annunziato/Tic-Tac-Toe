@@ -35,6 +35,13 @@ class T3ViewModel : ViewModel() {
             _position = value
         }
 
+    private var _timeLeftForTurn: Int by mutableStateOf(12)
+    private var timeLeftForTurn: Int
+        get() = _timeLeftForTurn
+        set(value) {
+            _timeLeftForTurn = value
+        }
+
     init {
         initToBoardMiddle()
     }
@@ -314,6 +321,12 @@ class T3ViewModel : ViewModel() {
         )
         val middleOption = Pair(4, arrayOf(0, 1, 2, 3, 5, 6, 7, 8))
 
+        viewModelScope.launch {
+
+            delay(2000)
+
+
+        }
         for (pair in pairArray) {
             if (position == pair.first || position == pair.second) {
 
@@ -321,50 +334,62 @@ class T3ViewModel : ViewModel() {
                 val secondIndexSymbol = tileAndGameState.value?.get(pair.second)?.symbolInTile!!
 
                 //at least one needs to have a symbol
-                if (firstIndexSymbol != TileValue.NONE || secondIndexSymbol != TileValue.NONE) {
-                    if (firstIndexSymbol != TileValue.LOCKED && secondIndexSymbol != TileValue.LOCKED) {
-                        _tileAndGameState.value =
-                            _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
-                                when (index) {
-                                    //switch first to second
-                                    //if second is NONE then first will end up as NONE so tile is not occupied
-                                    pair.first -> {
-                                        if (secondIndexSymbol == TileValue.NONE) {
-                                            tileAndGameState.copy(
-                                                symbolInTile = secondIndexSymbol,
-                                                tileIsOccupied = false
-                                            )
-                                        } else tileAndGameState.copy(
-                                            symbolInTile = secondIndexSymbol, tileIsOccupied = true
-                                        )
+                if(firstIndexSymbol != secondIndexSymbol) {
+                    if (firstIndexSymbol != TileValue.NONE || secondIndexSymbol != TileValue.NONE) {
+                        if (firstIndexSymbol != TileValue.LOCKED && secondIndexSymbol != TileValue.LOCKED) {
+                            _tileAndGameState.value =
+                                _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
+                                    when (index) {
+                                        //switch first to second
+                                        //if second is NONE then first will end up as NONE so tile is not occupied
 
-                                    }
-                                    //switch second to first
-                                    //if first is NONE then second will end up as NONE so tile is not occupied
-                                    pair.second -> {
-                                        if (firstIndexSymbol == TileValue.NONE) {
-                                            tileAndGameState.copy(
-                                                symbolInTile = firstIndexSymbol,
-                                                tileIsOccupied = false
+
+                                        pair.first -> {
+                                            if (secondIndexSymbol == TileValue.NONE) {
+                                                tileAndGameState.copy(
+                                                    symbolInTile = secondIndexSymbol,
+                                                    tileIsOccupied = false
+                                                )
+                                            } else tileAndGameState.copy(
+                                                symbolInTile = secondIndexSymbol,
+                                                tileIsOccupied = true
                                             )
-                                        } else tileAndGameState.copy(
-                                            symbolInTile = firstIndexSymbol, tileIsOccupied = true
-                                        )
+
+                                        }
+                                        //switch second to first
+                                        //if first is NONE then second will end up as NONE so tile is not occupied
+                                        pair.second -> {
+                                            if (firstIndexSymbol == TileValue.NONE) {
+                                                tileAndGameState.copy(
+                                                    symbolInTile = firstIndexSymbol,
+                                                    tileIsOccupied = false
+                                                )
+                                            } else tileAndGameState.copy(
+                                                symbolInTile = firstIndexSymbol,
+                                                tileIsOccupied = true
+                                            )
+                                        }
+
+
+                                        else -> {
+                                            tileAndGameState
+                                        }
                                     }
-                                    else -> {
-                                        tileAndGameState
-                                    }
+
+
                                 }
+                            if (tileAndGameState.value!!.first().isPlayer1Turn) {
+                                _controllerState.value = _controllerState.value?.copy(
+                                    transposeButtonIsOnCooldownP1 = true,
+                                    transposeCooldownLeftP1 = 3
+                                )
                             }
-                        if (tileAndGameState.value!!.first().isPlayer1Turn) {
-                            _controllerState.value = _controllerState.value?.copy(
-                                transposeButtonIsOnCooldownP1 = true, transposeCooldownLeftP1 = 3
-                            )
-                        }
-                        if (!tileAndGameState.value!!.first().isPlayer1Turn) {
-                            _controllerState.value = _controllerState.value?.copy(
-                                transposeButtonIsOnCooldownP2 = true, transposeCooldownLeftP2 = 3
-                            )
+                            if (!tileAndGameState.value!!.first().isPlayer1Turn) {
+                                _controllerState.value = _controllerState.value?.copy(
+                                    transposeButtonIsOnCooldownP2 = true,
+                                    transposeCooldownLeftP2 = 3
+                                )
+                            }
                         }
                     }
                 }
@@ -696,6 +721,13 @@ class T3ViewModel : ViewModel() {
             if (index == _position) {
                 tileState.copy(isSelected = true)
             } else tileState
+        }
+    }
+    fun outOfTime(){
+
+        Log.i(TAG,"outoftime called")
+        _tileAndGameState.value = _tileAndGameState.value?.map{ tileState ->
+            tileState.copy(gameIsComplete = true, tileIsOccupied = true)
         }
     }
 }

@@ -15,17 +15,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.Popup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.tictactoe.Data.ControllerState
@@ -216,7 +211,7 @@ fun MainScreen(
                 listOfTileAndGameStates = liveBoardState.value ?: listOfState,
                 viewModel = viewModel,
                 arrowState = controllerState,
-            )
+            gameOver = {viewModel.outOfTime()})
         }
         Column(
             modifier = Modifier
@@ -281,7 +276,6 @@ fun MainScreen(
 fun AppBar(scaffoldState: () -> Unit) {
 
     var expandedMenu by remember { mutableStateOf(false) }
-    var expandedHelp by remember { mutableStateOf(false) }
     var switchState by remember { mutableStateOf(false) }
 
     TopAppBar(title = {
