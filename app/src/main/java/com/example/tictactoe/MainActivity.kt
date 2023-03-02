@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
             Scaffold(scaffoldState = scaffoldState,
-                topBar = { AppBar { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } } },
+                topBar = { AppBar (countDownEnabled = {vm.updateCountDownEnabled(it)}){ scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } } },
                 drawerContent = { DrawerContent() }) {
                 MainScreen(
                     viewModel = vm,
@@ -273,7 +273,7 @@ fun MainScreen(
 
 
 @Composable
-fun AppBar(scaffoldState: () -> Unit) {
+fun AppBar(countDownEnabled: (Boolean) -> Unit,scaffoldState: () -> Unit) {
 
     var expandedMenu by remember { mutableStateOf(false) }
     var switchState by remember { mutableStateOf(false) }
@@ -310,7 +310,14 @@ fun AppBar(scaffoldState: () -> Unit) {
                 Text("Board Touch", color = Color.Black)
                 Switch(
                     checked = switchState,
-                    onCheckedChange = { switchState = it },
+                    onCheckedChange = {
+                        switchState = it
+                        if (switchState) {
+                            countDownEnabled(true)
+                        } else {
+                            countDownEnabled(false)
+                        }
+                       },
                     modifier = Modifier.padding(start = 20.dp),
                     colors = SwitchDefaults.colors(uncheckedThumbColor = retroGrey)
                 )

@@ -42,6 +42,16 @@ class T3ViewModel : ViewModel() {
             _timeLeftForTurn = value
         }
 
+    private var _countDownEnabled: Boolean by mutableStateOf(true)
+    val countDownEnabled: Boolean
+        get() = _countDownEnabled
+
+
+    fun updateCountDownEnabled(value : Boolean){
+        _countDownEnabled = value
+        Log.i(TAG,"update cd $countDownEnabled")
+    }
+
     init {
         initToBoardMiddle()
     }
