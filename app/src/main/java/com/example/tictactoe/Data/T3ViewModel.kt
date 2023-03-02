@@ -400,12 +400,15 @@ class T3ViewModel : ViewModel() {
             //init a variable to something that will change
             var randomChoice = middleOption.first
             var randomSymbolAroundMiddle =  TileValue.NONE
+            var tryCount: Int by mutableStateOf(0)
             //take anything but the middle as a valid transposition partner i.e. no transpose itself
             // and anything but NONE in the surrounding tiles
             //if both false we move on else grab a new index (randomChoice)
-            while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE) {
+            while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE && tryCount <= 25) {
                 randomChoice = Random.nextInt(numColumns * numRows)
                 randomSymbolAroundMiddle = tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
+                Log.i(TAG," hey $tryCount")
+                tryCount += 1
             }
             //again produce any index but 4 (middle) to be selected
 
