@@ -68,14 +68,12 @@ fun TicTacToeBoard(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = playerTextFont3,
-                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else
-                        if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
+                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(start = 33.dp, 5.dp)
                         .alpha(
-                            alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else
-                                if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f
+                            alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f
                         )
                 )
 
@@ -85,17 +83,21 @@ fun TicTacToeBoard(
                     fontSize = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 20.sp else 21.sp,
                     fontWeight = FontWeight.ExtraBold,
                     fontFamily = playerTextFont3,
-                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else
-                        if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroGreen,
+                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroGreen,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(start = 33.dp, 5.dp)
                         .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
                 )
             }
-            if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
+
+            if (viewModel.tileAndGameState.value!!.first().gameIsComplete) {
+                CountdownTimer(modifier.weight(1.2f), turnOver = turnOver, true)
+                //alternate countdown based on turn
+            } else if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
+                //alternate countdown based on turn
                 CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
-            } else {
+                }  else {
                 CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
             }
         }

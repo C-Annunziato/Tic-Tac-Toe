@@ -13,15 +13,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tictactoe.ui.theme.playerTextFont3
 import com.example.tictactoe.ui.theme.retroDarkBlue
+import kotlinx.coroutines.Delay
 import kotlinx.coroutines.delay
 
 @Composable
 
-fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit) {
+fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boolean = false) {
 
-    var timeLeftForTurn by remember { mutableStateOf(12) }
+    var timeLeftForTurn by remember { mutableStateOf(5) }
     LaunchedEffect(Unit) {
-        for (i in 0 until timeLeftForTurn) {
+        for (i in 0 until timeLeftForTurn + 1) {
             delay(1000)
             timeLeftForTurn--
         }
@@ -29,12 +30,17 @@ fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
+
+        if (gameIsComplete) {
+            timeLeftForTurn = -1
+        }
+
         Text(
             text = when (timeLeftForTurn) {
                 12, 11, 10, 9, 8, 7 -> "T I M E"
-                6, 5, 4, 3, 2, 1 -> "T I M E"
-                0 -> {
+                6, 5, 4, 3, 2, 1, 0 -> "T I M E"
+                -1 -> {
                     "Hit Reset"
                 }
                 else -> ""
@@ -53,8 +59,8 @@ fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit) {
         Text(
             text = when (timeLeftForTurn) {
                 12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn"
-                6, 5, 4, 3, 2, 1 -> "$timeLeftForTurn"
-                0 -> {
+                6, 5, 4, 3, 2, 1, 0 -> "$timeLeftForTurn"
+                -1 -> {
                     "To Play Again"
                 }
                 else -> ""
@@ -69,9 +75,12 @@ fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit) {
         )
     }
 
-        if(timeLeftForTurn == 0){
-            turnOver()
-        }
+
+    if (timeLeftForTurn == 0) {
+        turnOver()
+    }
+
+
 }
 
 
