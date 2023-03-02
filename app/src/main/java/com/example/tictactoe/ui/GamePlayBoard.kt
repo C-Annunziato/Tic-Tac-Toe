@@ -71,14 +71,18 @@ fun TicTacToeBoard(
 
             }
 
-            if (viewModel.tileAndGameState.value!!.first().gameIsComplete) {
-                CountdownTimer(modifier.weight(1.2f), turnOver = turnOver, true)
-                //alternate countdown based on turn
-            } else if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
-                //alternate countdown based on turn
-                CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
-            } else {
-                CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
+            if (listOfTileAndGameStates?.first()?.disableCountDown == false) {
+                if (viewModel.tileAndGameState.value!!.first().gameIsComplete) {
+                    CountdownTimer(modifier.weight(1.2f), turnOver = turnOver, true)
+                    //alternate countdown based on turn
+                } else if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
+                    //alternate countdown based on turn
+                    CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
+                } else {
+                    CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
+                }
+            } else if (listOfTileAndGameStates?.first()?.disableCountDown == true) {
+                Column(modifier = Modifier.weight(1.2f)) {}
             }
         }
     }
@@ -151,9 +155,7 @@ fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?) {
     }
 
     AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut()
+        visible = isVisible, enter = fadeIn(), exit = fadeOut()
     ) {
         Text(
             text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) {
@@ -189,9 +191,7 @@ fun BlinkingText2(listOfTileAndGameStates: List<TileAndGameState>?) {
     }
 
     AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut()
+        visible = isVisible, enter = fadeIn(), exit = fadeOut()
     ) {
 
         Text(
