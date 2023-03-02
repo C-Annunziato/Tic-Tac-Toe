@@ -20,7 +20,7 @@ import kotlinx.coroutines.delay
 
 fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boolean = false) {
 
-    var timeLeftForTurn by remember { mutableStateOf(5) }
+    var timeLeftForTurn by remember { mutableStateOf(20) }
     LaunchedEffect(Unit) {
         for (i in 0 until timeLeftForTurn + 1) {
             delay(1000)
@@ -38,7 +38,7 @@ fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boo
 
         Text(
             text = when (timeLeftForTurn) {
-                12, 11, 10, 9, 8, 7 -> "T I M E"
+                20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7 -> "T I M E"
                 6, 5, 4, 3, 2, 1, 0 -> "T I M E"
                 -1 -> {
                     "Hit Reset"
@@ -58,7 +58,7 @@ fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boo
 
         Text(
             text = when (timeLeftForTurn) {
-                12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn"
+                20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7 -> "$timeLeftForTurn"
                 6, 5, 4, 3, 2, 1, 0 -> "$timeLeftForTurn"
                 -1 -> {
                     "To Play Again"
