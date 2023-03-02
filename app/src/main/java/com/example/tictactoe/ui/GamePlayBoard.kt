@@ -154,6 +154,10 @@ fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?) {
         }
     }
 
+    if (listOfTileAndGameStates?.first()?.gameIsComplete == false) {
+        isVisible = true
+    }
+
     AnimatedVisibility(
         visible = isVisible, enter = fadeIn(), exit = fadeOut()
     ) {
@@ -188,6 +192,10 @@ fun BlinkingText2(listOfTileAndGameStates: List<TileAndGameState>?) {
                 isVisible = !isVisible
             }
         }
+    }
+
+    if (listOfTileAndGameStates?.first()?.gameIsComplete == false) {
+        isVisible = true
     }
 
     AnimatedVisibility(
