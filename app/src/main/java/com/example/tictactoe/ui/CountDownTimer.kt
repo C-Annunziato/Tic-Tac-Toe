@@ -50,10 +50,10 @@ fun CountdownTimer(modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boo
             fontSize = 16.sp,
             modifier = Modifier
                 .padding(5.dp)
-                .alpha(alpha = if (timeLeftForTurn == 0) 0.8f else 0.4f),
+                .alpha(alpha = if (timeLeftForTurn == 0) 0.8f else 0.6f),
             textAlign = TextAlign.Center,
             fontFamily = playerTextFont3,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold
         )
 
         Text(

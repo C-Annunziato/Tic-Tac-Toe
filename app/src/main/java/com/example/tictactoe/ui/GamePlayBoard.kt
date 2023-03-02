@@ -1,16 +1,16 @@
 package com.example.tictactoe.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import android.util.Log
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -24,6 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tictactoe.Data.*
 import com.example.tictactoe.ui.theme.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+const val LOG = "gameplay"
 
 @Composable
 fun TicTacToeBoard(
@@ -62,33 +66,9 @@ fun TicTacToeBoard(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) "GAME"
-                    else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 2" else "Player 1",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = playerTextFont3,
-                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(start = 33.dp, 5.dp)
-                        .alpha(
-                            alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f
-                        )
-                )
+                BlinkingText1(listOfTileAndGameStates = listOfTileAndGameStates)
+                BlinkingText2(listOfTileAndGameStates = listOfTileAndGameStates)
 
-                Text(
-                    text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) "OVER"
-                    else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2",
-                    fontSize = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 20.sp else 21.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = playerTextFont3,
-                    color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroGreen,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(start = 33.dp, 5.dp)
-                        .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
-                )
             }
 
             if (viewModel.tileAndGameState.value!!.first().gameIsComplete) {
@@ -97,7 +77,7 @@ fun TicTacToeBoard(
             } else if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
                 //alternate countdown based on turn
                 CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
-                }  else {
+            } else {
                 CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
             }
         }
@@ -156,5 +136,79 @@ fun Tile(
     }
 }
 
+
+@Composable
+fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?) {
+    var isVisible by remember { mutableStateOf(true) }
+
+    if (listOfTileAndGameStates != null) {
+        LaunchedEffect(listOfTileAndGameStates.first().gameIsComplete) {
+            while (listOfTileAndGameStates.first().gameIsComplete) {
+                delay(1250)
+                isVisible = !isVisible
+            }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Text(
+            text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) {
+                "GAME"
+            } else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 2" else "Player 1",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            fontFamily = playerTextFont3,
+            color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) retroGreen else Color.Blue,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 33.dp, 5.dp)
+                .alpha(
+                    alpha = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 1.0f else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 1.0f else 0.40f
+                )
+        )
+
+    }
+}
+
+
+@Composable
+fun BlinkingText2(listOfTileAndGameStates: List<TileAndGameState>?) {
+    var isVisible by remember { mutableStateOf(true) }
+
+    if (listOfTileAndGameStates != null) {
+        LaunchedEffect(listOfTileAndGameStates.first().gameIsComplete) {
+            while (listOfTileAndGameStates.first().gameIsComplete) {
+                delay(1250)
+                isVisible = !isVisible
+            }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+
+        Text(
+            text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) {
+                "OVER"
+            } else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2",
+            fontSize = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 20.sp else 21.sp,
+            fontWeight = FontWeight.ExtraBold,
+            fontFamily = playerTextFont3,
+            color = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) retroDarkBlue else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) Color.Blue else retroGreen,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 33.dp, 5.dp)
+                .alpha(alpha = if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) 0.40f else 1.0f)
+        )
+
+    }
+}
 
 
