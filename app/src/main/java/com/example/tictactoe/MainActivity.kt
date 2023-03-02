@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                    color = Color.White,
                    modifier = Modifier.padding(start = 40.dp).weight(1.8f)
                    )
-                Box(modifier = Modifier.padding(start = 40.dp).weight(1f)) {
+                Box(modifier = Modifier.padding(start = 40.dp, top = 10.dp).weight(1f)) {
                     DeadButton(onCooldown = 2)
                 }
             }
