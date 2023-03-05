@@ -82,7 +82,8 @@ fun TicTacToeBoard(
                     CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
                 }
             } else if (listOfTileAndGameStates?.first()?.disableCountDown == true) {
-                Column(modifier = Modifier.weight(1.2f)) {}
+                //prevent the space from collapsing
+                Column(modifier = Modifier.weight(1.2f).size(62.dp)) {}
             }
         }
     }
