@@ -83,7 +83,24 @@ fun TicTacToeBoard(
                 }
             } else if (listOfTileAndGameStates?.first()?.disableCountDown == true) {
                 //prevent the space from collapsing
-                Column(modifier = Modifier.weight(1.2f).size(62.dp)) {}
+                Column(modifier = Modifier.weight(1.2f)) {
+                    Text(
+                        "Space Holder",
+                        fontSize = 16.sp,
+                        fontFamily = playerTextFont3,
+                        fontWeight = FontWeight.Bold,
+                        modifier = modifier.padding(5.dp),
+                        color = Color.Transparent
+                    )
+                    Text(
+                        "Space Holder",
+                        fontSize = 17.sp,
+                        fontFamily = playerTextFont3,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp),
+                        color = Color.Transparent
+                    )
+                }
             }
         }
     }
