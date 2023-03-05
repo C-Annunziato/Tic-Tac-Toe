@@ -51,7 +51,7 @@ class T3ViewModel : ViewModel() {
 //        _countDownEnabled = value
 //    }
 
-    fun disableCountDown(value : Boolean){
+    fun disableCountDown(value: Boolean) {
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(disableCountDown = value)
         }
@@ -252,8 +252,6 @@ class T3ViewModel : ViewModel() {
                             _controllerState.value?.copy(transposeButtonIsOnCooldownP2 = false)
                     }
 
-                    Log.i(TAG, "transpose cd 1: ${controllerState.value?.transposeCooldownLeftP1}")
-                    Log.i(TAG, "transpose cd 2: ${controllerState.value?.transposeCooldownLeftP2}")
                     //transpose
                     if (controllerState.value?.transposeButtonIsOnCooldownP1 == true && controllerState.value?.transposeCooldownLeftP1!! == 0) {
                         _controllerState.value =
@@ -349,7 +347,7 @@ class T3ViewModel : ViewModel() {
                 val secondIndexSymbol = tileAndGameState.value?.get(pair.second)?.symbolInTile!!
 
                 //at least one needs to have a symbol
-                if(firstIndexSymbol != secondIndexSymbol && firstIndexSymbol != TileValue.DESTROYED && secondIndexSymbol != TileValue.DESTROYED) {
+                if (firstIndexSymbol != secondIndexSymbol && firstIndexSymbol != TileValue.DESTROYED && secondIndexSymbol != TileValue.DESTROYED) {
                     if (firstIndexSymbol != TileValue.NONE || secondIndexSymbol != TileValue.NONE) {
                         if (firstIndexSymbol != TileValue.LOCKED && secondIndexSymbol != TileValue.LOCKED) {
                             _tileAndGameState.value =
@@ -414,27 +412,37 @@ class T3ViewModel : ViewModel() {
         if (position == middleOption.first) {
             //init a variable to something that will change
             var randomChoice = middleOption.first
-            var randomSymbolAroundMiddle =  TileValue.NONE
+            var randomSymbolAroundMiddle = TileValue.NONE
             var tryCount: Int by mutableStateOf(0)
             //take anything but the middle as a valid transposition partner i.e. no transpose itself
             // and anything but NONE in the surrounding tiles
             //if both false we move on else grab a new index (randomChoice)
-            while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE && tryCount <= 25) {
-                randomChoice = Random.nextInt(numColumns * numRows)
-                randomSymbolAroundMiddle = tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
-                Log.i(TAG," hey $tryCount")
-                tryCount += 1
+
+            val symbolInMiddleTile = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
+            //if middle tile is none find the next non NONE tile or quit
+            if (symbolInMiddleTile == TileValue.NONE) {
+                while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE && tryCount <= 50) {
+                    randomChoice = Random.nextInt(numColumns * numRows)
+                    randomSymbolAroundMiddle =
+                        tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
+                    tryCount += 1
+                }
+            } else {
+                randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
+                randomSymbolAroundMiddle =
+                    tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
+                while (randomSymbolAroundMiddle == symbolInMiddleTile ) {
+                    randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
+                    randomSymbolAroundMiddle =
+                        tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
+                }
             }
             //again produce any index but 4 (middle) to be selected
 
 
-
-
-            val middleOptionSymbol = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
-
-            if (middleOptionSymbol != randomSymbolAroundMiddle && middleOptionSymbol != TileValue.DESTROYED && randomSymbolAroundMiddle != TileValue.DESTROYED) {
-                if (randomSymbolAroundMiddle != TileValue.NONE || middleOptionSymbol != TileValue.NONE) {
-                    if (randomSymbolAroundMiddle != TileValue.LOCKED && middleOptionSymbol != TileValue.LOCKED) {
+            if (symbolInMiddleTile != randomSymbolAroundMiddle && symbolInMiddleTile != TileValue.DESTROYED && randomSymbolAroundMiddle != TileValue.DESTROYED) {
+                if (randomSymbolAroundMiddle != TileValue.NONE || symbolInMiddleTile != TileValue.NONE) {
+                    if (randomSymbolAroundMiddle != TileValue.LOCKED && symbolInMiddleTile != TileValue.LOCKED) {
                         _tileAndGameState.value =
                             _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                                 when (index) {
@@ -445,7 +453,7 @@ class T3ViewModel : ViewModel() {
                                         )
                                     }
                                     randomChoice -> {
-                                        tileAndGameState.copy(symbolInTile = middleOptionSymbol)
+                                        tileAndGameState.copy(symbolInTile = symbolInMiddleTile)
                                     }
                                     else -> tileAndGameState
                                 }
@@ -752,10 +760,11 @@ class T3ViewModel : ViewModel() {
             } else tileState
         }
     }
-    fun outOfTime(){
 
-        Log.i(TAG,"outoftime called")
-        _tileAndGameState.value = _tileAndGameState.value?.map{ tileState ->
+    fun outOfTime() {
+
+        Log.i(TAG, "outoftime called")
+        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
         }
     }
