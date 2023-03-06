@@ -421,7 +421,7 @@ class T3ViewModel : ViewModel() {
             val symbolInMiddleTile = tileAndGameState.value?.get(middleOption.first)?.symbolInTile!!
             //if middle tile is none find the next non NONE tile or quit
             if (symbolInMiddleTile == TileValue.NONE) {
-                while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE && tryCount <= 50) {
+                while (randomChoice == middleOption.first || randomSymbolAroundMiddle == TileValue.NONE && tryCount <= 50 || randomSymbolAroundMiddle == TileValue.LOCKED) {
                     randomChoice = Random.nextInt(numColumns * numRows)
                     randomSymbolAroundMiddle =
                         tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
@@ -431,7 +431,7 @@ class T3ViewModel : ViewModel() {
                 randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
                 randomSymbolAroundMiddle =
                     tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
-                while (randomSymbolAroundMiddle == symbolInMiddleTile ) {
+                while (randomSymbolAroundMiddle == symbolInMiddleTile || randomSymbolAroundMiddle == TileValue.LOCKED) {
                     randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
                     randomSymbolAroundMiddle =
                         tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
