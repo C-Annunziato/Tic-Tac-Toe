@@ -453,7 +453,11 @@ class T3ViewModel : ViewModel() {
                                         )
                                     }
                                     randomChoice -> {
-                                        tileAndGameState.copy(symbolInTile = symbolInMiddleTile)
+                                        tileAndGameState.copy(
+                                            symbolInTile = symbolInMiddleTile,
+                                            tileIsOccupied = false
+                                        )
+
                                     }
                                     else -> tileAndGameState
                                 }
