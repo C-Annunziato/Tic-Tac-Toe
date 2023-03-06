@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui.theme
+package com.entropic89.tictacno.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.tictactoe.R
+import com.entropic89.tictacno.R
 
 val playerTextFont1 = FontFamily(Font(R.font.inide_flower_reg))
 val playerTextFont2 = FontFamily(Font(R.font.evil_empire_reg))

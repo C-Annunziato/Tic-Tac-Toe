@@ -1,4 +1,4 @@
-package com.example.tictactoe
+package com.entropic89.tictacno
 
 import android.os.Bundle
 import android.util.Log
@@ -25,11 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.tictactoe.Data.ControllerState
-import com.example.tictactoe.Data.TileAndGameState
-import com.example.tictactoe.Data.T3ViewModel
-import com.example.tictactoe.Data.listOfState
-import com.example.tictactoe.ui.*
+import com.entropic89.tictacno.Data.ControllerState
+import com.entropic89.tictacno.Data.TileAndGameState
+import com.entropic89.tictacno.Data.T3ViewModel
+import com.entropic89.tictacno.Data.listOfState
+import com.entropic89.tictacno.ui.DeadButton
+import com.entropic89.tictacno.ui.FullController
+import com.entropic89.tictacno.ui.TicTacToeBoard
+import com.entropic89.tictacno.ui.theme.*
 import com.example.tictactoe.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -87,12 +90,13 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(start = 40.dp, top = 20.dp)
             )
             Text(
-                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & lasts 1 enemy turn.",
+                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & lasts 2 turns.",
                 fontSize = 21.sp,
                 fontFamily = playerTextFont4,
-                textAlign = TextAlign.Start,
+                textAlign = TextAlign.Start,////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 color = Color.White,
                 modifier = Modifier.padding(start = 40.dp, end = 30.dp)
+
             )
             Row(
                 horizontalArrangement = Arrangement.Center,

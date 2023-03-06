@@ -1,4 +1,4 @@
-package com.example.tictactoe.Data
+package com.entropic89.tictacno.Data
 
 data class ControllerState(
    //Shared State

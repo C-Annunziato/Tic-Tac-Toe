@@ -1,4 +1,4 @@
-package com.example.tictactoe
+package com.entropic89.tictacno
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui
+package com.entropic89.tictacno.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.offset
@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.example.tictactoe.ui.theme.*
+import com.entropic89.tictacno.ui.theme.retroControllerButtons
 
 @Composable
 fun ArrowButton(onClick: () -> Unit, iconRotation: Float){

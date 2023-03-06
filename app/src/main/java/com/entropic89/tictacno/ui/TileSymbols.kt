@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui
+package com.entropic89.tictacno.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*

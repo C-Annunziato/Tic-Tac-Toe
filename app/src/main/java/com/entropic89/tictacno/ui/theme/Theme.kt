@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui.theme
+package com.entropic89.tictacno.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

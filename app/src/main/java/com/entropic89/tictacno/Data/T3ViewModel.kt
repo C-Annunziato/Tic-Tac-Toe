@@ -1,4 +1,4 @@
-package com.example.tictactoe.Data
+package com.entropic89.tictacno.Data
 
 import android.util.Log
 import androidx.compose.runtime.getValue

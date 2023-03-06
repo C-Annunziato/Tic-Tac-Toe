@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui
+package com.entropic89.tictacno.ui
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
-import com.example.tictactoe.Data.Action
-import com.example.tictactoe.Data.Direction
-import com.example.tictactoe.ui.theme.*
+import com.entropic89.tictacno.Data.Action
+import com.entropic89.tictacno.Data.Direction
+import com.entropic89.tictacno.ui.theme.retroDarkGrey
 import kotlin.math.ceil
 
 const val TAG = "controller"

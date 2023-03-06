@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui
+package com.entropic89.tictacno.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -11,9 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tictactoe.ui.theme.playerTextFont3
-import com.example.tictactoe.ui.theme.retroDarkBlue
-import kotlinx.coroutines.Delay
+import com.entropic89.tictacno.ui.theme.playerTextFont3
+import com.entropic89.tictacno.ui.theme.retroDarkBlue
 import kotlinx.coroutines.delay
 
 @Composable

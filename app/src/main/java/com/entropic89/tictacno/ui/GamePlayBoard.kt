@@ -1,14 +1,11 @@
-package com.example.tictactoe.ui
+package com.entropic89.tictacno.ui
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,10 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tictactoe.Data.*
-import com.example.tictactoe.ui.theme.*
+import com.entropic89.tictacno.Data.ControllerState
+import com.entropic89.tictacno.Data.T3ViewModel
+import com.entropic89.tictacno.Data.TileAndGameState
+import com.entropic89.tictacno.Data.TileValue
+import com.entropic89.tictacno.ui.theme.playerTextFont3
+import com.entropic89.tictacno.ui.theme.retroDarkBlue
+import com.entropic89.tictacno.ui.theme.retroGreen
+import com.entropic89.tictacno.ui.theme.retroNearWhite
+import com.entropic89.tictacno.Data.*
+import com.entropic89.tictacno.ui.theme.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 const val LOG = "gameplay"
 
