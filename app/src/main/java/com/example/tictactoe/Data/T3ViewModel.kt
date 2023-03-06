@@ -283,9 +283,9 @@ class T3ViewModel : ViewModel() {
                     if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP1!! && !ts.tileIsOccupied && ts.isPlayer1Turn) {
                         _controllerState.value = _controllerState.value?.copy(
                             lockButtonIsOnCooldownP1 = true,
-                            lockButtonCooldownLeftP1 = 2,
+                            lockButtonCooldownLeftP1 = 3,
                             tileIsLockedP1 = true,
-                            lockOnTileCooldownLeftP1 = 2
+                            lockOnTileCooldownLeftP1 = 3
                         )
                         lockSpecificTile()
                     }
@@ -293,9 +293,9 @@ class T3ViewModel : ViewModel() {
                     if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP2!! && !ts.tileIsOccupied && !ts.isPlayer1Turn) {
                         _controllerState.value = _controllerState.value?.copy(
                             lockButtonIsOnCooldownP2 = true,
-                            lockButtonCooldownLeftP2 = 2,
+                            lockButtonCooldownLeftP2 = 3,
                             tileIsLockedP2 = true,
-                            lockOnTileCooldownLeftP2 = 2
+                            lockOnTileCooldownLeftP2 = 3
                         )
                         lockSpecificTile()
                     } else controllerState
