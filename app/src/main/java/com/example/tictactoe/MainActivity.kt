@@ -1,6 +1,7 @@
 package com.example.tictactoe
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -15,6 +16,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,14 +42,22 @@ class MainActivity : ComponentActivity() {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
-            Scaffold(scaffoldState = scaffoldState,
-                topBar = { AppBar (countDownOff = {vm.disableCountDown(it)}){ scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } } },
+            var rotateScreen180 by remember { mutableStateOf(false) }
+
+            Scaffold(modifier = if (rotateScreen180) Modifier.rotate(180f) else Modifier,
+                scaffoldState = scaffoldState,
+                topBar = {
+                    AppBar(countDownOff = { vm.disableCountDown(it) }, rotateScreen180 = {
+                        rotateScreen180 = !rotateScreen180
+                    }) { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } }
+                },
                 drawerContent = { DrawerContent() }) {
                 MainScreen(
                     viewModel = vm,
                     liveDataListOfTileAndGameStates = vm.tileAndGameState,
                     controllerState = vm.controllerState,
                 )
+                Log.i(TAG, "rotate screen $rotateScreen180")
             }
         }
     }
@@ -67,13 +77,14 @@ class MainActivity : ComponentActivity() {
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Text("RULES:",
+            Text(
+                "RULES:",
                 fontSize = 26.sp,
                 fontFamily = playerTextFont4,
                 textAlign = TextAlign.Start,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 40.dp, top = 20.dp,)
+                modifier = Modifier.padding(start = 40.dp, top = 20.dp)
             )
             Text(
                 text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & lasts 1 enemy turn.",
@@ -83,27 +94,41 @@ class MainActivity : ComponentActivity() {
                 color = Color.White,
                 modifier = Modifier.padding(start = 40.dp, end = 30.dp)
             )
-            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-               Text("\u2022 Actions have cooldowns like ",
-                   fontSize = 21.sp,
-                   fontFamily = playerTextFont4,
-                   textAlign = TextAlign.Start,
-                   color = Color.White,
-                   modifier = Modifier.padding(start = 40.dp).weight(1.8f)
-                   )
-                Box(modifier = Modifier.padding(start = 40.dp, top = 10.dp).weight(1f)) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "\u2022 Actions have cooldowns like ",
+                    fontSize = 21.sp,
+                    fontFamily = playerTextFont4,
+                    textAlign = TextAlign.Start,
+                    color = Color.White,
+                    modifier = Modifier
+                        .padding(start = 40.dp)
+                        .weight(1.8f)
+                )
+                Box(
+                    modifier = Modifier
+                        .padding(start = 40.dp, top = 10.dp)
+                        .weight(1f)
+                ) {
                     DeadButton(onCooldown = 2)
                 }
             }
-            Text("ACTIONS:",
+            Text(
+                "ACTIONS:",
                 fontSize = 26.sp,
                 fontFamily = playerTextFont4,
                 textAlign = TextAlign.Start,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 40.dp)
-                )
-            Column(modifier = Modifier.padding(end = 30.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            )
+            Column(
+                modifier = Modifier.padding(end = 30.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Row(
                     modifier = Modifier.padding(start = 40.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -207,11 +232,10 @@ fun MainScreen(
         Column(
             modifier = Modifier.weight(0.55f)
         ) {
-            TicTacToeBoard(
-                listOfTileAndGameStates = liveBoardState.value ?: listOfState,
+            TicTacToeBoard(listOfTileAndGameStates = liveBoardState.value ?: listOfState,
                 viewModel = viewModel,
                 arrowState = controllerState,
-            turnOver = {viewModel.outOfTime()})
+                turnOver = { viewModel.outOfTime() })
         }
         Column(
             modifier = Modifier
@@ -273,7 +297,9 @@ fun MainScreen(
 
 
 @Composable
-fun AppBar(countDownOff: (Boolean) -> Unit, scaffoldState: () -> Unit) {
+fun AppBar(
+    countDownOff: (Boolean) -> Unit, rotateScreen180: () -> Unit, scaffoldState: () -> Unit,
+) {
 
     var expandedMenu by remember { mutableStateOf(false) }
     var switchState by remember { mutableStateOf(false) }
@@ -281,15 +307,26 @@ fun AppBar(countDownOff: (Boolean) -> Unit, scaffoldState: () -> Unit) {
     TopAppBar(title = {
         Text("Tic Tac No", color = Color.White)
     }, actions = {
+
+
+        IconButton(onClick = rotateScreen180) {
+            Icon(
+                imageVector = Icons.Filled.Cached,
+                contentDescription = "rotate screen 180",
+                tint = Color.White
+            )
+        }
+
         IconButton(onClick = scaffoldState) {
             Icon(
                 imageVector = Icons.Filled.Help,
                 contentDescription = "game rules",
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
             )
         }
         IconButton(
-            onClick = { expandedMenu = !expandedMenu }, Modifier.padding(end = 10.dp, start = 2.dp)
+            onClick = { expandedMenu = !expandedMenu }, Modifier.padding(end = 10.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.Menu,
@@ -297,6 +334,8 @@ fun AppBar(countDownOff: (Boolean) -> Unit, scaffoldState: () -> Unit) {
                 tint = Color.White
             )
         }
+
+
     }, backgroundColor = retroAppBarColor, elevation = 2.dp)
 
     MaterialTheme(colors = MaterialTheme.colors.copy(surface = retroNearWhite)) {
@@ -317,7 +356,7 @@ fun AppBar(countDownOff: (Boolean) -> Unit, scaffoldState: () -> Unit) {
                         } else {
                             countDownOff(false)
                         }
-                       },
+                    },
                     modifier = Modifier.padding(start = 20.dp),
                     colors = SwitchDefaults.colors(uncheckedThumbColor = retroGrey)
                 )
