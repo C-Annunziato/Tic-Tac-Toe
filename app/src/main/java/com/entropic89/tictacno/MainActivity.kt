@@ -60,7 +60,6 @@ class MainActivity : ComponentActivity() {
                     liveDataListOfTileAndGameStates = vm.tileAndGameState,
                     controllerState = vm.controllerState,
                 )
-                Log.i(TAG, "rotate screen $rotateScreen180")
             }
         }
     }
