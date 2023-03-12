@@ -284,14 +284,14 @@ fun MainScreen(
                 ),
                 elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
                 border = BorderStroke(5.dp, color = Color.Black),
-                modifier = Modifier.size(140.dp, 60.dp)
+                modifier = Modifier.size(145.dp, 60.dp)
             ) {
                 Text(
                     "Reset",
-                    modifier = Modifier.padding(top = 8.dp, start = 5.dp),
-                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
                     color = Color.White,
-                    fontFamily = playerTextFont5
+                    fontFamily = playerTextFont3,
                 )
             }
         }
