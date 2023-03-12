@@ -42,7 +42,7 @@ fun FullController(
                 .shadow(5.dp, shape = CircleShape), elevation = 5.dp, color = retroDarkGrey
         ) {
             Row(
-                modifier = Modifier.padding(start = 20.dp, end =30.dp, top = 25.dp, bottom = 25.dp)
+                modifier = Modifier.padding(start = 24.dp, end =30.dp, top = 25.dp, bottom = 25.dp)
             ) {
                 //right arrow button distorts on pixel 4a if not at 1.2f
                 GameControlsLeft(modifier = Modifier.weight(1.3f), arrowOnClick)
@@ -74,7 +74,7 @@ fun GameControlsLeft(
         Row(verticalAlignment = Alignment.CenterVertically) {
             ArrowButton(onClick = { arrowOnClick(Direction.LEFT) }, iconRotation = 180f)
             Column(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
+                verticalArrangement = Arrangement.spacedBy(13.dp),
             ) {
                 ArrowButton(onClick = { arrowOnClick(Direction.UP) }, iconRotation = -90f)
                 ArrowButton(onClick = { arrowOnClick(Direction.DOWN) }, iconRotation = 90f)
@@ -101,7 +101,7 @@ fun GameControlsRight(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ActionButtons(
                 onClick = { actionOnClick(Action.PLACE) },
                 icon = Icons.Filled.AdsClick,
@@ -117,7 +117,7 @@ fun GameControlsRight(
                 )
             }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             if (lockButtonOnCooldown()) {
                 DeadButton(lockCooldownLeft())
             } else {

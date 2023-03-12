@@ -26,7 +26,7 @@ fun ArrowButton(onClick: () -> Unit, iconRotation: Float){
         shape = CircleShape,
         modifier = Modifier
             .offset((-5).dp)
-            .size(56.dp)
+            .size(55.dp)
             .shadow(2.dp, shape = CircleShape),
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons
