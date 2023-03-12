@@ -71,7 +71,7 @@ fun DeadButton (onCooldown: Int, modifier: Modifier =Modifier){
         onClick = { },
         shape = CircleShape,
         modifier = Modifier
-            .size(60.dp)
+            .size(58.dp)
             .shadow(2.dp, shape = CircleShape),
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons

@@ -89,10 +89,10 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(start = 40.dp, top = 20.dp)
             )
             Text(
-                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock cannot be destroyed/transposed & lasts 2 turns.",
-                fontSize = 21.sp,
+                text = "\u2022 Complete a row diagonal or column.\n\n\u2022 You can transpose to win.\n\n\u2022 Lock is immune to all actions.",
+                fontSize = 19.sp,
                 fontFamily = playerTextFont4,
-                textAlign = TextAlign.Start,////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                textAlign = TextAlign.Start,
                 color = Color.White,
                 modifier = Modifier.padding(start = 40.dp, end = 30.dp)
 
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(
                     "\u2022 Actions have cooldowns like ",
-                    fontSize = 21.sp,
+                    fontSize = 19.sp,
                     fontFamily = playerTextFont4,
                     textAlign = TextAlign.Start,
                     color = Color.White,
@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
                 )
                 Box(
                     modifier = Modifier
-                        .padding(start = 40.dp, top = 10.dp)
+                        .padding(start = 30.dp, top = 10.dp)
                         .weight(1f)
                 ) {
                     DeadButton(onCooldown = 2)
@@ -145,7 +145,7 @@ class MainActivity : ComponentActivity() {
                     Text(
                         "Place an X or O",
                         modifier = Modifier.padding(start = 20.dp),
-                        fontSize = 21.sp,
+                        fontSize = 19.sp,
                         color = Color.White,
                         fontFamily = playerTextFont4
                     )
@@ -162,9 +162,9 @@ class MainActivity : ComponentActivity() {
                         tint = Color.White
                     )
                     Text(
-                        "Destroy tiles\n(random pattern)",
+                        "Destroy tiles",
                         modifier = Modifier.padding(start = 20.dp),
-                        fontSize = 21.sp,
+                        fontSize = 19.sp,
                         color = Color.White,
                         fontFamily = playerTextFont4
                     )
@@ -183,7 +183,7 @@ class MainActivity : ComponentActivity() {
                     Text(
                         "Lock a tile",
                         modifier = Modifier.padding(start = 20.dp),
-                        fontSize = 21.sp,
+                        fontSize = 19.sp,
                         color = Color.White,
                         fontFamily = playerTextFont4
                     )
@@ -200,9 +200,9 @@ class MainActivity : ComponentActivity() {
                         tint = Color.White
                     )
                     Text(
-                        "Transpose cross, diagonal or mid\n(mid is random)",
+                        "Transpose symbols",
                         modifier = Modifier.padding(start = 20.dp),
-                        fontSize = 21.sp,
+                        fontSize = 19.sp,
                         color = Color.White,
                         fontFamily = playerTextFont4
                     )
