@@ -127,7 +127,7 @@ fun DrawScope.drawCableUI(){
     )
 
     drawBezierCables(
-        startx = 0.178f,
+        startx = 0.180f,
         starty = 0.28f,
         endx = 0.178f,
         endy = 0.15f,
