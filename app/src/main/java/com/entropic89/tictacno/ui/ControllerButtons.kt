@@ -49,7 +49,7 @@ fun ActionButtons(onClick: () -> Unit, icon: ImageVector, borderColor: Color){
         onClick = {onClick()},
         shape = CircleShape,
         modifier = Modifier
-            .size(60.dp)
+            .size(58.dp)
             .shadow(2.dp, shape = CircleShape),
         colors = ButtonDefaults.buttonColors(
             retroControllerButtons
