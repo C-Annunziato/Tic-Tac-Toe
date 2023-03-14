@@ -35,22 +35,6 @@ class T3ViewModel : ViewModel() {
             _position = value
         }
 
-    private var _timeLeftForTurn: Int by mutableStateOf(12)
-    private var timeLeftForTurn: Int
-        get() = _timeLeftForTurn
-        set(value) {
-            _timeLeftForTurn = value
-        }
-
-//    private var _countDownEnabled: Boolean by mutableStateOf(true)
-//    val countDownEnabled: Boolean
-//        get() = _countDownEnabled
-//
-//
-//    fun updateCountDownEnabled(value : Boolean){
-//        _countDownEnabled = value
-//    }
-
     fun disableCountDown(value: Boolean) {
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(disableCountDown = value)

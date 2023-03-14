@@ -237,7 +237,6 @@ fun MainScreen(
         ) {
             TicTacToeBoard(listOfTileAndGameStates = liveBoardState.value ?: listOfState,
                 viewModel = viewModel,
-                arrowState = controllerState,
                 turnOver = { viewModel.outOfTime() })
         }
         Column(

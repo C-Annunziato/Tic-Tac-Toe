@@ -44,7 +44,6 @@ fun FullController(
             Row(
                 modifier = Modifier.padding(start = 24.dp, end =30.dp, top = 25.dp, bottom = 25.dp)
             ) {
-                //right arrow button distorts on pixel 4a if not at 1.2f
                 GameControlsLeft(modifier = Modifier.weight(1.3f), arrowOnClick)
                 GameControlsRight(
                     modifier = Modifier.weight(1f),

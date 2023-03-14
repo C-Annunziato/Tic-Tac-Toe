@@ -38,7 +38,6 @@ fun TicTacToeBoard(
     modifier: Modifier = Modifier,
     listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
-    arrowState: State<ControllerState?>,
     turnOver: () -> Unit
 ) {
     Column(
