@@ -19,7 +19,7 @@
 * [Jetpack Compose - UI](https://developer.android.com/jetpack/compose)
 * [Canvas - Drawing Graphics](https://developer.android.com/jetpack/compose/graphics/draw/overview)
 * [LiveData - Design Pattern](https://developer.android.com/topic/libraries/architecture/livedata)
-* [Animations - Grahpics](https://developer.android.com/jetpack/compose/animation)
+* [Animations - Graphics](https://developer.android.com/jetpack/compose/animation)
 * [MVVM - Architecture](https://developer.android.com/topic/architecture/intro)
 
 <!-- GETTING STARTED -->
