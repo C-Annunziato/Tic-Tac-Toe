@@ -310,16 +310,18 @@ class T3ViewModel : ViewModel() {
 
     private fun transposeTiles() {
 
+       //make a pair of all possible transpositions
         val pairArray = arrayOf(
             Pair(0, 8),
             Pair(2, 6),
             Pair(1, 7),
             Pair(3, 5),
         )
+        //the middle can transpose to any tile around
         val middleOption = Pair(4, arrayOf(0, 1, 2, 3, 5, 6, 7, 8))
 
         viewModelScope.launch {
-
+            //delay for thumb down *animation*
             delay(2000)
 
 
@@ -375,6 +377,8 @@ class T3ViewModel : ViewModel() {
 
 
                                 }
+
+                            //cooldown adjustment
                             if (tileAndGameState.value!!.first().isPlayer1Turn) {
                                 _controllerState.value = _controllerState.value?.copy(
                                     transposeButtonIsOnCooldownP1 = true,
@@ -446,6 +450,7 @@ class T3ViewModel : ViewModel() {
                                     else -> tileAndGameState
                                 }
                             }
+                        //cooldown adjustment
                         if (tileAndGameState.value!!.first().isPlayer1Turn) {
                             _controllerState.value = _controllerState.value?.copy(
                                 transposeButtonIsOnCooldownP1 = true, transposeCooldownLeftP1 = 3
