@@ -691,35 +691,39 @@ class T3ViewModel : ViewModel() {
 
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(
-                isPlayer1Turn = true,
                 tileIsOccupied = false,
                 symbolInTile = TileValue.NONE,
                 isSelected = false,
                 gameIsComplete = false,
-                lockOnTileP2 = -1,
+                winningIndexes = Triple(0, 0, 0),
+               //p1
+                isPlayer1Turn = true,
                 lockOnTileP1 = -1,
-                winningIndexes = Triple(0, 0, 0)
+               //p2
+                lockOnTileP2 = -1,
             )
         }
 
         _controllerState.value = _controllerState.value?.copy(
             arrowState = Direction.NONE,
             actionState = Action.NONE,
-            destroyButtonIsOnCooldownP2 = false,
+            //p1
             destroyButtonIsOnCooldownP1 = false,
-            destroyCooldownLeftP2 = 0,
             destroyCooldownLeftP1 = 0,
-            lockButtonIsOnCooldownP2 = false,
-            lockButtonCooldownLeftP2 = 0,
-            tileIsLockedP2 = false,
-            tileIsLockedP1 = false,
-            lockOnTileCooldownLeftP2 = 0,
-            transposeButtonIsOnCooldownP2 = false,
             transposeButtonIsOnCooldownP1 = false,
-            transposeCooldownLeftP2 = 0,
             transposeCooldownLeftP1 = 0,
             lockButtonIsOnCooldownP1 = false,
             lockButtonCooldownLeftP1 = 0,
+            tileIsLockedP1 = false,
+            //p2
+            destroyButtonIsOnCooldownP2 = false,
+            destroyCooldownLeftP2 = 0,
+            transposeButtonIsOnCooldownP2 = false,
+            transposeCooldownLeftP2 = 0,
+            lockButtonIsOnCooldownP2 = false,
+            lockButtonCooldownLeftP2 = 0,
+            lockOnTileCooldownLeftP2 = 0,
+            tileIsLockedP2 = false,
         )
 
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
