@@ -1,4 +1,4 @@
-package com.entropic89.tictacno.ui
+package com.entropic89.tictacno.ui.componenet
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -19,7 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.entropic89.tictacno.data.*
+import com.entropic89.tictacno.ui.*
+import com.entropic89.tictacno.ui.model.TileAndGameState
+import com.entropic89.tictacno.ui.model.TileValue
 import com.entropic89.tictacno.ui.theme.*
 import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
 import kotlinx.coroutines.delay

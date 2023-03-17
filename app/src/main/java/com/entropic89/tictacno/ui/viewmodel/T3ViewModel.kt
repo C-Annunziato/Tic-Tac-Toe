@@ -1,6 +1,5 @@
 package com.entropic89.tictacno.ui.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.entropic89.tictacno.data.*
+import com.entropic89.tictacno.ui.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -760,8 +759,6 @@ class T3ViewModel : ViewModel() {
     }
 
     fun outOfTime() {
-
-        Log.i(TAG, "outoftime called")
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
         }

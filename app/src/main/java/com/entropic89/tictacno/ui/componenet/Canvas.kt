@@ -1,4 +1,4 @@
-package com.example.tictactoe.ui.theme
+package com.entropic89.tictacno.ui.componenet
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
