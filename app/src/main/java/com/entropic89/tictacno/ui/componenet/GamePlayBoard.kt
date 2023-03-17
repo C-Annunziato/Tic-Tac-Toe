@@ -19,16 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.entropic89.tictacno.Data.ControllerState
-import com.entropic89.tictacno.Data.T3ViewModel
-import com.entropic89.tictacno.Data.TileAndGameState
-import com.entropic89.tictacno.Data.TileValue
-import com.entropic89.tictacno.ui.theme.playerTextFont3
-import com.entropic89.tictacno.ui.theme.retroDarkBlue
-import com.entropic89.tictacno.ui.theme.retroGreen
-import com.entropic89.tictacno.ui.theme.retroNearWhite
-import com.entropic89.tictacno.Data.*
+import com.entropic89.tictacno.data.*
 import com.entropic89.tictacno.ui.theme.*
+import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
 import kotlinx.coroutines.delay
 
 const val LOG = "gameplay"

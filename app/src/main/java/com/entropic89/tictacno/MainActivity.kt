@@ -1,7 +1,6 @@
 package com.entropic89.tictacno
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -17,7 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
@@ -25,15 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.entropic89.tictacno.Data.ControllerState
-import com.entropic89.tictacno.Data.TileAndGameState
-import com.entropic89.tictacno.Data.T3ViewModel
-import com.entropic89.tictacno.Data.listOfState
+import com.entropic89.tictacno.data.ControllerState
+import com.entropic89.tictacno.data.TileAndGameState
+import com.entropic89.tictacno.data.listOfState
 import com.entropic89.tictacno.ui.DeadButton
 import com.entropic89.tictacno.ui.FullController
 import com.entropic89.tictacno.ui.TicTacToeBoard
 import com.entropic89.tictacno.ui.theme.*
-import com.example.tictactoe.ui.theme.*
+import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
+import com.example.tictactoe.ui.theme.drawCableUI
 import kotlinx.coroutines.launch
 
 const val TAG = "main"

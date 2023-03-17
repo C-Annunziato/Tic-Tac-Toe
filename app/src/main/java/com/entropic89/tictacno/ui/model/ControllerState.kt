@@ -1,4 +1,4 @@
-package com.entropic89.tictacno.Data
+package com.entropic89.tictacno.data
 
 data class ControllerState(
    //Shared State

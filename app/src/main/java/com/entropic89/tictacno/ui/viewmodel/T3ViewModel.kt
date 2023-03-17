@@ -1,4 +1,4 @@
-package com.entropic89.tictacno.Data
+package com.entropic89.tictacno.ui.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.entropic89.tictacno.data.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
