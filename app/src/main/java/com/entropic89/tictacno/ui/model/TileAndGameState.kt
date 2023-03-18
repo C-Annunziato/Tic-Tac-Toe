@@ -13,7 +13,7 @@ data class TileAndGameState(
     val winningIndexes: Triple<Int, Int, Int> = Triple(0, 0, 0),
     val gameIsComplete: Boolean = false,
     val disableCountDown: Boolean = false,
-
+    val currentPlayer: Player = Player.PLAYER1
     )
 
 val listOfState = List(9) { id ->

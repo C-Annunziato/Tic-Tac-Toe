@@ -1,20 +1,33 @@
 package com.entropic89.tictacno.ui.componenet
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AdsClick
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.entropic89.tictacno.ui.model.Action
 import com.entropic89.tictacno.ui.model.Direction
+import com.entropic89.tictacno.ui.model.Player
+import com.entropic89.tictacno.ui.theme.playerTextFont3
 import com.entropic89.tictacno.ui.theme.retroDarkGrey
+import com.entropic89.tictacno.ui.theme.retroPurple
 import kotlin.math.ceil
 
 const val TAG = "controller"
@@ -137,6 +150,86 @@ fun GameControlsRight(
                     borderColor = buttonBorderColor
                 )
             }
+        }
+    }
+}
+
+
+@Composable
+fun FullController(
+    modifier: Modifier = Modifier,
+    player: Player,
+    onUpdateArrowButtonClick: (Direction) -> Unit,
+    onUpdateActionButtonClick: (Action) -> Unit,
+    onResetBoard: () -> Unit
+){
+    Column(
+        modifier = modifier
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+//        FullController(
+//                arrowOnClick = onUpdateArrowButtonClick,
+//                actionOnClick = onUpdateActionButtonClick,
+//                destroyButtonOnCooldown = { player.controllerState?.destroyButtonIsOnCooldownP2!! },
+//                destroyCooldownLeft = { player.controllerState?.destroyCooldownLeftP2 ?: 0 },
+//                lockButtonOnCooldown = { player.controllerState?.lockButtonIsOnCooldownP2!! },
+//                lockCooldownLeft = { player.controllerState?.lockButtonCooldownLeftP2 ?: 0 },
+//                transposeButtonOnCooldown = { player.controllerState?.transposeButtonIsOnCooldownP2!! },
+//                transposeCooldownLeft = {player.controllerState?.transposeCooldownLeftP2 ?: 0 },
+//                buttonBorderColor = retroGreen,
+//                modifier = Modifier.padding(bottom = 40.dp)
+//            )
+
+
+
+//        if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
+//
+//            FullController(
+//                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+//                actionOnClick = { viewModel.updateActionButtonState(action = it) },
+//                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
+//                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
+//                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
+//                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP1 ?: 0 },
+//                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
+//                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
+//                buttonBorderColor = retroPurple,
+//                modifier = Modifier.padding(bottom = 40.dp)
+//            )
+//        } else {
+//
+//            FullController(
+//                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+//                actionOnClick = { viewModel.updateActionButtonState(action = it) },
+//                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
+//                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
+//                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
+//                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP2 ?: 0 },
+//                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
+//                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+//                buttonBorderColor = retroGreen,
+//                modifier = Modifier.padding(bottom = 40.dp)
+//            )
+//        }
+        OutlinedButton(
+            onClick = onResetBoard,
+            shape = CutCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                retroPurple
+            ),
+            elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
+            border = BorderStroke(5.dp, color = Color.Black),
+            modifier = Modifier.size(145.dp, 60.dp)
+        ) {
+            Text(
+                "Reset",
+                textAlign = TextAlign.Center,
+                fontSize = 24.sp,
+                color = Color.White,
+                fontFamily = playerTextFont3,
+            )
         }
     }
 }

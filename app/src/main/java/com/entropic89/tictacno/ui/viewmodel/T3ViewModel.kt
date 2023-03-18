@@ -23,6 +23,8 @@ class T3ViewModel : ViewModel() {
     private val _controllerState = MutableLiveData(ControllerState())
     val controllerState: LiveData<ControllerState> = _controllerState
 
+    val gameState = GameState()
+
     private var currentRow: Int by mutableStateOf(0)
     private var currentColumn: Int by mutableStateOf(0)
     private var numColumns: Int = 3
@@ -34,6 +36,10 @@ class T3ViewModel : ViewModel() {
         set(value) {
             _position = value
         }
+    init {
+        initToBoardMiddle()
+    }
+
 
     fun disableCountDown(value: Boolean) {
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
@@ -41,16 +47,11 @@ class T3ViewModel : ViewModel() {
         }
     }
 
-    init {
-        initToBoardMiddle()
-    }
-
     fun updateActionButtonState(action: Action) {
         //get the tile at the position of the arrow controls as tileState
         tileAndGameState.value?.getOrNull(position)?.let { ts ->
             when (action) {
                 Action.PLACE -> {
-
 
                     //everytime a symbol is placed in a non occupied tile do the following:
                     //if tile is empty
@@ -71,7 +72,6 @@ class T3ViewModel : ViewModel() {
 
                         //Player 2 turn
                         if (!ts.isPlayer1Turn) {
-
                             //lock button cd
                             _controllerState.value =
                                 _controllerState.value?.lockButtonCooldownLeftP2?.let {

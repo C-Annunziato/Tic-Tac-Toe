@@ -25,6 +25,23 @@ data class ControllerState(
     val tileIsLockedP2: Boolean = false,
 )
 
+data class NewControllerState(
+    val arrowState: Direction = Direction.NONE,
+    val actionState: Action = Action.NONE,
+
+    val destroyButtonIsOnCooldownP1: Boolean = false,
+    val destroyCooldownLeftP1: Int = 0,
+    val lockButtonIsOnCooldownP1: Boolean = false,
+    val lockButtonCooldownLeftP1: Int = 0,
+    val transposeButtonIsOnCooldownP1: Boolean = false,
+    val transposeCooldownLeftP1: Int = 0,
+    val lockOnTileCooldownLeftP1: Int = 0,
+    val tileIsLockedP1: Boolean = false,
+
+){
+
+}
+
 enum class Direction {
     UP,
     DOWN,
