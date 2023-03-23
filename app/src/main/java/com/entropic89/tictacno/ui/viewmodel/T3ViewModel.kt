@@ -36,6 +36,7 @@ class T3ViewModel : ViewModel() {
         set(value) {
             _position = value
         }
+
     init {
         initToBoardMiddle()
     }
@@ -44,6 +45,36 @@ class T3ViewModel : ViewModel() {
     fun disableCountDown(value: Boolean) {
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(disableCountDown = value)
+        }
+    }
+
+    fun updateActionButtonState2(action: Action) {
+        tileAndGameState.value?.getOrNull(position)?.let { ts ->
+            when (action) {
+                Action.PLACE -> {
+                    gameState.updateActionCooldowns()
+                    _tileAndGameState.value = gameState.placeSymbolInTile(tileState = tileAndGameState.value!!, position = position)
+                    _tileAndGameState.value = gameState.lockTile(listOfTileState = tileAndGameState.value!!)
+                    checkForVictory(TileValue.CROSS)
+                    checkForVictory(TileValue.CIRCLE)
+                    gameState.changePlayer()
+                }
+                Action.DESTROY -> {
+                    gameState.updateDestroyCooldowns(tileState = ts)
+                }
+                Action.LOCK -> {
+                    gameState.updateLockCooldowns(tileState = ts)
+                    lockSpecificTile()
+                }
+                Action.TRANSPOSE -> {
+                    if (!ts.gameIsComplete && gameState.isTransposeButtonOnCooldown()) {
+                        transposeTiles()
+                        checkForVictory(TileValue.CROSS)
+                        checkForVictory(TileValue.CIRCLE)
+                    }
+                }
+                else -> {}
+            }
         }
     }
 
@@ -187,8 +218,11 @@ class T3ViewModel : ViewModel() {
                     }
                     //lock
                     if (controllerState.value?.tileIsLockedP1 == true && controllerState.value?.lockOnTileCooldownLeftP1!! == 0) {
+
+
                         _controllerState.value =
                             _controllerState.value?.copy(tileIsLockedP1 = false)
+
                         _tileAndGameState.value =
                             _tileAndGameState.value?.mapIndexed { index, tileState ->
                                 if (index == tileState.lockOnTileP1) {
@@ -284,7 +318,6 @@ class T3ViewModel : ViewModel() {
                         lockSpecificTile()
                     } else controllerState
                 }
-
                 Action.TRANSPOSE -> {
 
                     if (!ts.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP2!! && !tileAndGameState.value!!.first().isPlayer1Turn) {
@@ -310,7 +343,7 @@ class T3ViewModel : ViewModel() {
 
     private fun transposeTiles() {
 
-       //make a pair of all possible transpositions
+        //make a pair of all possible transpositions
         val pairArray = arrayOf(
             Pair(0, 8),
             Pair(2, 6),
@@ -416,11 +449,15 @@ class T3ViewModel : ViewModel() {
                     tryCount += 1
                 }
             } else {
-                randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
+                randomChoice =
+                    Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first }
+                        ?: Random.nextInt(numColumns * numRows)
                 randomSymbolAroundMiddle =
                     tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
                 while (randomSymbolAroundMiddle == symbolInMiddleTile || randomSymbolAroundMiddle == TileValue.LOCKED) {
-                    randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
+                    randomChoice =
+                        Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first }
+                            ?: Random.nextInt(numColumns * numRows)
                     randomSymbolAroundMiddle =
                         tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
                 }
@@ -696,10 +733,10 @@ class T3ViewModel : ViewModel() {
                 isSelected = false,
                 gameIsComplete = false,
                 winningIndexes = Triple(0, 0, 0),
-               //p1
+                //p1
                 isPlayer1Turn = true,
                 lockOnTileP1 = -1,
-               //p2
+                //p2
                 lockOnTileP2 = -1,
             )
         }
