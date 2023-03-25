@@ -1,5 +1,6 @@
 package com.entropic89.tictacno.ui.componenet
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.entropic89.tictacno.ui.*
+import com.entropic89.tictacno.ui.model.Player
 import com.entropic89.tictacno.ui.model.TileAndGameState
 import com.entropic89.tictacno.ui.model.TileValue
 import com.entropic89.tictacno.ui.theme.*
@@ -33,8 +35,13 @@ fun TicTacToeBoard(
     modifier: Modifier = Modifier,
     listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
-    turnOver: () -> Unit
+    turnOver: () -> Unit,
+    player: Player
 ) {
+
+
+    val isPlayer1Turn = (player == Player.PLAYER1)
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,8 +71,8 @@ fun TicTacToeBoard(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)
             ) {
-                BlinkingText1(listOfTileAndGameStates = listOfTileAndGameStates)
-                BlinkingText2(listOfTileAndGameStates = listOfTileAndGameStates)
+                BlinkingText1(listOfTileAndGameStates = listOfTileAndGameStates, isPlayer1Turn)
+                BlinkingText2(listOfTileAndGameStates = listOfTileAndGameStates, isPlayer1Turn)
 
             }
 
@@ -73,10 +80,12 @@ fun TicTacToeBoard(
                 if (viewModel.tileAndGameState.value!!.first().gameIsComplete) {
                     CountdownTimer(modifier.weight(1.2f), turnOver = turnOver, true)
                     //alternate countdown based on turn
-                } else if (viewModel.tileAndGameState.value?.first()?.isPlayer1Turn == true) {
+                } else if (isPlayer1Turn) {
+                    Log.i(LOG, "player 1 turn")
                     //alternate countdown based on turn
                     CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
                 } else {
+                    Log.i(LOG, "player 2 turn")
                     CountdownTimer(modifier.weight(1.2f), turnOver = turnOver)
                 }
             } else if (listOfTileAndGameStates?.first()?.disableCountDown == true) {
@@ -158,7 +167,7 @@ fun Tile(
 
 
 @Composable
-fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?) {
+fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?, isPlayer1Turn: Boolean) {
     var isVisible by remember { mutableStateOf(true) }
 
     if (listOfTileAndGameStates != null) {
@@ -180,7 +189,7 @@ fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?) {
         Text(
             text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) {
                 "GAME"
-            } else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 2" else "Player 1",
+            } else if (isPlayer1Turn) "Player 2" else "Player 1",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
             fontFamily = playerTextFont3,
@@ -198,7 +207,7 @@ fun BlinkingText1(listOfTileAndGameStates: List<TileAndGameState>?) {
 
 
 @Composable
-fun BlinkingText2(listOfTileAndGameStates: List<TileAndGameState>?) {
+fun BlinkingText2(listOfTileAndGameStates: List<TileAndGameState>?, isPlayer1Turn: Boolean) {
     var isVisible by remember { mutableStateOf(true) }
 
     if (listOfTileAndGameStates != null) {
@@ -221,7 +230,7 @@ fun BlinkingText2(listOfTileAndGameStates: List<TileAndGameState>?) {
         Text(
             text = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) {
                 "OVER"
-            } else if (listOfTileAndGameStates?.first()?.isPlayer1Turn == true) "Player 1" else "Player 2",
+            } else if (isPlayer1Turn) "Player 1" else "Player 2",
             fontSize = if (listOfTileAndGameStates?.first()?.gameIsComplete == true) 20.sp else 21.sp,
             fontWeight = FontWeight.ExtraBold,
             fontFamily = playerTextFont3,

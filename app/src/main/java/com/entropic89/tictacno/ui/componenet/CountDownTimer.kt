@@ -20,7 +20,7 @@ fun CountdownTimer(
     modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boolean = false
 ) {
 
-    val time by produceState(initialValue = 5) {
+    val time by produceState(initialValue = 20) {
         while (value > 0) {
             delay(1.seconds)
             value = value.minus(1)

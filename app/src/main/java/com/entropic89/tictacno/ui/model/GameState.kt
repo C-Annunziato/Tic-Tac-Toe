@@ -1,5 +1,6 @@
 package com.entropic89.tictacno.ui.model
 
+import android.util.Log
 import androidx.compose.runtime.toMutableStateList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,10 @@ data class GameState(
         //Lock
     }
 
+    fun resetPlayer(){
+       _currentPlayer.value = Player.PLAYER1
+    }
+
     fun updateDestroyCooldowns(tileState: TileAndGameState) {
         _currentPlayer.update { player ->
             player.apply {
@@ -40,29 +45,31 @@ data class GameState(
         }
     }
 
-    fun updateTransposeCooldowns(tileState: TileAndGameState){
+    fun updateTransposeCooldowns(tileState: TileAndGameState) {
 
     }
 
     fun isTransposeButtonOnCooldown(): Boolean {
-       return currentPlayer.value.controllerState.transposeButtonIsOnCooldownP1
+        return currentPlayer.value.controllerState.transposeButtonIsOnCooldownP1
     }
-   fun updateLockCooldowns(tileState: TileAndGameState){
-       _currentPlayer.update { player ->
-           player.apply {
-               if (!tileState.gameIsComplete && !controllerState.lockButtonIsOnCooldownP1!! && !tileState.tileIsOccupied && tileState.isPlayer1Turn){
-                  controllerState = controllerState.copy(
-                      lockButtonIsOnCooldownP1 = true,
-                      lockButtonCooldownLeftP1 = 3,
-                      tileIsLockedP1 = true,
-                      lockOnTileCooldownLeftP1 = 3,
-                  )
-               }
-           }
-       }
-   }
 
-    fun updateActionCooldowns() {
+    fun updateLockCooldowns(tileState: TileAndGameState) {
+        _currentPlayer.update { player ->
+            player.apply {
+                if (!tileState.gameIsComplete && !controllerState.lockButtonIsOnCooldownP1!! && !tileState.tileIsOccupied && tileState.isPlayer1Turn) {
+                    controllerState = controllerState.copy(
+                        lockButtonIsOnCooldownP1 = true,
+                        lockButtonCooldownLeftP1 = 3,
+                        tileIsLockedP1 = true,
+                        lockOnTileCooldownLeftP1 = 3,
+                    )
+                }
+            }
+        }
+    }
+
+
+    fun updateActionButtonCooldowns() {
 
         //transpose is subtracted on both turns need to deal with it or split it up to individual players
 
@@ -111,12 +118,9 @@ data class GameState(
         }
     }
 
-    fun change() {
-
-    }
-
     //synchronizing controller states
     fun changePlayer() {
+        Log.i(tag, "player change")
         //source of truth ensures we always correlate correct player to record
         //current player matches one of the  players in enum class
         val currentPlayerIndex = players.indexOfFirst { it.name == currentPlayer.value.name }

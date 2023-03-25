@@ -44,8 +44,12 @@ fun FullController(
     lockCooldownLeft: () -> Int,
     transposeButtonOnCooldown: () -> Boolean,
     transposeCooldownLeft: () -> Int,
-    buttonBorderColor: Color
-) {
+    buttonBorderColor: Color,
+    onResetBoard: () -> Unit,
+    player: Player,
+
+
+    ) {
     Column(
         modifier = modifier,
     ) {
@@ -55,7 +59,7 @@ fun FullController(
                 .shadow(5.dp, shape = CircleShape), elevation = 5.dp, color = retroDarkGrey
         ) {
             Row(
-                modifier = Modifier.padding(start = 24.dp, end =30.dp, top = 25.dp, bottom = 25.dp)
+                modifier = Modifier.padding(start = 24.dp, end = 30.dp, top = 25.dp, bottom = 25.dp)
             ) {
                 GameControlsLeft(modifier = Modifier.weight(1.3f), arrowOnClick)
                 GameControlsRight(
@@ -72,6 +76,24 @@ fun FullController(
             }
         }
 
+    }
+    OutlinedButton(
+        onClick = onResetBoard,
+        shape = CutCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(
+            retroPurple
+        ),
+        elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
+        border = BorderStroke(5.dp, color = Color.Black),
+        modifier = Modifier.size(145.dp, 60.dp)
+    ) {
+        Text(
+            "Reset",
+            textAlign = TextAlign.Center,
+            fontSize = 24.sp,
+            color = Color.White,
+            fontFamily = playerTextFont3,
+        )
     }
 }
 
@@ -154,87 +176,87 @@ fun GameControlsRight(
     }
 }
 
-
-@Composable
-fun FullController(
-    modifier: Modifier = Modifier,
-    player: Player,
-    onUpdateArrowButtonClick: (Direction) -> Unit,
-    onUpdateActionButtonClick: (Action) -> Unit,
-    onResetBoard: () -> Unit
-){
-    Column(
-        modifier = modifier
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-//        FullController(
-//                arrowOnClick = onUpdateArrowButtonClick,
-//                actionOnClick = onUpdateActionButtonClick,
-//                destroyButtonOnCooldown = { player.controllerState?.destroyButtonIsOnCooldownP2!! },
-//                destroyCooldownLeft = { player.controllerState?.destroyCooldownLeftP2 ?: 0 },
-//                lockButtonOnCooldown = { player.controllerState?.lockButtonIsOnCooldownP2!! },
-//                lockCooldownLeft = { player.controllerState?.lockButtonCooldownLeftP2 ?: 0 },
-//                transposeButtonOnCooldown = { player.controllerState?.transposeButtonIsOnCooldownP2!! },
-//                transposeCooldownLeft = {player.controllerState?.transposeCooldownLeftP2 ?: 0 },
-//                buttonBorderColor = retroGreen,
-//                modifier = Modifier.padding(bottom = 40.dp)
-//            )
-
-
-
-//        if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
 //
-//            FullController(
-//                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
-//                actionOnClick = { viewModel.updateActionButtonState(action = it) },
-//                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
-//                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
-//                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
-//                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP1 ?: 0 },
-//                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
-//                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
-//                buttonBorderColor = retroPurple,
-//                modifier = Modifier.padding(bottom = 40.dp)
-//            )
-//        } else {
+//@Composable
+//fun FullController(
+//    modifier: Modifier = Modifier,
+//    player: Player,
+//    onUpdateArrowButtonClick: (Direction) -> Unit,
+//    onUpdateActionButtonClick: (Action) -> Unit,
+//    onResetBoard: () -> Unit
+//){
+//    Column(
+//        modifier = modifier
+//            .padding(8.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Top
+//    ) {
+////        FullController(
+////                arrowOnClick = onUpdateArrowButtonClick,
+////                actionOnClick = onUpdateActionButtonClick,
+////                destroyButtonOnCooldown = { player.controllerState?.destroyButtonIsOnCooldownP2!! },
+////                destroyCooldownLeft = { player.controllerState?.destroyCooldownLeftP2 ?: 0 },
+////                lockButtonOnCooldown = { player.controllerState?.lockButtonIsOnCooldownP2!! },
+////                lockCooldownLeft = { player.controllerState?.lockButtonCooldownLeftP2 ?: 0 },
+////                transposeButtonOnCooldown = { player.controllerState?.transposeButtonIsOnCooldownP2!! },
+////                transposeCooldownLeft = {player.controllerState?.transposeCooldownLeftP2 ?: 0 },
+////                buttonBorderColor = retroGreen,
+////                modifier = Modifier.padding(bottom = 40.dp)
+////            )
 //
-//            FullController(
-//                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
-//                actionOnClick = { viewModel.updateActionButtonState(action = it) },
-//                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
-//                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
-//                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
-//                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP2 ?: 0 },
-//                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
-//                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
-//                buttonBorderColor = retroGreen,
-//                modifier = Modifier.padding(bottom = 40.dp)
+//
+//
+////        if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
+////
+////            FullController(
+////                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+////                actionOnClick = { viewModel.updateActionButtonState(action = it) },
+////                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
+////                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
+////                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
+////                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP1 ?: 0 },
+////                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
+////                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
+////                buttonBorderColor = retroPurple,
+////                modifier = Modifier.padding(bottom = 40.dp)
+////            )
+////        } else {
+////
+////            FullController(
+////                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+////                actionOnClick = { viewModel.updateActionButtonState(action = it) },
+////                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
+////                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
+////                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
+////                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP2 ?: 0 },
+////                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP2!! },
+////                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP2 ?: 0 },
+////                buttonBorderColor = retroGreen,
+////                modifier = Modifier.padding(bottom = 40.dp)
+////            )
+////        }
+//        OutlinedButton(
+//            onClick = onResetBoard,
+//            shape = CutCornerShape(10.dp),
+//            colors = ButtonDefaults.buttonColors(
+//                retroPurple
+//            ),
+//            elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
+//            border = BorderStroke(5.dp, color = Color.Black),
+//            modifier = Modifier.size(145.dp, 60.dp)
+//        ) {
+//            Text(
+//                "Reset",
+//                textAlign = TextAlign.Center,
+//                fontSize = 24.sp,
+//                color = Color.White,
+//                fontFamily = playerTextFont3,
 //            )
 //        }
-        OutlinedButton(
-            onClick = onResetBoard,
-            shape = CutCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                retroPurple
-            ),
-            elevation = ButtonDefaults.elevation(defaultElevation = 5.dp),
-            border = BorderStroke(5.dp, color = Color.Black),
-            modifier = Modifier.size(145.dp, 60.dp)
-        ) {
-            Text(
-                "Reset",
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                color = Color.White,
-                fontFamily = playerTextFont3,
-            )
-        }
-    }
-}
-
-
+//    }
+//}
+//
+//
 
 
 

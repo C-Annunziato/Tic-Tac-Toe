@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,11 +29,10 @@ import com.entropic89.tictacno.ui.componenet.FullController
 import com.entropic89.tictacno.ui.componenet.TicTacToeBoard
 import com.entropic89.tictacno.ui.componenet.drawCableUI
 import com.entropic89.tictacno.ui.model.ControllerState
+import com.entropic89.tictacno.ui.model.Player
 import com.entropic89.tictacno.ui.model.TileAndGameState
 import com.entropic89.tictacno.ui.model.listOfState
-import com.entropic89.tictacno.ui.theme.retroAppBarColor
-import com.entropic89.tictacno.ui.theme.retroGrey
-import com.entropic89.tictacno.ui.theme.retroNearWhite
+import com.entropic89.tictacno.ui.theme.*
 import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
 import kotlinx.coroutines.launch
 
@@ -89,17 +89,36 @@ fun MainScreen(
         Column(
             modifier = Modifier.weight(0.55f)
         ) {
-            TicTacToeBoard(listOfTileAndGameStates = tileAndGameState.value ?: listOfState,
+            TicTacToeBoard(
+                listOfTileAndGameStates = tileAndGameState.value ?: listOfState,
                 viewModel = viewModel,
-                turnOver = { viewModel.outOfTime() })
+                turnOver = { viewModel.outOfTime() },
+                player = player
+            )
+
         }
-        FullController(
-            modifier = Modifier.weight(0.45f),
-            onUpdateActionButtonClick = viewModel::updateActionButtonState,
-            onUpdateArrowButtonClick = viewModel::updateArrowButtonState,
-            onResetBoard = viewModel::resetBoard,
-            player = player
-        )
+        Column(
+            modifier = Modifier
+                .weight(0.45f)
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            FullController(
+                modifier = Modifier.padding(bottom = 40.dp),
+                onResetBoard = viewModel::resetBoard,
+                player = player,
+                arrowOnClick = { viewModel.updateArrowButtonState(direction = it) },
+                actionOnClick = { viewModel.updateActionButtonState(action = it) },
+                destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
+                destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
+                lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
+                lockCooldownLeft = { controllerState.value?.lockButtonCooldownLeftP1 ?: 0 },
+                transposeButtonOnCooldown = { controllerState.value?.transposeButtonIsOnCooldownP1!! },
+                transposeCooldownLeft = { controllerState.value?.transposeCooldownLeftP1 ?: 0 },
+                buttonBorderColor = if (player == Player.PLAYER1) retroPurple else retroGreen,
+            )
+        }
     }
 }
 

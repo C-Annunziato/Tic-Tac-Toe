@@ -48,292 +48,34 @@ class T3ViewModel : ViewModel() {
         }
     }
 
-    fun updateActionButtonState2(action: Action) {
-        tileAndGameState.value?.getOrNull(position)?.let { ts ->
+    fun updateActionButtonState(action: Action) {
+        tileAndGameState.value?.getOrNull(position)?.let { tileState ->
             when (action) {
                 Action.PLACE -> {
-                    gameState.updateActionCooldowns()
-                    _tileAndGameState.value = gameState.placeSymbolInTile(tileState = tileAndGameState.value!!, position = position)
-                    _tileAndGameState.value = gameState.lockTile(listOfTileState = tileAndGameState.value!!)
-                    checkForVictory(TileValue.CROSS)
-                    checkForVictory(TileValue.CIRCLE)
-                    gameState.changePlayer()
+                    if(!tileState.tileIsOccupied) {
+                        gameState.updateActionButtonCooldowns()
+                        _tileAndGameState.value = gameState.placeSymbolInTile(
+                            tileState = this.tileAndGameState.value!!,
+                            position = position
+                        )
+                        checkForVictory(TileValue.CROSS)
+                        checkForVictory(TileValue.CIRCLE)
+                        gameState.changePlayer()
+                    }
                 }
                 Action.DESTROY -> {
-                    gameState.updateDestroyCooldowns(tileState = ts)
+                    gameState.updateDestroyCooldowns(tileState = tileState)
                 }
                 Action.LOCK -> {
-                    gameState.updateLockCooldowns(tileState = ts)
+                    _tileAndGameState.value = gameState.lockTile(listOfTileState = this.tileAndGameState.value!!)
+                    gameState.updateLockCooldowns(tileState = tileState)
                     lockSpecificTile()
                 }
                 Action.TRANSPOSE -> {
-                    if (!ts.gameIsComplete && gameState.isTransposeButtonOnCooldown()) {
+                    if (!tileState.gameIsComplete && gameState.isTransposeButtonOnCooldown()) {
                         transposeTiles()
                         checkForVictory(TileValue.CROSS)
                         checkForVictory(TileValue.CIRCLE)
-                    }
-                }
-                else -> {}
-            }
-        }
-    }
-
-    fun updateActionButtonState(action: Action) {
-        //get the tile at the position of the arrow controls as tileState
-        tileAndGameState.value?.getOrNull(position)?.let { ts ->
-            when (action) {
-                Action.PLACE -> {
-
-                    //everytime a symbol is placed in a non occupied tile do the following:
-                    //if tile is empty
-                    if (!ts.tileIsOccupied) {
-
-                        //Player one turn
-                        if (ts.isPlayer1Turn) {
-                            //lock button cd
-                            _controllerState.value =
-                                _controllerState.value?.lockButtonCooldownLeftP1?.let {
-                                    _controllerState.value?.copy(
-                                        lockButtonCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
-                                    )
-                                }
-
-
-                        }
-
-                        //Player 2 turn
-                        if (!ts.isPlayer1Turn) {
-                            //lock button cd
-                            _controllerState.value =
-                                _controllerState.value?.lockButtonCooldownLeftP2?.let {
-                                    _controllerState.value?.copy(
-                                        lockButtonCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
-                                    )
-                                }
-
-
-                        }
-
-                        //transpose
-                        //both turns subtract
-                        _controllerState.value =
-                            _controllerState.value?.transposeCooldownLeftP1?.let {
-                                _controllerState.value?.copy(
-                                    transposeCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
-                                )
-                            }
-
-                        //transpose
-                        //both turns subtract
-                        _controllerState.value =
-                            _controllerState.value?.transposeCooldownLeftP2?.let {
-                                _controllerState.value?.copy(
-                                    transposeCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
-                                )
-                            }
-
-                        //both turns we subtract
-                        _controllerState.value =
-                            _controllerState.value?.lockOnTileCooldownLeftP1?.let {
-                                if (it > 0) {
-                                    _controllerState.value?.copy(
-                                        lockOnTileCooldownLeftP1 = it.minus(1)
-                                    )
-                                } else _controllerState.value
-                            }
-
-
-                        //both turns we subtract
-                        _controllerState.value =
-                            _controllerState.value?.lockOnTileCooldownLeftP2?.let {
-                                if (it > 0) {
-                                    controllerState.value?.copy(
-                                        lockOnTileCooldownLeftP2 = it.minus(1)
-                                    )
-                                } else _controllerState.value
-                            }
-
-
-                        //destroy
-                        _controllerState.value =
-                            _controllerState.value?.destroyCooldownLeftP2?.let {
-                                _controllerState.value?.copy(
-                                    destroyCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
-                                )
-                            }
-
-                        //destroy
-                        _controllerState.value =
-                            _controllerState.value?.destroyCooldownLeftP1?.let {
-                                _controllerState.value?.copy(
-                                    destroyCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
-                                )
-                            }
-
-
-                        //player turn change
-                        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
-                            tileState.copy(
-                                isPlayer1Turn = !tileState.isPlayer1Turn,
-                            )
-                        }
-
-                        //Place Symbol
-                        _tileAndGameState.value =
-                            _tileAndGameState.value?.mapIndexed { index, tileState ->
-                                if (position == index && tileState.isPlayer1Turn) {
-                                    tileState.copy(
-                                        symbolInTile = TileValue.CROSS, tileIsOccupied = true
-                                    )
-
-                                } else if (position == index && !tileState.isPlayer1Turn) {
-                                    tileState.copy(
-                                        symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
-                                    )
-                                    //retain the state
-                                } else tileState
-                            }
-                        //Check for victory
-                        checkForVictory(TileValue.CROSS)
-                        checkForVictory(TileValue.CIRCLE)
-                    }
-
-
-                    // if player 1
-                    //lock
-                    if (ts.isPlayer1Turn) {
-                        if (controllerState.value?.lockButtonIsOnCooldownP1 == true && controllerState.value?.lockButtonCooldownLeftP1!! == 0) {
-                            _controllerState.value =
-                                _controllerState.value?.copy(lockButtonIsOnCooldownP1 = false)
-                        }
-                    }
-
-                    // if player 2
-                    //lock
-                    if (!ts.isPlayer1Turn) {
-                        if (controllerState.value?.lockButtonIsOnCooldownP2 == true && controllerState.value?.lockButtonCooldownLeftP2!! == 0) {
-                            _controllerState.value =
-                                _controllerState.value?.copy(lockButtonIsOnCooldownP2 = false)
-                        }
-                    }
-                    //lock
-                    if (controllerState.value?.tileIsLockedP1 == true && controllerState.value?.lockOnTileCooldownLeftP1!! == 0) {
-
-
-                        _controllerState.value =
-                            _controllerState.value?.copy(tileIsLockedP1 = false)
-
-                        _tileAndGameState.value =
-                            _tileAndGameState.value?.mapIndexed { index, tileState ->
-                                if (index == tileState.lockOnTileP1) {
-                                    tileState.copy(
-                                        symbolInTile = TileValue.NONE,
-                                        tileIsOccupied = false,
-                                        lockOnTileP1 = -1
-                                    )
-                                } else tileState
-                            }
-                    }
-
-
-                    //lock
-                    if (controllerState.value?.tileIsLockedP2 == true && controllerState.value?.lockOnTileCooldownLeftP2!! == 0) {
-                        _controllerState.value =
-                            _controllerState.value?.copy(tileIsLockedP2 = false)
-                        _tileAndGameState.value =
-                            _tileAndGameState.value?.mapIndexed { index, tileState ->
-                                if (index == tileState.lockOnTileP2) {
-                                    tileState.copy(
-                                        symbolInTile = TileValue.NONE,
-                                        tileIsOccupied = false,
-                                        lockOnTileP2 = -1
-                                    )
-                                } else tileState
-                            }
-                    }
-
-
-                    //destroy
-                    if (controllerState.value?.destroyButtonIsOnCooldownP1 == true && controllerState.value?.destroyCooldownLeftP1!! == 0) {
-                        _controllerState.value =
-                            _controllerState.value?.copy(destroyButtonIsOnCooldownP1 = false)
-                    }
-                    //destroy
-                    if (controllerState.value?.destroyButtonIsOnCooldownP2 == true && controllerState.value?.destroyCooldownLeftP2!! == 0) {
-                        _controllerState.value =
-                            _controllerState.value?.copy(destroyButtonIsOnCooldownP2 = false)
-                    }
-
-                    //transpose
-                    if (controllerState.value?.transposeButtonIsOnCooldownP2 == true && controllerState.value?.transposeCooldownLeftP2!! == 0) {
-                        _controllerState.value =
-                            _controllerState.value?.copy(transposeButtonIsOnCooldownP2 = false)
-                    }
-
-                    //transpose
-                    if (controllerState.value?.transposeButtonIsOnCooldownP1 == true && controllerState.value?.transposeCooldownLeftP1!! == 0) {
-                        _controllerState.value =
-                            _controllerState.value?.copy(transposeButtonIsOnCooldownP1 = false)
-                    } else ts
-                }
-                Action.DESTROY -> {
-
-                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP1!! && ts.isPlayer1Turn) {
-                        destroyRandomTiles()
-                        _controllerState.value = _controllerState.value?.copy(
-                            destroyButtonIsOnCooldownP1 = true, destroyCooldownLeftP1 = 4
-                        )
-                    }
-
-                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP2!! && !ts.isPlayer1Turn) {
-                        destroyRandomTiles()
-                        _controllerState.value = _controllerState.value?.copy(
-                            destroyButtonIsOnCooldownP2 = true, destroyCooldownLeftP2 = 4
-                        )
-                    } else {
-                    }
-
-
-                }
-                Action.LOCK -> {
-
-                    //is player 1 and lock button not on CD
-                    if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP1!! && !ts.tileIsOccupied && ts.isPlayer1Turn) {
-                        _controllerState.value = _controllerState.value?.copy(
-                            lockButtonIsOnCooldownP1 = true,
-                            lockButtonCooldownLeftP1 = 3,
-                            tileIsLockedP1 = true,
-                            lockOnTileCooldownLeftP1 = 3
-                        )
-                        lockSpecificTile()
-                    }
-                    //is player 2
-                    if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP2!! && !ts.tileIsOccupied && !ts.isPlayer1Turn) {
-                        _controllerState.value = _controllerState.value?.copy(
-                            lockButtonIsOnCooldownP2 = true,
-                            lockButtonCooldownLeftP2 = 3,
-                            tileIsLockedP2 = true,
-                            lockOnTileCooldownLeftP2 = 3
-                        )
-                        lockSpecificTile()
-                    } else controllerState
-                }
-                Action.TRANSPOSE -> {
-
-                    if (!ts.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP2!! && !tileAndGameState.value!!.first().isPlayer1Turn) {
-                        transposeTiles()
-
-                        checkForVictory(TileValue.CROSS)
-                        checkForVictory(TileValue.CIRCLE)
-                    } else {
-                    }
-
-                    if (!ts.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP1!! && tileAndGameState.value!!.first().isPlayer1Turn) {
-                        transposeTiles()
-
-                        checkForVictory(TileValue.CROSS)
-                        checkForVictory(TileValue.CIRCLE)
-                    } else {
                     }
                 }
                 else -> {}
@@ -386,7 +128,6 @@ class T3ViewModel : ViewModel() {
                                                 symbolInTile = secondIndexSymbol,
                                                 tileIsOccupied = true
                                             )
-
                                         }
                                         //switch second to first
                                         //if first is NONE then second will end up as NONE so tile is not occupied
@@ -401,14 +142,10 @@ class T3ViewModel : ViewModel() {
                                                 tileIsOccupied = true
                                             )
                                         }
-
-
                                         else -> {
                                             tileAndGameState
                                         }
                                     }
-
-
                                 }
 
                             //cooldown adjustment
@@ -769,6 +506,7 @@ class T3ViewModel : ViewModel() {
             } else tileState
         }
 
+        gameState.resetPlayer()
         initToBoardMiddle()
     }
 
@@ -805,7 +543,268 @@ class T3ViewModel : ViewModel() {
 
 
 
-
+//    fun updateActionButtonState(action: Action) {
+//        //get the tile at the position of the arrow controls as tileState
+//        tileAndGameState.value?.getOrNull(position)?.let { ts ->
+//            when (action) {
+//                Action.PLACE -> {
+//
+//                    //everytime a symbol is placed in a non occupied tile do the following:
+//                    //if tile is empty
+//                    if (!ts.tileIsOccupied) {
+//
+//                        //Player one turn
+//                        if (ts.isPlayer1Turn) {
+//                            //lock button cd
+//                            _controllerState.value =
+//                                _controllerState.value?.lockButtonCooldownLeftP1?.let {
+//                                    _controllerState.value?.copy(
+//                                        lockButtonCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
+//                                    )
+//                                }
+//
+//
+//                        }
+//
+//                        //Player 2 turn
+//                        if (!ts.isPlayer1Turn) {
+//                            //lock button cd
+//                            _controllerState.value =
+//                                _controllerState.value?.lockButtonCooldownLeftP2?.let {
+//                                    _controllerState.value?.copy(
+//                                        lockButtonCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
+//                                    )
+//                                }
+//
+//
+//                        }
+//
+//                        //transpose
+//                        //both turns subtract
+//                        _controllerState.value =
+//                            _controllerState.value?.transposeCooldownLeftP1?.let {
+//                                _controllerState.value?.copy(
+//                                    transposeCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
+//                                )
+//                            }
+//
+//                        //transpose
+//                        //both turns subtract
+//                        _controllerState.value =
+//                            _controllerState.value?.transposeCooldownLeftP2?.let {
+//                                _controllerState.value?.copy(
+//                                    transposeCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
+//                                )
+//                            }
+//
+//                        //both turns we subtract
+//                        _controllerState.value =
+//                            _controllerState.value?.lockOnTileCooldownLeftP1?.let {
+//                                if (it > 0) {
+//                                    _controllerState.value?.copy(
+//                                        lockOnTileCooldownLeftP1 = it.minus(1)
+//                                    )
+//                                } else _controllerState.value
+//                            }
+//
+//
+//                        //both turns we subtract
+//                        _controllerState.value =
+//                            _controllerState.value?.lockOnTileCooldownLeftP2?.let {
+//                                if (it > 0) {
+//                                    controllerState.value?.copy(
+//                                        lockOnTileCooldownLeftP2 = it.minus(1)
+//                                    )
+//                                } else _controllerState.value
+//                            }
+//
+//
+//                        //destroy
+//                        _controllerState.value =
+//                            _controllerState.value?.destroyCooldownLeftP2?.let {
+//                                _controllerState.value?.copy(
+//                                    destroyCooldownLeftP2 = it.minus(1).coerceAtLeast(0),
+//                                )
+//                            }
+//
+//                        //destroy
+//                        _controllerState.value =
+//                            _controllerState.value?.destroyCooldownLeftP1?.let {
+//                                _controllerState.value?.copy(
+//                                    destroyCooldownLeftP1 = it.minus(1).coerceAtLeast(0),
+//                                )
+//                            }
+//
+//
+//                        //player turn change
+//                        _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
+//                            tileState.copy(
+//                                isPlayer1Turn = !tileState.isPlayer1Turn,
+//                            )
+//                        }
+//
+//                        //Place Symbol
+//                        _tileAndGameState.value =
+//                            _tileAndGameState.value?.mapIndexed { index, tileState ->
+//                                if (position == index && tileState.isPlayer1Turn) {
+//                                    tileState.copy(
+//                                        symbolInTile = TileValue.CROSS, tileIsOccupied = true
+//                                    )
+//
+//                                } else if (position == index && !tileState.isPlayer1Turn) {
+//                                    tileState.copy(
+//                                        symbolInTile = TileValue.CIRCLE, tileIsOccupied = true
+//                                    )
+//                                    //retain the state
+//                                } else tileState
+//                            }
+//                        //Check for victory
+//                        checkForVictory(TileValue.CROSS)
+//                        checkForVictory(TileValue.CIRCLE)
+//                    }
+//
+//
+//                    // if player 1
+//                    //lock
+//                    if (ts.isPlayer1Turn) {
+//                        if (controllerState.value?.lockButtonIsOnCooldownP1 == true && controllerState.value?.lockButtonCooldownLeftP1!! == 0) {
+//                            _controllerState.value =
+//                                _controllerState.value?.copy(lockButtonIsOnCooldownP1 = false)
+//                        }
+//                    }
+//
+//                    // if player 2
+//                    //lock
+//                    if (!ts.isPlayer1Turn) {
+//                        if (controllerState.value?.lockButtonIsOnCooldownP2 == true && controllerState.value?.lockButtonCooldownLeftP2!! == 0) {
+//                            _controllerState.value =
+//                                _controllerState.value?.copy(lockButtonIsOnCooldownP2 = false)
+//                        }
+//                    }
+//                    //lock
+//                    if (controllerState.value?.tileIsLockedP1 == true && controllerState.value?.lockOnTileCooldownLeftP1!! == 0) {
+//
+//
+//                        _controllerState.value =
+//                            _controllerState.value?.copy(tileIsLockedP1 = false)
+//
+//                        _tileAndGameState.value =
+//                            _tileAndGameState.value?.mapIndexed { index, tileState ->
+//                                if (index == tileState.lockOnTileP1) {
+//                                    tileState.copy(
+//                                        symbolInTile = TileValue.NONE,
+//                                        tileIsOccupied = false,
+//                                        lockOnTileP1 = -1
+//                                    )
+//                                } else tileState
+//                            }
+//                    }
+//
+//
+//                    //lock
+//                    if (controllerState.value?.tileIsLockedP2 == true && controllerState.value?.lockOnTileCooldownLeftP2!! == 0) {
+//                        _controllerState.value =
+//                            _controllerState.value?.copy(tileIsLockedP2 = false)
+//                        _tileAndGameState.value =
+//                            _tileAndGameState.value?.mapIndexed { index, tileState ->
+//                                if (index == tileState.lockOnTileP2) {
+//                                    tileState.copy(
+//                                        symbolInTile = TileValue.NONE,
+//                                        tileIsOccupied = false,
+//                                        lockOnTileP2 = -1
+//                                    )
+//                                } else tileState
+//                            }
+//                    }
+//
+//
+//                    //destroy
+//                    if (controllerState.value?.destroyButtonIsOnCooldownP1 == true && controllerState.value?.destroyCooldownLeftP1!! == 0) {
+//                        _controllerState.value =
+//                            _controllerState.value?.copy(destroyButtonIsOnCooldownP1 = false)
+//                    }
+//                    //destroy
+//                    if (controllerState.value?.destroyButtonIsOnCooldownP2 == true && controllerState.value?.destroyCooldownLeftP2!! == 0) {
+//                        _controllerState.value =
+//                            _controllerState.value?.copy(destroyButtonIsOnCooldownP2 = false)
+//                    }
+//
+//                    //transpose
+//                    if (controllerState.value?.transposeButtonIsOnCooldownP2 == true && controllerState.value?.transposeCooldownLeftP2!! == 0) {
+//                        _controllerState.value =
+//                            _controllerState.value?.copy(transposeButtonIsOnCooldownP2 = false)
+//                    }
+//
+//                    //transpose
+//                    if (controllerState.value?.transposeButtonIsOnCooldownP1 == true && controllerState.value?.transposeCooldownLeftP1!! == 0) {
+//                        _controllerState.value =
+//                            _controllerState.value?.copy(transposeButtonIsOnCooldownP1 = false)
+//                    } else ts
+//                }
+//                Action.DESTROY -> {
+//
+//                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP1!! && ts.isPlayer1Turn) {
+//                        destroyRandomTiles()
+//                        _controllerState.value = _controllerState.value?.copy(
+//                            destroyButtonIsOnCooldownP1 = true, destroyCooldownLeftP1 = 4
+//                        )
+//                    }
+//
+//                    if (!ts.gameIsComplete && !controllerState.value?.destroyButtonIsOnCooldownP2!! && !ts.isPlayer1Turn) {
+//                        destroyRandomTiles()
+//                        _controllerState.value = _controllerState.value?.copy(
+//                            destroyButtonIsOnCooldownP2 = true, destroyCooldownLeftP2 = 4
+//                        )
+//                    } else {
+//                    }
+//
+//
+//                }
+//                Action.LOCK -> {
+//
+//                    //is player 1 and lock button not on CD
+//                    if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP1!! && !ts.tileIsOccupied && ts.isPlayer1Turn) {
+//                        _controllerState.value = _controllerState.value?.copy(
+//                            lockButtonIsOnCooldownP1 = true,
+//                            lockButtonCooldownLeftP1 = 3,
+//                            tileIsLockedP1 = true,
+//                            lockOnTileCooldownLeftP1 = 3
+//                        )
+//                        lockSpecificTile()
+//                    }
+//                    //is player 2
+//                    if (!ts.gameIsComplete && !controllerState.value?.lockButtonIsOnCooldownP2!! && !ts.tileIsOccupied && !ts.isPlayer1Turn) {
+//                        _controllerState.value = _controllerState.value?.copy(
+//                            lockButtonIsOnCooldownP2 = true,
+//                            lockButtonCooldownLeftP2 = 3,
+//                            tileIsLockedP2 = true,
+//                            lockOnTileCooldownLeftP2 = 3
+//                        )
+//                        lockSpecificTile()
+//                    } else controllerState
+//                }
+//                Action.TRANSPOSE -> {
+//
+//                    if (!ts.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP2!! && !tileAndGameState.value!!.first().isPlayer1Turn) {
+//                        transposeTiles()
+//
+//                        checkForVictory(TileValue.CROSS)
+//                        checkForVictory(TileValue.CIRCLE)
+//                    } else {
+//                    }
+//
+//                    if (!ts.gameIsComplete && !controllerState.value?.transposeButtonIsOnCooldownP1!! && tileAndGameState.value!!.first().isPlayer1Turn) {
+//                        transposeTiles()
+//
+//                        checkForVictory(TileValue.CROSS)
+//                        checkForVictory(TileValue.CIRCLE)
+//                    } else {
+//                    }
+//                }
+//                else -> {}
+//            }
+//        }
+//   }
 
 
 
