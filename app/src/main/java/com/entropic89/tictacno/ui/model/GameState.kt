@@ -135,6 +135,7 @@ data class GameState(
                 players[currentPlayerIndex + 1]
             }
         }
+        Log.i(tag, "player is ${currentPlayer.value}")
     }
 }
 

@@ -20,12 +20,14 @@ fun CountdownTimer(
     modifier: Modifier, turnOver: () -> Unit, gameIsComplete: Boolean = false
 ) {
 
-    val time by produceState(initialValue = 20) {
+    val time by produceState(initialValue = 5) {
         while (value > 0) {
             delay(1.seconds)
             value = value.minus(1)
         }
     }
+
+
 
     LaunchedEffect(key1 = time){
         if (time == 0) {
@@ -43,7 +45,7 @@ fun CountdownTimer(
         ) {
             DefaultText(
                 text =  "T I M E",
-                alpha = if (time == 0) 0.8f else 0.6f,
+                alpha = 0.6f,
                 modifier = Modifier.padding(5.dp)
             )
             DefaultText(

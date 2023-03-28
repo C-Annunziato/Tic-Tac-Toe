@@ -1,6 +1,7 @@
 package com.entropic89.tictacno
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -28,10 +29,7 @@ import com.entropic89.tictacno.ui.componenet.DrawerContent
 import com.entropic89.tictacno.ui.componenet.FullController
 import com.entropic89.tictacno.ui.componenet.TicTacToeBoard
 import com.entropic89.tictacno.ui.componenet.drawCableUI
-import com.entropic89.tictacno.ui.model.ControllerState
-import com.entropic89.tictacno.ui.model.Player
-import com.entropic89.tictacno.ui.model.TileAndGameState
-import com.entropic89.tictacno.ui.model.listOfState
+import com.entropic89.tictacno.ui.model.*
 import com.entropic89.tictacno.ui.theme.*
 import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
 import kotlinx.coroutines.launch
@@ -43,6 +41,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
+            val gameState = GameState()
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
             var rotateScreen180 by remember { mutableStateOf(false) }
@@ -59,6 +58,7 @@ class MainActivity : ComponentActivity() {
                     viewModel = vm,
                     liveDataListOfTileAndGameStates = vm.tileAndGameState,
                     controllerState = vm.controllerState,
+                    gameState = gameState
                 )
             }
         }
@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: T3ViewModel,
+    gameState: GameState,
     liveDataListOfTileAndGameStates: LiveData<List<TileAndGameState>?>,
     controllerState: LiveData<ControllerState>,
 
@@ -76,7 +77,9 @@ fun MainScreen(
 
     val tileAndGameState = liveDataListOfTileAndGameStates.observeAsState()
     val controllerState = controllerState.observeAsState()
-    val player by viewModel.gameState.currentPlayer.collectAsState()
+    val player by gameState.currentPlayer.collectAsState()
+
+    Log.i(TAG,"player is $player")
 
     Column(
         modifier = modifier
@@ -92,7 +95,7 @@ fun MainScreen(
             TicTacToeBoard(
                 listOfTileAndGameStates = tileAndGameState.value ?: listOfState,
                 viewModel = viewModel,
-                turnOver = { viewModel.outOfTime() },
+                turnOver = { gameState.changePlayer() },
                 player = player
             )
 
