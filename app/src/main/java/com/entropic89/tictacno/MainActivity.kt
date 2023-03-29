@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = ViewModelProvider(this)[T3ViewModel::class.java]
-            val gameState = GameState()
+            val gameState = vm::gameState.get()
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
             var rotateScreen180 by remember { mutableStateOf(false) }

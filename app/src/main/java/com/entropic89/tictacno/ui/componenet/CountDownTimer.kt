@@ -27,8 +27,6 @@ fun CountdownTimer(
         }
     }
 
-
-
     LaunchedEffect(key1 = time){
         if (time == 0) {
             delay(1.seconds)

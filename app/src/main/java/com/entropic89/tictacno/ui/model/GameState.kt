@@ -16,7 +16,6 @@ data class GameState(
     val disableCountDown: Boolean = false,
 ) {
 
-
     //initial state of all players
     private val players = (Player.values()).toList().toMutableStateList()
     private val _currentPlayer = MutableStateFlow(Player.PLAYER1)
@@ -33,7 +32,7 @@ data class GameState(
        _currentPlayer.value = Player.PLAYER1
     }
 
-    fun updateDestroyCooldowns(tileState: TileAndGameState) {
+    fun setDestroyCooldowns(tileState: TileAndGameState) {
         _currentPlayer.update { player ->
             player.apply {
                 if (!tileState.gameIsComplete && !controllerState.destroyButtonIsOnCooldownP1!!) {
@@ -52,17 +51,18 @@ data class GameState(
     fun isTransposeButtonOnCooldown(): Boolean {
         return currentPlayer.value.controllerState.transposeButtonIsOnCooldownP1
     }
-
-    fun updateLockCooldowns(tileState: TileAndGameState) {
+//figure out player in this context
+    fun setLockCooldowns(tileState: TileAndGameState) {
         _currentPlayer.update { player ->
             player.apply {
-                if (!tileState.gameIsComplete && !controllerState.lockButtonIsOnCooldownP1!! && !tileState.tileIsOccupied && tileState.isPlayer1Turn) {
+                if (!tileState.gameIsComplete && !controllerState.lockButtonIsOnCooldownP1!! && !tileState.tileIsOccupied) {
                     controllerState = controllerState.copy(
                         lockButtonIsOnCooldownP1 = true,
                         lockButtonCooldownLeftP1 = 3,
                         tileIsLockedP1 = true,
                         lockOnTileCooldownLeftP1 = 3,
                     )
+                    Log.i(tag, "lock button is on cd ${controllerState.lockOnTileCooldownLeftP1}")
                 }
             }
         }
@@ -84,26 +84,48 @@ data class GameState(
                         .coerceAtLeast(0),
                     destroyCooldownLeftP1 = controllerState.destroyCooldownLeftP1.minus(1)
                         .coerceAtLeast(0),
-                    lockButtonIsOnCooldownP1 = (controllerState.lockButtonIsOnCooldownP1 && controllerState.lockButtonCooldownLeftP1!! == 0),
-                    tileIsLockedP1 = (controllerState.tileIsLockedP1 && controllerState.lockOnTileCooldownLeftP1!! == 0),
-
-                    destroyButtonIsOnCooldownP1 = (controllerState.destroyButtonIsOnCooldownP1 && controllerState.destroyCooldownLeftP1!! == 0),
-                    transposeButtonIsOnCooldownP1 = (controllerState.transposeButtonIsOnCooldownP1 && controllerState.transposeCooldownLeftP1!! == 0)
+                    //boolean expression set directly to controller state
+                    //if the cd left is zero and it was on cd  then the overall cd needs to be set to false
+                    lockButtonIsOnCooldownP1 = !(controllerState.lockButtonIsOnCooldownP1 && controllerState.lockButtonCooldownLeftP1!! == 0),
+                    tileIsLockedP1 = !(controllerState.tileIsLockedP1 && controllerState.lockOnTileCooldownLeftP1!! == 0),
+                    destroyButtonIsOnCooldownP1 = !(controllerState.destroyButtonIsOnCooldownP1 && controllerState.destroyCooldownLeftP1!! == 0),
+                    transposeButtonIsOnCooldownP1 = !(controllerState.transposeButtonIsOnCooldownP1 && controllerState.transposeCooldownLeftP1!! == 0)
 
                 )
+                Log.i(tag, "lock button is on cd ${controllerState.lockOnTileCooldownLeftP1}")
             }
         }
     }
 
-    fun lockTile(listOfTileState: List<TileAndGameState>): List<TileAndGameState> {
+    fun unlockTileGameState(listOfTileState: List<TileAndGameState>, controllerState: ControllerState): List<TileAndGameState> {
         return listOfTileState.mapIndexed { index, tileState ->
             if (index == tileState.lockOnTileP1) {
+                if (controllerState.tileIsLockedP1 && controllerState.lockOnTileCooldownLeftP1 == 0) {
+                    controllerState.copy(tileIsLockedP1 = false)
+                    tileState.copy(
+                        symbolInTile = TileValue.NONE, tileIsOccupied = false, lockOnTileP1 = -1
+                    )
+                } else tileState
+            } else tileState
+        }
+    }
+
+    fun unlockTileControllerState(controllerState: ControllerState) : ControllerState {
+       return  if (controllerState.lockButtonIsOnCooldownP1 && controllerState.lockButtonCooldownLeftP1 == 0) {
+            controllerState.copy(lockButtonIsOnCooldownP1 = false)
+        }  else controllerState
+    }
+
+    fun lockTile(listOfTileState: List<TileAndGameState>, position: Int): List<TileAndGameState> {
+        return listOfTileState.mapIndexed { index, tileState ->
+            if (index == position) {
                 tileState.copy(
-                    symbolInTile = TileValue.NONE, tileIsOccupied = false, lockOnTileP1 = -1
+                    symbolInTile = TileValue.LOCKED, tileIsOccupied = true, lockOnTileP1 = tileState.id
                 )
             } else tileState
         }
     }
+
 
 
     fun placeSymbolInTile(
@@ -120,7 +142,6 @@ data class GameState(
 
     //synchronizing controller states
     fun changePlayer() {
-        Log.i(tag, "player change")
         //source of truth ensures we always correlate correct player to record
         //current player matches one of the  players in enum class
         val currentPlayerIndex = players.indexOfFirst { it.name == currentPlayer.value.name }
@@ -135,7 +156,7 @@ data class GameState(
                 players[currentPlayerIndex + 1]
             }
         }
-        Log.i(tag, "player is ${currentPlayer.value}")
+
     }
 }
 

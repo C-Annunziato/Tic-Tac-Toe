@@ -1,5 +1,6 @@
 package com.entropic89.tictacno.ui.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -54,22 +55,23 @@ class T3ViewModel : ViewModel() {
                 Action.PLACE -> {
                     if(!tileState.tileIsOccupied) {
                         gameState.updateActionButtonCooldowns()
-                        _tileAndGameState.value = gameState.placeSymbolInTile(
-                            tileState = this.tileAndGameState.value!!,
-                            position = position
-                        )
+                        _tileAndGameState.value = gameState.placeSymbolInTile(tileState = this.tileAndGameState.value!!, position = position)
+                        Log.i(TAG, "lock cooldown is at ${controllerState.value?.lockOnTileCooldownLeftP1}")
+                        _tileAndGameState.value = gameState.unlockTileGameState(listOfTileState =  this.tileAndGameState.value!!, controllerState = controllerState.value!!)
+                        _controllerState.value = gameState.unlockTileControllerState(controllerState = controllerState.value!!)
                         checkForVictory(TileValue.CROSS)
                         checkForVictory(TileValue.CIRCLE)
                         gameState.changePlayer()
+                        gameState
                     }
                 }
                 Action.DESTROY -> {
-                    gameState.updateDestroyCooldowns(tileState = tileState)
+                    gameState.setDestroyCooldowns(tileState = tileState)
                 }
                 Action.LOCK -> {
-                    _tileAndGameState.value = gameState.lockTile(listOfTileState = this.tileAndGameState.value!!)
-                    gameState.updateLockCooldowns(tileState = tileState)
-                    lockSpecificTile()
+                    gameState.setLockCooldowns(tileState = tileState)
+                    Log.i(TAG, "start of cooldown ${controllerState.value?.lockOnTileCooldownLeftP1}")
+                    _tileAndGameState.value = gameState.lockTile(listOfTileState = this.tileAndGameState.value!!, position = position)
                 }
                 Action.TRANSPOSE -> {
                     if (!tileState.gameIsComplete && gameState.isTransposeButtonOnCooldown()) {
