@@ -160,6 +160,35 @@ data class GameState(
     }
 }
 
+//fun updateActionCooldowns() {
+//
+//    //transpose is subtracted on both turns need to deal with it or split it up to individual players
+//    updatePlayer {
+//        copy(
+//            lockButtonCooldownLeftP1 = lockButtonCooldownLeftP1.minus(1).coerceAtLeast(0),
+//            transposeCooldownLeftP1 = transposeCooldownLeftP1.minus(1).coerceAtLeast(0),
+//            lockOnTileCooldownLeftP1 = lockOnTileCooldownLeftP1.minus(1).coerceAtLeast(0),
+//            destroyCooldownLeftP1 = destroyCooldownLeftP1.minus(1).coerceAtLeast(0),
+//            lockButtonIsOnCooldownP1 = (lockButtonIsOnCooldownP1 && lockButtonCooldownLeftP1 == 0),
+//            tileIsLockedP1 = (tileIsLockedP1 && lockOnTileCooldownLeftP1 == 0),
+//            destroyButtonIsOnCooldownP1 = (destroyButtonIsOnCooldownP1 && destroyCooldownLeftP1 == 0),
+//            transposeButtonIsOnCooldownP1 = (transposeButtonIsOnCooldownP1 && transposeCooldownLeftP1 == 0)
+//        )
+//    }
+//}
+//private fun updatePlayer(
+//    updateController : NewControllerState.() -> NewControllerState,
+//) {
+//    // PUT THE UPDATED PLAYER IN FLOW
+//    _currentPlayer.update { player ->
+//        //UPDATE THE PLAYER OBJECT
+//        player.apply {
+//            //UPDATE THE PLAYER'S CONTROL STATE
+//            controllerState = updateController(controllerState)
+//        }
+//    }
+//}
+
 
 fun main() {
     runBlocking {
