@@ -3,7 +3,7 @@ package com.entropic89.tictacno.ui.componenet
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,8 +58,9 @@ fun TicTacToeBoard(
                         currentIndex = currentIndex,
                         viewModel = viewModel,
                         onTileSelect = {
-                        viewModel.updateTileOnTouchSelected(currentIndex)
-                        })
+                            viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = false)},
+                        onDoubleTap = {viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = true)}
+                    )
                 }
             }
         }
@@ -116,8 +118,11 @@ fun Tile(
     state: TileAndGameState?,
     currentIndex: Int,
     viewModel: T3ViewModel,
-    onTileSelect: () -> Unit
+    onTileSelect: () -> Unit,
+    onDoubleTap: () -> Unit
 ) {
+
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -139,7 +144,12 @@ fun Tile(
                         cornerRadius = CornerRadius(x = 30f, y = 30f)
                     )
                 }
-                .clickable { onTileSelect() },
+//                .clickable { onTileSelect() }
+                .pointerInput(Unit) {
+                    detectTapGestures(onDoubleTap = { onDoubleTap() }, onPress = { onTileSelect()},
+
+                    )
+                },
             elevation = 5.dp,
             shape = RoundedCornerShape(8.dp),
             backgroundColor = retroNearWhite

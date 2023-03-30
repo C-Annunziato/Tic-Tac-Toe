@@ -569,7 +569,7 @@ class T3ViewModel : ViewModel() {
         }
     }
 
-    fun updateTileOnTouchSelected(currentSelection: Int) {
+    fun updateTileOnTouchSelected(currentSelection: Int, doubleTap : Boolean) {
         removePriorSelection()
         _position = currentSelection
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
@@ -615,6 +615,10 @@ class T3ViewModel : ViewModel() {
                 currentColumn = 3
             }
         }
+
+        if(doubleTap){
+            updateActionButtonState(Action.PLACE)
+        } else {}
     }
 
 
