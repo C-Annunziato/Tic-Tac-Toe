@@ -1,4 +1,4 @@
-package com.entropic89.tictacno.data
+package com.entropic89.tictacno.ui.model
 
 data class TileAndGameState(
     //tilestate

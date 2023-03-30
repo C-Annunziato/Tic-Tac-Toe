@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.entropic89.tictacno.data.*
+import com.entropic89.tictacno.ui.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -35,6 +35,7 @@ class T3ViewModel : ViewModel() {
         set(value) {
             _position = value
         }
+
 
     fun disableCountDown(value: Boolean) {
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
@@ -311,7 +312,7 @@ class T3ViewModel : ViewModel() {
 
     private fun transposeTiles() {
 
-       //make a pair of all possible transpositions
+        //make a pair of all possible transpositions
         val pairArray = arrayOf(
             Pair(0, 8),
             Pair(2, 6),
@@ -417,11 +418,15 @@ class T3ViewModel : ViewModel() {
                     tryCount += 1
                 }
             } else {
-                randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
+                randomChoice =
+                    Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first }
+                        ?: Random.nextInt(numColumns * numRows)
                 randomSymbolAroundMiddle =
                     tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
                 while (randomSymbolAroundMiddle == symbolInMiddleTile || randomSymbolAroundMiddle == TileValue.LOCKED) {
-                    randomChoice = Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first } ?: Random.nextInt(numColumns*numRows)
+                    randomChoice =
+                        Random.nextInt(numColumns * numRows).takeIf { it != middleOption.first }
+                            ?: Random.nextInt(numColumns * numRows)
                     randomSymbolAroundMiddle =
                         tileAndGameState.value?.get(randomChoice)?.symbolInTile ?: TileValue.NONE
                 }
@@ -564,8 +569,57 @@ class T3ViewModel : ViewModel() {
         }
     }
 
+    fun updateTileOnTouchSelected(currentSelection: Int) {
+        removePriorSelection()
+        _position = currentSelection
+        _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
+            if (currentSelection == index) {
+                tileState.copy(isSelected = true)
+            } else tileState
+        }
+        when (position) {
+            0 -> {
+                currentRow = 1
+                currentColumn = 1
+            }
+            1 -> {
+                currentRow = 1
+                currentColumn = 2
+            }
+            2 -> {
+                currentRow = 1
+                currentColumn = 3
+            }
+            3 -> {
+                currentRow = 2
+                currentColumn = 1
+            }
+            4 -> {
+                currentRow = 2
+                currentColumn = 2
+            }
+            5 -> {
+                currentRow = 2
+                currentColumn = 3
+            }
+            6 -> {
+                currentRow = 3
+                currentColumn = 1
+            }
+            7 -> {
+                currentRow = 3
+                currentColumn = 2
+            }
+            8 -> {
+                currentRow = 3
+                currentColumn = 3
+            }
+        }
+    }
+
 
     private fun moveOnBoard(numOfRows: Int, numOfColumns: Int) {
+
         when (controllerState.value?.arrowState) {
             Direction.UP -> {
                 //can move up
@@ -653,6 +707,7 @@ class T3ViewModel : ViewModel() {
                 }
             }
         }
+        Log.i(TAG, "position on move is $position")
     }
 
     private fun destroyRandomTiles() {
@@ -697,10 +752,10 @@ class T3ViewModel : ViewModel() {
                 isSelected = false,
                 gameIsComplete = false,
                 winningIndexes = Triple(0, 0, 0),
-               //p1
+                //p1
                 isPlayer1Turn = true,
                 lockOnTileP1 = -1,
-               //p2
+                //p2
                 lockOnTileP2 = -1,
             )
         }

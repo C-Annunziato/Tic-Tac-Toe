@@ -25,15 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.entropic89.tictacno.data.ControllerState
-import com.entropic89.tictacno.data.TileAndGameState
-import com.entropic89.tictacno.data.listOfState
-import com.entropic89.tictacno.ui.DeadButton
-import com.entropic89.tictacno.ui.FullController
-import com.entropic89.tictacno.ui.TicTacToeBoard
+import com.entropic89.tictacno.ui.componenet.DeadButton
+import com.entropic89.tictacno.ui.componenet.FullController
+import com.entropic89.tictacno.ui.componenet.TicTacToeBoard
+import com.entropic89.tictacno.ui.componenet.drawCableUI
+import com.entropic89.tictacno.ui.model.ControllerState
+import com.entropic89.tictacno.ui.model.TileAndGameState
+import com.entropic89.tictacno.ui.model.listOfState
 import com.entropic89.tictacno.ui.theme.*
 import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
-import com.example.tictactoe.ui.theme.drawCableUI
 import kotlinx.coroutines.launch
 
 const val TAG = "main"

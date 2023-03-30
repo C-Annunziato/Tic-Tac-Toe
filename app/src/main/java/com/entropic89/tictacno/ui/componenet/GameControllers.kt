@@ -1,4 +1,4 @@
-package com.entropic89.tictacno.ui
+package com.entropic89.tictacno.ui.componenet
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
-import com.entropic89.tictacno.data.Action
-import com.entropic89.tictacno.data.Direction
+import com.entropic89.tictacno.ui.model.Action
+import com.entropic89.tictacno.ui.model.Direction
 import com.entropic89.tictacno.ui.theme.retroDarkGrey
 import kotlin.math.ceil
 

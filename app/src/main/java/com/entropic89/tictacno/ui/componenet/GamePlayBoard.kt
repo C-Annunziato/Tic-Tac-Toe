@@ -1,8 +1,9 @@
-package com.entropic89.tictacno.ui
+package com.entropic89.tictacno.ui.componenet
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -19,7 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.entropic89.tictacno.data.*
+import com.entropic89.tictacno.ui.*
+import com.entropic89.tictacno.ui.model.TileAndGameState
+import com.entropic89.tictacno.ui.model.TileValue
 import com.entropic89.tictacno.ui.theme.*
 import com.entropic89.tictacno.ui.viewmodel.T3ViewModel
 import kotlinx.coroutines.delay
@@ -31,7 +34,8 @@ fun TicTacToeBoard(
     modifier: Modifier = Modifier,
     listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
-    turnOver: () -> Unit
+    turnOver: () -> Unit,
+//    onTileSelect: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -51,8 +55,10 @@ fun TicTacToeBoard(
                     Tile(
                         state = listOfTileAndGameStates?.getOrNull(currentIndex),
                         currentIndex = currentIndex,
-                        viewModel = viewModel
-                    )
+                        viewModel = viewModel,
+                        onTileSelect = {
+                        viewModel.updateTileOnTouchSelected(currentIndex)
+                        })
                 }
             }
         }
@@ -110,6 +116,7 @@ fun Tile(
     state: TileAndGameState?,
     currentIndex: Int,
     viewModel: T3ViewModel,
+    onTileSelect: () -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -131,7 +138,8 @@ fun Tile(
                         size = Size(width = 84.dp.toPx(), height = 84.dp.toPx()),
                         cornerRadius = CornerRadius(x = 30f, y = 30f)
                     )
-                },
+                }
+                .clickable { onTileSelect() },
             elevation = 5.dp,
             shape = RoundedCornerShape(8.dp),
             backgroundColor = retroNearWhite
@@ -141,7 +149,6 @@ fun Tile(
                 enter = scaleIn(tween(150)),
             ) {
                 when (state?.symbolInTile?.ordinal) {
-
                     TileValue.NONE.ordinal -> {}
                     TileValue.CROSS.ordinal -> DrawCross()
                     TileValue.CIRCLE.ordinal -> CircleOfSquares()

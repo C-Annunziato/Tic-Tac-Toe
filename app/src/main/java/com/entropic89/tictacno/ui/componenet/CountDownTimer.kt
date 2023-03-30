@@ -1,4 +1,4 @@
-package com.entropic89.tictacno.ui
+package com.entropic89.tictacno.ui.componenet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
