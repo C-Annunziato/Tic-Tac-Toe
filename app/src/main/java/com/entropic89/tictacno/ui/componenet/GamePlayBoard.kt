@@ -16,7 +16,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,13 +55,18 @@ fun TicTacToeBoard(
             ) {
                 for (j in 1..3) {
                     val currentIndex = (i - 1) * 3 + (j - 1)
+
+                    val haptic = LocalHapticFeedback.current
                     Tile(
                         state = listOfTileAndGameStates?.getOrNull(currentIndex),
                         currentIndex = currentIndex,
                         viewModel = viewModel,
                         onTileSelect = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = false)},
-                        onDoubleTap = {viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = true)}
+                        onDoubleTap = {
+//                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = true)},
                     )
                 }
             }
@@ -119,7 +126,7 @@ fun Tile(
     currentIndex: Int,
     viewModel: T3ViewModel,
     onTileSelect: () -> Unit,
-    onDoubleTap: () -> Unit
+    onDoubleTap: () -> Unit,
 ) {
 
 
@@ -144,11 +151,8 @@ fun Tile(
                         cornerRadius = CornerRadius(x = 30f, y = 30f)
                     )
                 }
-//                .clickable { onTileSelect() }
                 .pointerInput(Unit) {
-                    detectTapGestures(onDoubleTap = { onDoubleTap() }, onPress = { onTileSelect()},
-
-                    )
+                    detectTapGestures(onDoubleTap = { onDoubleTap() }, onPress = { onTileSelect()})
                 },
             elevation = 5.dp,
             shape = RoundedCornerShape(8.dp),

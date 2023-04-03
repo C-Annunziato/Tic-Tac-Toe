@@ -619,6 +619,8 @@ class T3ViewModel : ViewModel() {
         if(doubleTap){
             updateActionButtonState(Action.PLACE)
         } else {}
+
+
     }
 
 
