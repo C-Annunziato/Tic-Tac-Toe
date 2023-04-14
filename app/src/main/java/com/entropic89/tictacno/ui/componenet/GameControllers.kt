@@ -1,16 +1,22 @@
 package com.entropic89.tictacno.ui.componenet
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AdsClick
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.entropic89.tictacno.ui.model.Action
 import com.entropic89.tictacno.ui.model.Direction
@@ -18,6 +24,7 @@ import com.entropic89.tictacno.ui.theme.retroDarkGrey
 import kotlin.math.ceil
 
 const val TAG = "controller"
+
 
 @Composable
 fun FullController(
@@ -42,7 +49,7 @@ fun FullController(
                 .shadow(5.dp, shape = CircleShape), elevation = 5.dp, color = retroDarkGrey
         ) {
             Row(
-                modifier = Modifier.padding(start = 24.dp, end =30.dp, top = 25.dp, bottom = 25.dp)
+                modifier = Modifier.padding(start = 24.dp, end = 30.dp, top = 25.dp, bottom = 25.dp)
             ) {
                 GameControlsLeft(modifier = Modifier.weight(1.3f), arrowOnClick)
                 GameControlsRight(
@@ -61,6 +68,10 @@ fun FullController(
 
     }
 }
+
+
+
+
 
 @Composable
 fun GameControlsLeft(

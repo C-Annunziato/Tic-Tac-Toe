@@ -250,13 +250,14 @@ fun MainScreen(
         ) {
             val haptic = LocalHapticFeedback.current
             if (liveBoardState.value?.get(0)?.isPlayer1Turn == true) {
-                FullController(
-                    arrowOnClick = {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        viewModel.updateArrowButtonState(direction = it) },
+                FullController(arrowOnClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.updateArrowButtonState(direction = it)
+                },
                     actionOnClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        viewModel.updateActionButtonState(action = it) },
+                        viewModel.updateActionButtonState(action = it)
+                    },
                     destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP1!! },
                     destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP1 ?: 0 },
                     lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP1!! },
@@ -267,13 +268,14 @@ fun MainScreen(
                     modifier = Modifier.padding(bottom = 40.dp)
                 )
             } else {
-                FullController(
-                    arrowOnClick = {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        viewModel.updateArrowButtonState(direction = it) },
+                FullController(arrowOnClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.updateArrowButtonState(direction = it)
+                },
                     actionOnClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        viewModel.updateActionButtonState(action = it) },
+                        viewModel.updateActionButtonState(action = it)
+                    },
                     destroyButtonOnCooldown = { controllerState.value?.destroyButtonIsOnCooldownP2!! },
                     destroyCooldownLeft = { controllerState.value?.destroyCooldownLeftP2 ?: 0 },
                     lockButtonOnCooldown = { controllerState.value?.lockButtonIsOnCooldownP2!! },
@@ -287,7 +289,8 @@ fun MainScreen(
             OutlinedButton(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    viewModel.resetBoard() },
+                    viewModel.resetBoard()
+                },
                 shape = CutCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     retroPurple

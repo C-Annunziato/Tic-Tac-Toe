@@ -547,6 +547,7 @@ class T3ViewModel : ViewModel() {
         return false
     }
 
+
     fun updateArrowButtonState(direction: Direction) {
         when (direction) {
             Direction.UP -> _controllerState.value =
@@ -569,7 +570,7 @@ class T3ViewModel : ViewModel() {
         }
     }
 
-    fun updateTileOnTouchSelected(currentSelection: Int, doubleTap : Boolean) {
+    fun updateTileOnTouchSelected(currentSelection: Int, doubleTap: Boolean) {
         removePriorSelection()
         _position = currentSelection
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
@@ -616,9 +617,10 @@ class T3ViewModel : ViewModel() {
             }
         }
 
-        if(doubleTap){
+        if (doubleTap) {
             updateActionButtonState(Action.PLACE)
-        } else {}
+        } else {
+        }
 
 
     }
@@ -806,19 +808,19 @@ class T3ViewModel : ViewModel() {
         return midRow * midColumn
     }
 
+
     private fun initToBoardMiddle() {
         //find the middle of a square grid
         //avoid integer division via toDouble cast
 
         _position = returnMiddleOfBoard()
-
-
         _tileAndGameState.value = _tileAndGameState.value?.mapIndexed { index, tileState ->
             if (index == _position) {
                 tileState.copy(isSelected = true)
             } else tileState
         }
     }
+
 
     fun outOfTime() {
 
