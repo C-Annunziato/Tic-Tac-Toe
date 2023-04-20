@@ -436,25 +436,43 @@ class T3ViewModel : ViewModel() {
             if (symbolInMiddleTile != randomSymbolAroundMiddle && symbolInMiddleTile != TileValue.DESTROYED && randomSymbolAroundMiddle != TileValue.DESTROYED) {
                 if (randomSymbolAroundMiddle != TileValue.NONE || symbolInMiddleTile != TileValue.NONE) {
                     if (randomSymbolAroundMiddle != TileValue.LOCKED && symbolInMiddleTile != TileValue.LOCKED) {
+
                         _tileAndGameState.value =
                             _tileAndGameState.value?.mapIndexed { index, tileAndGameState ->
                                 when (index) {
+
                                     middleOption.first -> {
-                                        tileAndGameState.copy(
-                                            symbolInTile = randomSymbolAroundMiddle,
-                                            tileIsOccupied = true
-                                        )
+                                       if(randomSymbolAroundMiddle == TileValue.NONE){
+                                           tileAndGameState.copy(
+                                               symbolInTile = randomSymbolAroundMiddle,
+                                               tileIsOccupied = false
+                                           )
+                                       } else {
+                                           tileAndGameState.copy(
+                                               symbolInTile = randomSymbolAroundMiddle,
+                                               tileIsOccupied = true
+                                           )
+                                       }
                                     }
                                     randomChoice -> {
-                                        tileAndGameState.copy(
-                                            symbolInTile = symbolInMiddleTile,
-                                            tileIsOccupied = false
-                                        )
+                                        if(symbolInMiddleTile == TileValue.NONE) {
+                                            tileAndGameState.copy(
+                                                symbolInTile = symbolInMiddleTile,
+                                                tileIsOccupied = false
+                                            )
+                                        } else {
+                                            tileAndGameState.copy(
+                                                symbolInTile = symbolInMiddleTile,
+                                                tileIsOccupied = true
+                                            )
+                                        }
 
                                     }
                                     else -> tileAndGameState
                                 }
                             }
+
+
                         //cooldown adjustment
                         if (tileAndGameState.value!!.first().isPlayer1Turn) {
                             _controllerState.value = _controllerState.value?.copy(
