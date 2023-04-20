@@ -1,6 +1,5 @@
 package com.entropic89.tictacno.ui.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -443,7 +442,7 @@ class T3ViewModel : ViewModel() {
                                     middleOption.first -> {
                                         tileAndGameState.copy(
                                             symbolInTile = randomSymbolAroundMiddle,
-                                            tileIsOccupied = false
+                                            tileIsOccupied = true
                                         )
                                     }
                                     randomChoice -> {
@@ -715,7 +714,6 @@ class T3ViewModel : ViewModel() {
                 }
             }
         }
-        Log.i(TAG, "position on move is $position")
     }
 
     private fun destroyRandomTiles() {
@@ -824,7 +822,6 @@ class T3ViewModel : ViewModel() {
 
     fun outOfTime() {
 
-        Log.i(TAG, "outoftime called")
         _tileAndGameState.value = _tileAndGameState.value?.map { tileState ->
             tileState.copy(isPlayer1Turn = !tileState.isPlayer1Turn)
         }

@@ -38,7 +38,6 @@ fun TicTacToeBoard(
     listOfTileAndGameStates: List<TileAndGameState>?,
     viewModel: T3ViewModel,
     turnOver: () -> Unit,
-//    onTileSelect: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -65,7 +64,7 @@ fun TicTacToeBoard(
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = false)},
                         onDoubleTap = {
-//                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             viewModel.updateTileOnTouchSelected(currentIndex, doubleTap = true)},
                     )
                 }
